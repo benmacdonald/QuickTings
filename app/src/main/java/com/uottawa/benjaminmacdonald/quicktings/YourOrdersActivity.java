@@ -3,11 +3,11 @@ package com.uottawa.benjaminmacdonald.quicktings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class YourTripsActivity extends AppCompatActivity {
+public class YourOrdersActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_your_trips);
+        setContentView(R.layout.activity_your_orders);
     }
 }
