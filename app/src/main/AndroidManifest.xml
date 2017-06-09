@@ -23,10 +23,18 @@
         <activity android:name=".CartActivity" />
         <activity android:name=".CheckoutActivity" />
         <activity android:name=".DeliveryActivity" />
-        <activity android:name=".PaymentActivity" />
-        <activity android:name=".HelpActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".YourOrdersActivity"></activity>
+        <activity
+            android:name=".PaymentActivity"
+            android:label="Payment" />
+        <activity
+            android:name=".HelpActivity"
+            android:label="Help" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings" />
+        <activity
+            android:name=".YourOrdersActivity"
+            android:label="Your Orders"></activity>
     </application>
 
 </manifest>

@@ -9,5 +9,15 @@ public class PaymentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment);
+
+        //Add the back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    //Back button functionality
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

@@ -9,5 +9,15 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        //Add the back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    //Back button functionality
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }
