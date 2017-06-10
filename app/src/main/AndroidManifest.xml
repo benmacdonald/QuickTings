@@ -18,7 +18,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.SearchActivity" />
         <activity android:name=".Activities.ProductActivity" />
         <activity android:name=".Activities.CartActivity" />
         <activity android:name=".Activities.CheckoutActivity" />
@@ -32,9 +31,6 @@
         <activity
             android:name=".Activities.SettingsActivity"
             android:label="Settings" />
-        <activity
-            android:name=".YourOrdersActivity"
-            android:label="Your Orders"></activity>
     </application>
 
 </manifest>
