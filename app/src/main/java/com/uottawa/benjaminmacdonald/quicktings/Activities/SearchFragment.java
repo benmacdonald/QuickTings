@@ -4,11 +4,22 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.uottawa.benjaminmacdonald.quicktings.Activities.Interfaces.VolleyCallback;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+
+import org.json.JSONObject;
 
 
 /**
@@ -25,9 +36,9 @@ public class SearchFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView test;
 
     private OnFragmentInteractionListener mListener;
 
@@ -66,7 +77,38 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_search, container, false);
+        test = (TextView) rootView.findViewById(R.id.testSearch);
+        String query = getArguments().getString("SEARCH_PARAM");
+        test.setText(query);
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        String url = "https://lcboapi.com/products?access_key="+getString(R.string.api_key)+"&q="+query;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // TODO doooooo
+                        test.setText(response.toString());
+                        Log.d("MYAPP",response.toString());
+
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO Auto-generated method stub
+                        test.setText(error.toString());
+                        Log.d("MYAPP","ERROR" + error);
+
+                    }
+                });
+
+        requestQueue.add(jsonObjectRequest);
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -107,4 +149,5 @@ public class SearchFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
