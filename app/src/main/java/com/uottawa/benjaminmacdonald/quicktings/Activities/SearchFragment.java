@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -16,10 +17,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.uottawa.benjaminmacdonald.quicktings.Activities.Adapters.ProductItemArrayAdapter;
+import com.uottawa.benjaminmacdonald.quicktings.Activities.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.Activities.Interfaces.VolleyCallback;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -38,10 +46,11 @@ public class SearchFragment extends Fragment {
 
     private String mParam1;
     private String mParam2;
-    private TextView test;
 
     private OnFragmentInteractionListener mListener;
     private RequestQueue requestQueue;
+    private List<ProductItem> productItems;
+    private ProductItemArrayAdapter productArrayAdapter;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -79,12 +88,17 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        test = (TextView) rootView.findViewById(R.id.testSearch);
         String query = getArguments().getString("SEARCH_PARAM");
-        test.setText(query);
 
         requestQueue = Volley.newRequestQueue(getActivity());
         updateSearchResults(query);
+
+        ListView listView = (ListView) rootView.findViewById(R.id.productListView);
+
+        productItems = new ArrayList<ProductItem>();
+
+        productArrayAdapter = new ProductItemArrayAdapter(getActivity(), productItems);
+        listView.setAdapter(productArrayAdapter);
 
         return rootView;
     }
@@ -121,8 +135,11 @@ public class SearchFragment extends Fragment {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        // TODO doooooo
-                        test.setText(response.toString());
+                        List<ProductItem> tmp = createProductItems(response);
+                        productItems.clear();
+                        productItems.addAll(tmp);
+                        productArrayAdapter.notifyDataSetChanged();
+
                         Log.d("MYAPP",response.toString());
 
                     }
@@ -131,14 +148,26 @@ public class SearchFragment extends Fragment {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        // TODO Auto-generated method stub
-                        test.setText(error.toString());
                         Log.d("MYAPP","ERROR" + error);
 
                     }
                 });
 
         requestQueue.add(jsonObjectRequest);
+    }
+
+    public List<ProductItem> createProductItems(JSONObject response) {
+        JSONArray jsonArray;
+        List<ProductItem> items = new ArrayList<ProductItem>();
+        try {
+            jsonArray = new JSONArray(response.getString("result"));
+            for (int i =0; i<jsonArray.length(); i++) {
+                items.add(new ProductItem(jsonArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            return items;
+        }
+        return items;
     }
 
     /**
