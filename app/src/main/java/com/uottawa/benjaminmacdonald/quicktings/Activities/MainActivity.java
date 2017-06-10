@@ -1,5 +1,6 @@
 package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -148,13 +149,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_payment) {
-
+            startActivity(new Intent(this, PaymentActivity.class));
         } else if (id == R.id.nav_your_orders) {
-
+            startActivity(new Intent(this, YourOrdersActivity.class));
         } else if (id == R.id.nav_help) {
-
+            startActivity(new Intent(this, HelpActivity.class));
         } else if (id == R.id.nav_settings) {
-
+            startActivity(new Intent(this, SettingsActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

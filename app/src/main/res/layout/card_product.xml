@@ -40,9 +40,9 @@
                         android:id="@+id/favouriteButton"
                         android:layout_width="36dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.15"
                         android:background="@drawable/custom_favourite_button"
-                        android:rotation="0"
-                        android:layout_weight="0.15" />
+                        android:rotation="0" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
