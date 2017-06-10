@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.uottawa.benjaminmacdonald.quicktings.YourOrdersActivity">
+    tools:context="com.uottawa.benjaminmacdonald.quicktings.Activities.YourOrdersActivity">
 
 </android.support.constraint.ConstraintLayout>

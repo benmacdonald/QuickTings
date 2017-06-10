@@ -26,6 +26,9 @@
             android:name=".Activities.PaymentActivity"
             android:label="Payment" />
         <activity
+            android:name=".Activities.YourOrdersActivity"
+            android:label="Your Orders" />
+        <activity
             android:name=".Activities.HelpActivity"
             android:label="Help" />
         <activity
