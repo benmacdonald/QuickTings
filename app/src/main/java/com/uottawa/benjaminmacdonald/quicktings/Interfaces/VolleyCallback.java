@@ -1,4 +1,4 @@
-package com.uottawa.benjaminmacdonald.quicktings.Activities.Interfaces;
+package com.uottawa.benjaminmacdonald.quicktings.Interfaces;
 
 import org.json.JSONObject;
 

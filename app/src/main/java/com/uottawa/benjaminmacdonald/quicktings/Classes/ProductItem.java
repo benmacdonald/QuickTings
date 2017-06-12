@@ -1,9 +1,7 @@
-package com.uottawa.benjaminmacdonald.quicktings.Activities.Classes;
+package com.uottawa.benjaminmacdonald.quicktings.Classes;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Date;
 
 /**
  * Created by BenjaminMacDonald on 2017-06-09.

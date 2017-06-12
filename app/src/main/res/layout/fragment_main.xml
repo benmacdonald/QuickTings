@@ -1,13 +1,13 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.uottawa.benjaminmacdonald.quicktings.Activities.MainFragment">
+    tools:context="com.uottawa.benjaminmacdonald.quicktings.Fragments.MainFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:text="@string/main_fragment_discover" />
 
-</FrameLayout>
+</android.support.constraint.ConstraintLayout>

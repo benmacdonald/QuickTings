@@ -1,4 +1,4 @@
-package com.uottawa.benjaminmacdonald.quicktings.Activities.Adapters;
+package com.uottawa.benjaminmacdonald.quicktings.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.uottawa.benjaminmacdonald.quicktings.Activities.Classes.ProductItem;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 

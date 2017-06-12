@@ -1,4 +1,4 @@
-package com.uottawa.benjaminmacdonald.quicktings.Activities;
+package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -7,12 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.uottawa.benjaminmacdonald.quicktings.R;
-
-import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 
 /**
