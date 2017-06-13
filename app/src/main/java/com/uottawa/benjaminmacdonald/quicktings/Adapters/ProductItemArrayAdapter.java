@@ -5,10 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -49,6 +53,10 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
         //get volume
         TextView productVolume = (TextView) listView.findViewById(R.id.productVolume);
         productVolume.setText(values.get(position).getVolume() +" mL bottle");
+
+        //get image
+        ImageView imageView = (ImageView) listView.findViewById(R.id.productImage);
+        Glide.with(context).load(values.get(position).getImageUrl()).into(imageView);
 
 
         return listView;
