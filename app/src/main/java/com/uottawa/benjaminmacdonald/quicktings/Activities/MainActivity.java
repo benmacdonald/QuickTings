@@ -119,26 +119,29 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    /*
+    Navigation for the shelf.
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_payment) {
-            startActivity(new Intent(this, PaymentActivity.class));
-        } else if (id == R.id.nav_your_orders) {
+        if (id == R.id.nav_orders) {
             startActivity(new Intent(this, YourOrdersActivity.class));
-        } else if (id == R.id.nav_help) {
-            startActivity(new Intent(this, HelpActivity.class));
+        } else if (id == R.id.nav_cart) {
+            startActivity(new Intent(this, CartActivity.class));
         } else if (id == R.id.nav_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+        } else if (id == R.id.nav_help) {
+            startActivity(new Intent(this, HelpActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
 
-        return false; //returning false instead of true because it does not highlight selection
+        return false; //returning false instead of true so that it does not highlight selection
     }
 
     @Override
