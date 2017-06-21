@@ -3,6 +3,8 @@ package com.uottawa.benjaminmacdonald.quicktings.Classes;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.IllegalFormatException;
+
 /**
  * Created by BenjaminMacDonald on 2017-06-09.
  */
@@ -60,7 +62,7 @@ public class ProductItem {
             this.tags = json.getString("tags");
             this.updated = json.getString("updated_at");
         } catch (JSONException e) {
-            return;
+            throw new NullPointerException();
         }
     }
 

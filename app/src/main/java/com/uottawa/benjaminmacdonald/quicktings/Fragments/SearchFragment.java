@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,6 +24,7 @@ import com.uottawa.benjaminmacdonald.quicktings.R;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +44,15 @@ public class SearchFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private String mParam1;
-    private String mParam2;
+    private String query;
 
     private OnFragmentInteractionListener mListener;
     private RequestQueue requestQueue;
     private List<ProductItem> productItems;
     private ProductItemArrayAdapter productArrayAdapter;
+
+    private TextView numResult;
+    private TextView searchParam;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -66,8 +70,6 @@ public class SearchFragment extends Fragment {
     public static SearchFragment newInstance(String param1, String param2) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,8 +78,7 @@ public class SearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            query = getArguments().getString("SEARCH_PARAM");
         }
     }
 
@@ -86,12 +87,14 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
-        String query = getArguments().getString("SEARCH_PARAM");
 
         requestQueue = Volley.newRequestQueue(getActivity());
         updateSearchResults(query);
 
         ListView listView = (ListView) rootView.findViewById(R.id.productListView);
+
+        numResult = (TextView) rootView.findViewById(R.id.numResults);
+        searchParam = (TextView) rootView.findViewById(R.id.searchTerm);
 
         productItems = new ArrayList<ProductItem>();
 
@@ -126,8 +129,8 @@ public class SearchFragment extends Fragment {
     }
 
     public void updateSearchResults(String query) {
-        query = query.replaceAll(" ", "%20");
-        String url = "https://lcboapi.com/products?access_key="+getString(R.string.api_key)+"&q="+query;
+        this.query = query.replaceAll(" ", "%20");
+        String url = "https://lcboapi.com/products?access_key="+getString(R.string.api_key)+"&per_page=100&q="+this.query;
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -136,6 +139,7 @@ public class SearchFragment extends Fragment {
                         List<ProductItem> tmp = createProductItems(response);
                         productItems.clear();
                         productItems.addAll(tmp);
+                        updateFilterBarText();
                         productArrayAdapter.notifyDataSetChanged();
 
                         Log.d("MYAPP",response.toString());
@@ -160,12 +164,26 @@ public class SearchFragment extends Fragment {
         try {
             jsonArray = new JSONArray(response.getString("result"));
             for (int i =0; i<jsonArray.length(); i++) {
-                items.add(new ProductItem(jsonArray.getJSONObject(i)));
+
+                try {
+                    items.add(new ProductItem(jsonArray.getJSONObject(i)));
+                } catch (NullPointerException e) {
+                    continue;
+                }
             }
         } catch (JSONException e) {
             return items;
         }
         return items;
+    }
+
+    public void updateFilterBarText() {
+        numResult.setText(Integer.toString(productItems.size()));
+        searchParam.setText("results for "+query.replaceAll("%20"," "));
+    }
+
+    public List<ProductItem> sortProductItems(String sortParam) {
+        return null;
     }
 
     /**

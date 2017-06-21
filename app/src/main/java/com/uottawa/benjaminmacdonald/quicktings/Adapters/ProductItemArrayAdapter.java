@@ -48,7 +48,7 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
 
         //Set price
         TextView productPrice = (TextView) listView.findViewById(R.id.productPrice);
-        productPrice.setText("$"+values.get(position).getPrice());
+        productPrice.setText("$"+values.get(position).getPrice()/100.00);
 
         //get volume
         TextView productVolume = (TextView) listView.findViewById(R.id.productVolume);
