@@ -4,16 +4,41 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_local_shipping_black_24dp"
             android:title="Orders" />
         <item
             android:id="@+id/nav_cart"
+            android:icon="@drawable/ic_shopping_cart_black_24dp"
+
             android:title="Cart" />
         <item
             android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_build_black_24dp"
             android:title="Settings" />
         <item
             android:id="@+id/nav_help"
+            android:icon="@drawable/ic_help_black_24dp"
             android:title="Help" />
     </group>
 
+    <item android:title="Categories">
+        <menu>
+            <item
+                android:id="@+id/nav_wine"
+                android:icon="@drawable/ic_categories_wine"
+                android:title="Wine" />
+            <item
+                android:id="@+id/nav_beer"
+                android:icon="@drawable/ic_categories_beer"
+                android:title="Beer" />
+            <item
+                android:id="@+id/nav_spirits"
+                android:icon="@drawable/ic_categories_spirit"
+                android:title="Spirits" />
+            <item
+                android:id="@+id/nav_coolers"
+                android:icon="@drawable/ic_categories_cooler"
+                android:title="Coolers" />
+        </menu>
+    </item>
 </menu>
