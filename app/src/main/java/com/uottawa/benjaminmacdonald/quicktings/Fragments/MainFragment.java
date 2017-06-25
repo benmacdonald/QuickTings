@@ -1,14 +1,24 @@
 package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.GridView;
+import android.widget.ListAdapter;
 
+import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
+import com.uottawa.benjaminmacdonald.quicktings.Adapters.MainActivityArrayAdapter;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -29,8 +39,9 @@ public class MainFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-
     private OnFragmentInteractionListener mListener;
+
+    private List<ProductItem> orderAgainItems;
 
     public MainFragment() {
         // Required empty public constructor
@@ -67,8 +78,38 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        //Order Again Gallery
+        orderAgainItems = new ArrayList<ProductItem>();
+
+        //Adding dummy items
+        orderAgainItems.add(new ProductItem());
+        orderAgainItems.add(new ProductItem());
+        orderAgainItems.add(new ProductItem());
+        orderAgainItems.add(new ProductItem());
+        orderAgainItems.add(new ProductItem());
+        orderAgainItems.add(new ProductItem());
+
+        GridView orderAgainView = (GridView) rootView.findViewById(R.id.orderAgainView);
+
+        final MainActivityArrayAdapter orderAgainArrayAdapter = new MainActivityArrayAdapter(getActivity(), orderAgainItems);
+        orderAgainView.setAdapter(orderAgainArrayAdapter);
+        orderAgainView.setNumColumns(orderAgainItems.size());
+        if (orderAgainItems.size() > 0) {
+            setDynamicWidth(orderAgainView);
+        }
+        orderAgainView.setDrawSelectorOnTop(true);
+        orderAgainView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(rootView.getContext(), ProductActivity.class);
+                intent.putExtra("RECIPE_ID", orderAgainItems.get(position).getId());
+                startActivity(intent);
+            }
+        });
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -108,6 +149,29 @@ public class MainFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    /**
+     * Sets the amount of rows depending on the amount of elements.
+     * Used for horizontal scrolling.
+     * Method taken from stackoverflow.
+     * source: http://stackoverflow.com/questions/5725745/horizontal-scrolling-grid-view
+     * @param gridView is the layout for the horizontal scrolling.
+     */
+    private void setDynamicWidth(GridView gridView) {
+        ListAdapter gridViewAdapter = gridView.getAdapter();
+        if (gridViewAdapter == null) {
+            return;
+        }
+        int totalWidth;
+        int items = gridViewAdapter.getCount();
+        View listItem = gridViewAdapter.getView(0, null, gridView);
+        listItem.measure(0, 0);
+        totalWidth = listItem.getMeasuredWidth();
+        totalWidth = totalWidth * items;
+        ViewGroup.LayoutParams params = gridView.getLayoutParams();
+        params.width = totalWidth;
+        gridView.setLayoutParams(params);
     }
 
 }

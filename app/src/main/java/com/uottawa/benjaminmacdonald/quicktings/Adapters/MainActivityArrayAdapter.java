@@ -17,16 +17,16 @@ import org.w3c.dom.Text;
 import java.util.List;
 
 /**
- * Created by BenjaminMacDonald on 2017-06-10.
+ * Created by TommyNguyen on 2017-06-21.
  */
 
-public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
+public class MainActivityArrayAdapter extends ArrayAdapter<ProductItem> {
 
     private final Context context;
     private final List<ProductItem> values;
 
-    public ProductItemArrayAdapter(Context context, List<ProductItem> values) {
-        super(context, R.layout.card_search_result, values);
+    public MainActivityArrayAdapter(Context context, List<ProductItem> values) {
+        super(context, R.layout.card_product, values);
         this.context = context;
         this.values = values;
     }
@@ -35,7 +35,7 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View listView = inflater.inflate(R.layout.card_search_result,parent,false);
+        View listView = inflater.inflate(R.layout.card_product,parent,false);
 
         //Set the title of the product
         TextView productTitle = (TextView) listView.findViewById(R.id.productTitle);
@@ -48,10 +48,6 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
         //Set price
         TextView productPrice = (TextView) listView.findViewById(R.id.productPrice);
         productPrice.setText("$"+values.get(position).getPrice()/100.00);
-
-        //get volume
-        TextView productVolume = (TextView) listView.findViewById(R.id.productVolume);
-        productVolume.setText(values.get(position).getVolume() +" mL bottle");
 
         //get image
         ImageView imageView = (ImageView) listView.findViewById(R.id.productImage);

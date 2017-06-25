@@ -66,6 +66,13 @@ public class ProductItem {
         }
     }
 
+    //Dummy constructor for testing purposes
+    public ProductItem () {
+        this.name = "Rum Tings";
+        this.unitType = "bottle";
+        this.price = 5;
+    }
+
 
     public int getAlcoholContent() {
         return alcoholContent;
