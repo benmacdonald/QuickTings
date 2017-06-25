@@ -21,9 +21,17 @@
             tools:layout_editor_absoluteX="8dp"
             tools:layout_editor_absoluteY="8dp">
 
+            <TextView
+                android:id="@+id/orderAgainTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="Order Again" />
+
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:scrollbars="none">
 
                 <LinearLayout
@@ -43,6 +51,37 @@
                 </LinearLayout>
 
             </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/favouritesTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="Favourites" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <GridView
+                        android:id="@+id/favouritesView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:horizontalSpacing="10dp"
+                        android:scrollbars="none"
+                        android:smoothScrollbar="false"></GridView>
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
         </LinearLayout>
     </RelativeLayout>
 

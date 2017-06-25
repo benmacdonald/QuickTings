@@ -42,6 +42,7 @@ public class MainFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private List<ProductItem> orderAgainItems;
+    private List<ProductItem> favouriteItems;
 
     public MainFragment() {
         // Required empty public constructor
@@ -104,11 +105,39 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(rootView.getContext(), ProductActivity.class);
-                intent.putExtra("RECIPE_ID", orderAgainItems.get(position).getId());
+                intent.putExtra("PRODUCT_ID", orderAgainItems.get(position).getId());
                 startActivity(intent);
             }
         });
 
+        //Favourites Gallery
+        favouriteItems = new ArrayList<ProductItem>();
+
+        //Adding dummy items
+        favouriteItems.add(new ProductItem());
+        favouriteItems.add(new ProductItem());
+        favouriteItems.add(new ProductItem());
+        favouriteItems.add(new ProductItem());
+        favouriteItems.add(new ProductItem());
+        favouriteItems.add(new ProductItem());
+
+        GridView favouritesView = (GridView) rootView.findViewById(R.id.favouritesView);
+
+        final MainActivityArrayAdapter favouritesArrayAdapter = new MainActivityArrayAdapter(getActivity(), favouriteItems);
+        favouritesView.setAdapter(favouritesArrayAdapter);
+        favouritesView.setNumColumns(favouriteItems.size());
+        if (favouriteItems.size() > 0) {
+            setDynamicWidth(favouritesView);
+        }
+        favouritesView.setDrawSelectorOnTop(true);
+        favouritesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(rootView.getContext(), ProductActivity.class);
+                intent.putExtra("PRODUCT_ID", favouriteItems.get(position).getId());
+                startActivity(intent);
+            }
+        });
         return rootView;
     }
 
