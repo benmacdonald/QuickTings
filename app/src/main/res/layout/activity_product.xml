@@ -1,95 +1,155 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#FFFFFF"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
     tools:context="com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity">
 
-    <LinearLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
-
-        <ImageView
-            android:id="@+id/productImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:srcCompat="@mipmap/ic_launcher" />
-
-        <TextView
-            android:id="@+id/titleLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize="36sp" />
-
-        <TextView
-            android:id="@+id/catLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:textSize="18sp" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
-
-        <TextView
-            android:id="@+id/limitedAvalibility"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            tools:layout_editor_absoluteX="8dp"
+            tools:layout_editor_absoluteY="8dp">
+
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:srcCompat="@mipmap/ic_launcher" />
 
             <TextView
-                android:id="@+id/priceLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/titleLabel"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="30sp" />
+                android:textSize="36sp" />
 
             <TextView
-                android:id="@+id/volumeLabel"
-                android:layout_width="wrap_content"
+                android:id="@+id/catLabel"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_weight="1"
+                android:text="TextView"
+                android:textSize="18sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:id="@+id/limitedAvalibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="TextView" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/priceLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TextView"
+                    android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/volumeLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="277dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis volutpat est. Morbi vehicula, elit nec vehicula scelerisque, odio tortor elementum lectus, sed ullamcorper neque ante et nulla. Maecenas porta orci non ornare gravida. Fusce laoreet lacinia lobortis. Nullam ullamcorper et elit in efficitur. Morbi ac turpis convallis, viverra dolor feugiat, semper erat. Aenean vitae vulputate enim.  Phasellus cursus vehicula arcu et egestas. Vestibulum at sodales tellus. Proin est neque, ultrices eu egestas id, porttitor a massa. Proin purus felis, convallis at felis eget, tincidunt rutrum felis. Donec blandit mattis lorem et consequat. Donec nec purus nec nibh porta eleifend. Praesent arcu felis, mollis eu diam ac, semper consectetur diam. Mauris in condimentum diam. Aenean aliquam efficitur arcu, ac auctor turpis lobortis nec. Donec sit amet augue vitae augue bibendum dapibus at ac quam. Cras vestibulum, mi in venenatis finibus, mi sapien imperdiet enim, ut egestas mi magna vel diam. Vestibulum mi sapien, scelerisque at venenatis sed, tempus nec nisl. Pellentesque aliquet commodo urna, in scelerisque mi aliquam ac. Vivamus risus lorem, interdum et iaculis sed, mattis sit amet nulla.  Nunc nec aliquet neque. Cras malesuada eget enim vel tempus. Nullam sollicitudin eu tortor a sodales. Vivamus posuere sem id nisl accumsan, in egestas odio tincidunt. Morbi commodo tortor pellentesque maximus ornare. Maecenas a venenatis elit, sit amet gravida ligula. Phasellus egestas sapien a nunc egestas eleifend. Morbi arcu ante, bibendum at justo et, ullamcorper vestibulum enim. Aenean ut ullamcorper dolor, in venenatis elit. Nam sem libero, tincidunt sit amet finibus nec, fringilla at sapien. Aenean accumsan et ipsum ut pharetra. Pellentesque eu eleifend dolor. Quisque hendrerit malesuada semper. Maecenas tincidunt sit amet neque quis laoreet.  Praesent luctus ex et lacus accumsan, vitae lacinia ex commodo. Vivamus consequat congue tellus et sodales. Sed sed nunc pharetra, pretium ipsum a, aliquet ligula. Mauris consequat mollis faucibus. Nunc vel eros non enim semper gravida. Mauris mattis faucibus neque, vel posuere risus interdum non. Nunc quis tellus lobortis, fringilla quam et, pretium dolor. Suspendisse auctor ultricies mi, et molestie felis blandit sit amet. Pellentesque aliquet neque ut condimentum sollicitudin. Donec semper sem nibh. Nullam lobortis, risus non consectetur lobortis, dolor tortor pulvinar urna, ut lacinia diam eros sit amet diam. Fusce dictum tortor nisl, ut sollicitudin eros iaculis sed. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam placerat est ex, ut auctor ligula lobortis ac. In et velit vitae leo pulvinar pharetra.  Aliquam rhoncus dui ut felis gravida, ac vulputate mi dapibus. Fusce in arcu blandit, bibendum libero vel, porttitor leo. Nunc finibus mauris sapien. Nullam aliquam laoreet condimentum. Nam iaculis felis et libero sagittis, id ultrices metus imperdiet. Suspendisse nec convallis ex, ut varius est. Vivamus porta lectus eu lectus luctus, a pharetra ligula fermentum. Suspendisse aliquam quis sapien sit amet tincidunt. In tristique, ligula imperdiet eleifend gravida, libero ligula tristique quam, sed fringilla libero ligula in purus. Suspendisse posuere turpis id mi tempor, sit amet vehicula arcu efficitur. Maecenas vel euismod odio, eu congue nunc. Sed eu dignissim magna." />
+
         </LinearLayout>
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="#F3F3F3" />
-
-    </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp"
-        android:layout_alignParentBottom="true">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/top_border"
+        android:gravity="center"
+        android:orientation="horizontal">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/quantityLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Quantity" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/minusButton"
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/button_white_borders"
+                    android:text="-" />
+
+                <TextView
+                    android:id="@+id/quantityValue"
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_white_borders"
+                    android:gravity="center"
+                    android:text="1" />
+
+                <Button
+                    android:id="@+id/plusButton"
+                    android:layout_width="40dp"
+                    android:layout_height="25dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/button_white_borders"
+                    android:text="+" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addToCartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimaryDark"
+            android:text="Add to Cart"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>
