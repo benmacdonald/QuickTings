@@ -1,6 +1,8 @@
 package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.ProductItemArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
@@ -88,6 +92,8 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
+        rootView.requestFocus();
+
         requestQueue = Volley.newRequestQueue(getActivity());
         updateSearchResults(query);
 
@@ -100,6 +106,18 @@ public class SearchFragment extends Fragment {
 
         productArrayAdapter = new ProductItemArrayAdapter(getActivity(), productItems);
         listView.setAdapter(productArrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?>adapter,View v, int position, long name){
+                ProductItem productItem = productArrayAdapter.getItem(position);
+
+                Intent intent = new Intent(getActivity(), ProductActivity.class);
+                intent.putExtra("PRODUCT" , productItem);
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }

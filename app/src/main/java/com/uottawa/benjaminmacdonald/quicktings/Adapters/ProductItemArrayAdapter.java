@@ -35,7 +35,7 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View listView = inflater.inflate(R.layout.card_search_result,parent,false);
+        View listView = inflater.inflate(R.layout.card_search_result, parent, false);
 
         //Set the title of the product
         TextView productTitle = (TextView) listView.findViewById(R.id.productTitle);
@@ -43,15 +43,15 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
 
         //Set the type
         TextView productType = (TextView) listView.findViewById(R.id.productType);
-        productType.setText(values.get(position).getUnitType());
+        productType.setText(values.get(position).getCategory());
 
         //Set price
         TextView productPrice = (TextView) listView.findViewById(R.id.productPrice);
-        productPrice.setText("$"+values.get(position).getPrice()/100.00);
+        productPrice.setText("$" + values.get(position).getPrice() / 100.00);
 
         //get volume
         TextView productVolume = (TextView) listView.findViewById(R.id.productVolume);
-        productVolume.setText(values.get(position).getVolume() +" mL bottle");
+        productVolume.setText(values.get(position).getVolume() + " mL bottle");
 
         //get image
         ImageView imageView = (ImageView) listView.findViewById(R.id.productImage);
@@ -64,5 +64,9 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
     @Override
     public int getCount() {
         return (this.values != null) ? this.values.size() : 0;
+    }
+
+    public ProductItem getItem(int position) {
+        return values.get(position);
     }
 }

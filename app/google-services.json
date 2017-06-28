@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "812754059872",
+    "firebase_url": "https://quick-tings.firebaseio.com",
+    "project_id": "quick-tings",
+    "storage_bucket": "quick-tings.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812754059872:android:bb46447192e57a29",
+        "android_client_info": {
+          "package_name": "com.uottawa.benjaminmacdonald.quicktings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812754059872-tqfd4sm9sc7tdcel31odsg6n5j6cb7h3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4OBqkABTQwbpVOnqQ4bvqqlAPhprbKPA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

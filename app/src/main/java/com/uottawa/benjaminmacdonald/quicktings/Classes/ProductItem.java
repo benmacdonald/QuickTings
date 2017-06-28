@@ -1,15 +1,19 @@
 package com.uottawa.benjaminmacdonald.quicktings.Classes;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.IllegalFormatException;
 
 /**
  * Created by BenjaminMacDonald on 2017-06-09.
  */
 
-public class ProductItem {
+public class ProductItem implements Parcelable {
 
     private int alcoholContent;
     private String description;
@@ -72,6 +76,7 @@ public class ProductItem {
         this.unitType = "bottle";
         this.price = 5;
     }
+
 
 
     public int getAlcoholContent() {
@@ -259,4 +264,73 @@ public class ProductItem {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.alcoholContent);
+        dest.writeString(this.description);
+        dest.writeByte(this.limitedTimeOffer ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.id);
+        dest.writeInt(this.inventoryCount);
+        dest.writeByte(this.isDead ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.discontinued ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isKosher ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isSeason ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isOCB ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.saleSaving);
+        dest.writeString(this.name);
+        dest.writeString(this.origin);
+        dest.writeString(this.unitType);
+        dest.writeInt(this.volume);
+        dest.writeInt(this.price);
+        dest.writeString(this.category);
+        dest.writeString(this.producerName);
+        dest.writeInt(this.regularPrice);
+        dest.writeString(this.imageUrl);
+        dest.writeString(this.thumbnailUrl);
+        dest.writeString(this.tags);
+        dest.writeString(this.updated);
+    }
+
+    protected ProductItem(Parcel in) {
+        this.alcoholContent = in.readInt();
+        this.description = in.readString();
+        this.limitedTimeOffer = in.readByte() != 0;
+        this.id = in.readInt();
+        this.inventoryCount = in.readInt();
+        this.isDead = in.readByte() != 0;
+        this.discontinued = in.readByte() != 0;
+        this.isKosher = in.readByte() != 0;
+        this.isSeason = in.readByte() != 0;
+        this.isOCB = in.readByte() != 0;
+        this.saleSaving = in.readInt();
+        this.name = in.readString();
+        this.origin = in.readString();
+        this.unitType = in.readString();
+        this.volume = in.readInt();
+        this.price = in.readInt();
+        this.category = in.readString();
+        this.producerName = in.readString();
+        this.regularPrice = in.readInt();
+        this.imageUrl = in.readString();
+        this.thumbnailUrl = in.readString();
+        this.tags = in.readString();
+        this.updated = in.readString();
+    }
+
+    public static final Creator<ProductItem> CREATOR = new Creator<ProductItem>() {
+        @Override
+        public ProductItem createFromParcel(Parcel source) {
+            return new ProductItem(source);
+        }
+
+        @Override
+        public ProductItem[] newArray(int size) {
+            return new ProductItem[size];
+        }
+    };
 }
