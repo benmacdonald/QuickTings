@@ -65,7 +65,7 @@ public class AuthActivity extends AppCompatActivity {
                     setPrefId(currentUser.getUid());
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference();
-                    User user = new User();
+                    User user = new User(null, "Guest", "User");
                     String id = currentUser.getUid();
                     ref.child("users").child(id).setValue(user);
 
