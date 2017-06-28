@@ -13,6 +13,7 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 
 import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
+import com.uottawa.benjaminmacdonald.quicktings.Adapters.DiscoverArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.MainActivityArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
@@ -41,6 +42,7 @@ public class MainFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private List<ProductItem> discoverItems; //TODO: what are we doing with these?
     private List<ProductItem> orderAgainItems;
     private List<ProductItem> favouriteItems;
 
@@ -80,6 +82,32 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        //Discover Gallery
+        discoverItems = new ArrayList<ProductItem>();
+
+        //Dummy items
+        discoverItems.add(new ProductItem());
+        discoverItems.add(new ProductItem());
+
+        GridView discoverView = (GridView) rootView.findViewById(R.id.discoverView);
+
+        final DiscoverArrayAdapter discoverArrayAdapter = new DiscoverArrayAdapter(getActivity(), discoverItems);
+        discoverView.setAdapter(discoverArrayAdapter);
+        discoverView.setNumColumns(discoverItems.size());
+        if (discoverItems.size() > 0) {
+            setDynamicWidth(discoverView);
+        }
+        discoverView.setDrawSelectorOnTop(true);
+        //TODO: decide what clicking on Discover cards do
+//        discoverView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent intent = new Intent(rootView.getContext(), ProductActivity.class);
+//                intent.putExtra("PRODUCT", orderAgainItems.get(position).getId());
+//                startActivity(intent);
+//            }
+//        });
 
         //Order Again Gallery
         orderAgainItems = new ArrayList<ProductItem>();
