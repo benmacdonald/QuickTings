@@ -15,4 +15,10 @@
     <!--USER PREFERENCES-->
     <string name="preferences">qt_prefs</string>
     <string name="user_id">USER_ID</string>
+
+    <!-- FACEBOOK -->
+    <string name="facebook_app_id">223099741543925</string>
+    <string name="fb_login_protocol_scheme">fb223099741543925</string>
+
+
 </resources>

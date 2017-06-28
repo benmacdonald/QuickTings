@@ -14,7 +14,7 @@ public class User {
     private String email;
     private String firstName;
     private String lastName;
-    private Uri photo;
+    private String photo;
 
     public User() {
         //this is required idk why
@@ -27,7 +27,7 @@ public class User {
 
     }
 
-    public User(String email, String firstName, String lastName, Uri photo) {
+    public User(String email, String firstName, String lastName, String photo) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -59,11 +59,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public Uri getPhoto() {
+    public String getPhoto() {
         return photo;
     }
 
-    public void setPhoto(Uri photo) {
+    public void setPhoto(String photo) {
         this.photo = photo;
     }
 

@@ -43,6 +43,17 @@ public class AuthActivity extends AppCompatActivity {
                 signInAsGuest();
             }
         });
+
+        Button signUpButton = (Button) findViewById(R.id.signUpButton);
+
+        signUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AuthActivity.this, SignUpActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
@@ -67,8 +78,11 @@ public class AuthActivity extends AppCompatActivity {
                 if(task.isSuccessful()) {
                     FirebaseUser currentUser = mAuth.getCurrentUser();
                     setPrefId(currentUser.getUid());
+
+                    //connect to database
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
                     DatabaseReference ref = database.getReference();
+
                     User user = new User(null, "Guest", "User");
                     String id = currentUser.getUid();
                     ref.child("users").child(id).setValue(user);
@@ -76,8 +90,6 @@ public class AuthActivity extends AppCompatActivity {
                     Intent intent = new Intent(AuthActivity.this, MainActivity.class);
                     startActivity(intent);
 
-                    Toast.makeText(AuthActivity.this, "Authentication Succeeded.",
-                            Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(AuthActivity.this, "Authentication failed.",
