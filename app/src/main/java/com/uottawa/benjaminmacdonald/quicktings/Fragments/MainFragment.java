@@ -105,7 +105,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(rootView.getContext(), ProductActivity.class);
-                intent.putExtra("PRODUCT_ID", orderAgainItems.get(position).getId());
+                intent.putExtra("PRODUCT", orderAgainItems.get(position).getId());
                 startActivity(intent);
             }
         });
@@ -134,7 +134,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(rootView.getContext(), ProductActivity.class);
-                intent.putExtra("PRODUCT_ID", favouriteItems.get(position).getId());
+                intent.putExtra("PRODUCT", favouriteItems.get(position).getId());
                 startActivity(intent);
             }
         });

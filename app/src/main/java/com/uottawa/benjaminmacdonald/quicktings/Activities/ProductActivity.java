@@ -13,6 +13,9 @@ import com.uottawa.benjaminmacdonald.quicktings.R;
 
 public class ProductActivity extends AppCompatActivity {
 
+    String description;
+    String details;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +25,6 @@ public class ProductActivity extends AppCompatActivity {
         ProductItem productItem = (ProductItem) intent.getExtras().getParcelable("PRODUCT");
 
         setupProduct(productItem);
-
     }
 
 
@@ -43,6 +45,10 @@ public class ProductActivity extends AppCompatActivity {
         TextView volumeView = (TextView) findViewById(R.id.volumeLabel);
         volumeView.setText(productItem.getVolume() + " mL " +productItem.getUnitType());
 
+        description = productItem.getDescription();
+        details = productItem.getOrigin();
 
+        TextView textToChange = (TextView) findViewById(R.id.textToChange);
+        textToChange.setText(productItem.getDescription());
     }
 }
