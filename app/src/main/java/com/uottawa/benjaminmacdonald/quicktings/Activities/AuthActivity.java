@@ -29,6 +29,10 @@ public class AuthActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+
+        //Hide action bar
+        getSupportActionBar().hide();
+
         mAuth = FirebaseAuth.getInstance();
 
         Button guestButton = (Button) findViewById(R.id.guestButton);
