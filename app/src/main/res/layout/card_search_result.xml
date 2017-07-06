@@ -15,15 +15,22 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
-        <ImageView
-            android:id="@+id/productImage"
-            android:layout_width="98dp"
-            android:layout_height="132dp"
-            app:srcCompat="@drawable/ic_menu_gallery" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent">
+
+            <ImageView
+                android:id="@+id/productImage"
+                android:layout_width="98dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                app:srcCompat="@drawable/ic_menu_gallery" />
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="112dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="27dp"
             android:orientation="vertical"
             android:paddingLeft="17dp"
             android:paddingTop="10dp">
