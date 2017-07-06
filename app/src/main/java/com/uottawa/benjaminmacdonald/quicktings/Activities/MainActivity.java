@@ -23,6 +23,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,7 +47,9 @@ import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener, SuggestionFragment.OnFragmentInteractionListener {
@@ -54,24 +57,24 @@ public class MainActivity extends AppCompatActivity
     private SearchView searchView;
     private SearchFragment searchFragment;
 
-    private String lastFragment;
-
 
     private TextView profileName;
     private TextView profileEmail;
     private ImageView profileImage;
 
-    private ArrayList<String> suggestions;
+    private  ArrayList<String> suggestions;
     private SuggestionFragment suggestionFragment;
     private Toolbar toolbar;
+    private DrawerLayout drawer;
+
+    private ActionBarDrawerToggle toggle;
+
+    private MenuItem cartItem;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        suggestions = new ArrayList<String>();
-        suggestions.add("tequila");
-        suggestions.add("rum");
-        suggestions.add("vodka");
+        createSuggestions();
 
 
         // Check that the activity is using the layout version with
@@ -95,8 +98,6 @@ public class MainActivity extends AppCompatActivity
             transaction.replace(R.id.fragment_container, mainFragment, "MAIN_FRAG");
             transaction.addToBackStack("main");
             transaction.commit();
-
-
         }
     }
 
@@ -105,11 +106,29 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(searchView != null && !searchView.isIconified()) {
+                    searchView.setIconified(true);
+                    searchView.setIconified(true);
+                    //closeSearchView();
+                } else {
+                    if (drawer.isDrawerOpen(Gravity.START)) {
+                        drawer.closeDrawer(Gravity.START);
+                    } else {
+                        drawer.openDrawer(Gravity.START);
+                    }
+                }
+            }
+        });
+
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -167,19 +186,50 @@ public class MainActivity extends AppCompatActivity
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
 
+        cartItem =(MenuItem) menu.findItem(R.id.action_cart);
+
         searchView = (SearchView) searchItem.getActionView();
 
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("WE OUR HERE BOIIII");
+                // Change Actionbar colour to WHITE-ish
                 getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#F5F5F5")));
+
+                //Edit close button and only show if there is text
+                final String query = searchView.getQuery().toString();
                 ImageView searchClose = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
                 searchClose.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+                searchClose.setVisibility(query.isEmpty() || query.equals("") ? View.GONE : View.VISIBLE);
+
+                searchClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        EditText txtSearch = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
+                        txtSearch.setText("");
+                        searchView.setQuery("", false);
+                        ImageView searchClose = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+                        searchClose.setVisibility(View.GONE);
+                        searchView.setIconified(false);
+
+                    }
+                });
+
+                // Changing Drawer Icon
+                toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back));
                 toolbar.getNavigationIcon().setColorFilter(Color.BLACK, PorterDuff.Mode.MULTIPLY);
+
+
+                // change textview colours
                 EditText txtSearch = ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text));
                 txtSearch.setTextColor(Color.BLACK);
                 txtSearch.setHintTextColor(Color.GRAY);
+
+                //remove cart icon
+                cartItem.setVisible(false);
+
+                // add suggestion view
+                addOrUpdateSuggestionView(suggestions);
 
             }
         });
@@ -187,22 +237,7 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                suggestionFragment = (SuggestionFragment) getSupportFragmentManager().findFragmentByTag("SUGGESTION_FRAG");
-                if (suggestionFragment != null && suggestionFragment.isVisible()) {
-
-                    if (lastFragment == "main") {
-                        MainFragment mainFragment = new MainFragment();
-                        transaction.replace(R.id.fragment_container, mainFragment, "MAIN_FRAG");
-                    }
-                    else {
-                        SearchFragment searchFragment = new SearchFragment();
-                        transaction.replace(R.id.fragment_container, searchFragment, "SEARCH_FRAG");
-                    }
-                    transaction.commit();
-                }
-                getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#607D8B")));
-                toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+                closeSearchView();
                 return false;
             }
         });
@@ -218,34 +253,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
                 ArrayList<String> newSuggestions = filterSuggestions(newText);
-                suggestionFragment = (SuggestionFragment) getSupportFragmentManager().findFragmentByTag("SUGGESTION_FRAG");
-                if(suggestionFragment == null) {
-                    MainFragment currentFragment = (MainFragment)  getSupportFragmentManager().findFragmentByTag("MAIN_FRAG");
-                    if (currentFragment != null && currentFragment.isVisible()) {
-                        lastFragment = "main";
-                    } else {
-                        lastFragment = "search";
-                    }
-                    suggestionFragment = new SuggestionFragment();
-                    Bundle args = new Bundle();
-                    args.putStringArrayList("SUGGESTION_ARRAY", newSuggestions);
-                    suggestionFragment.setArguments(args);
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_container, suggestionFragment, "SUGGESTION_FRAG");
-                    // Commit the transaction
-                    transaction.commit();
-                } else if (suggestionFragment != null && !suggestionFragment.isVisible()) {
-
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_container, suggestionFragment, "SUGGESTION_FRAG");
-                    // Commit the transaction
-                    transaction.commit();
-                    suggestionFragment.updateSuggestions(suggestions);
-
-                } else {
-                    suggestionFragment.updateSuggestions(newSuggestions);
-                }
-                return false;
+                addOrUpdateSuggestionView(newSuggestions);
+                ImageView searchClose = (ImageView) searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+                searchClose.setVisibility((newText.isEmpty() || newText.equals("")) ? View.GONE : View.VISIBLE);
+                return true;
             }
         });
 
@@ -254,6 +265,13 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        System.out.println(item.getItemId());
+        super.onOptionsItemSelected(item);
+        return false;
+    }
     /*
     Navigation for the shelf.
      */
@@ -285,6 +303,47 @@ public class MainActivity extends AppCompatActivity
         //you can leave it empty
     }
 
+    private void closeSearchView() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        MainFragment mainFragment = new MainFragment();
+        transaction.replace(R.id.fragment_container, mainFragment, "MAIN_FRAG");
+        transaction.commit();
+
+
+        // Change action bar colour
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#607D8B")));
+
+        // Changing Drawer Icon
+        toggle.syncState();
+        toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
+        cartItem.setVisible(true);
+    }
+
+    public void addOrUpdateSuggestionView(ArrayList<String> newSuggestions) {
+        suggestionFragment = (SuggestionFragment) getSupportFragmentManager().findFragmentByTag("SUGGESTION_FRAG");
+        if(suggestionFragment == null) {
+            suggestionFragment = new SuggestionFragment();
+            Bundle args = new Bundle();
+            args.putStringArrayList("SUGGESTION_ARRAY", newSuggestions);
+            suggestionFragment.setArguments(args);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, suggestionFragment, "SUGGESTION_FRAG");
+            // Commit the transaction
+            transaction.commit();
+        } else if (suggestionFragment != null && !suggestionFragment.isVisible()) {
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, suggestionFragment, "SUGGESTION_FRAG");
+            // Commit the transaction
+            transaction.commit();
+            suggestionFragment.updateSuggestions(createSuggestions());
+
+        } else {
+            suggestionFragment.updateSuggestions(newSuggestions);
+        }
+    }
+
     public void clickOnSuggested(String query) {
         searchView.setQuery(query, true);
     }
@@ -306,6 +365,14 @@ public class MainActivity extends AppCompatActivity
         } else {
             searchFragment.updateSearchResults(query);
         }
+    }
+
+    private ArrayList<String> createSuggestions() {
+        suggestions = new ArrayList<String>();
+        suggestions.add("tequila");
+        suggestions.add("rum");
+        suggestions.add("vodka");
+        return suggestions;
     }
 
     private ArrayList<String> filterSuggestions(String query) {
