@@ -69,8 +69,9 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         suggestions = new ArrayList<String>();
-        suggestions.add("Tequila");
-        suggestions.add("Rum");
+        suggestions.add("tequila");
+        suggestions.add("rum");
+        suggestions.add("vodka");
 
 
         // Check that the activity is using the layout version with
@@ -210,21 +211,7 @@ public class MainActivity extends AppCompatActivity
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchFragment = (SearchFragment) getSupportFragmentManager().findFragmentByTag("SEARCH_FRAG");
-                if(searchFragment == null || !searchFragment.isVisible()) {
-
-                    searchFragment = new SearchFragment();
-                    Bundle args = new Bundle();
-                    args.putString("SEARCH_PARAM", query);
-                    searchFragment.setArguments(args);
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.fragment_container, searchFragment, "SEARCH_FRAG");
-                    transaction.addToBackStack("search");
-                    // Commit the transaction
-                    transaction.commit();
-                } else {
-                    searchFragment.updateSearchResults(query);
-                }
+                transitionToSearchView(query);
                 return false;
             }
 
@@ -253,6 +240,7 @@ public class MainActivity extends AppCompatActivity
                     transaction.replace(R.id.fragment_container, suggestionFragment, "SUGGESTION_FRAG");
                     // Commit the transaction
                     transaction.commit();
+                    suggestionFragment.updateSuggestions(suggestions);
 
                 } else {
                     suggestionFragment.updateSuggestions(newSuggestions);
@@ -295,6 +283,29 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri){
         //you can leave it empty
+    }
+
+    public void clickOnSuggested(String query) {
+        searchView.setQuery(query, true);
+    }
+
+    private void transitionToSearchView(String query) {
+
+        searchFragment = (SearchFragment) getSupportFragmentManager().findFragmentByTag("SEARCH_FRAG");
+        if(searchFragment == null || !searchFragment.isVisible()) {
+
+            searchFragment = new SearchFragment();
+            Bundle args = new Bundle();
+            args.putString("SEARCH_PARAM", query);
+            searchFragment.setArguments(args);
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_container, searchFragment, "SEARCH_FRAG");
+            transaction.addToBackStack("search");
+            // Commit the transaction
+            transaction.commit();
+        } else {
+            searchFragment.updateSearchResults(query);
+        }
     }
 
     private ArrayList<String> filterSuggestions(String query) {

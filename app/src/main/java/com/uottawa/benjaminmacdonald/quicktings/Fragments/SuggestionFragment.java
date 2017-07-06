@@ -5,19 +5,25 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.uottawa.benjaminmacdonald.quicktings.Activities.MainActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.DiscoverArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.MainActivityArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.SuggestionArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -34,6 +40,8 @@ public class SuggestionFragment extends Fragment {
     private ArrayList<String> suggestions;
 
     private SuggestionArrayAdapter arrayAdapter;
+
+    private SearchFragment searchFragment;
 
     public SuggestionFragment() {
 
@@ -55,7 +63,7 @@ public class SuggestionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_suggestions, container, false);
@@ -64,6 +72,14 @@ public class SuggestionFragment extends Fragment {
 
         ListView listView = (ListView) rootView.findViewById(R.id.suggestionsListView);
         listView.setAdapter(arrayAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView labelView = (TextView) view.findViewById(R.id.suggestion);
+                ((MainActivity) getActivity()).clickOnSuggested(labelView.getText().toString());
+            }
+        });
 
         return rootView;
     }
