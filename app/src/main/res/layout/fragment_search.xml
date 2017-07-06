@@ -3,22 +3,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.uottawa.benjaminmacdonald.quicktings.Fragments.SearchFragment"
-    android:focusableInTouchMode="true">
+    android:background="@android:color/background_light"
+    android:focusableInTouchMode="true"
+    tools:context="com.uottawa.benjaminmacdonald.quicktings.Fragments.SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.CardView
         android:id="@+id/map_toolbar_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        app:cardBackgroundColor="@android:color/transparent">
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"
+        android:layout_marginTop="34dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="8dp">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/wld_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimaryDark"
+            android:background="?attr/colorPrimary"
             android:elevation="24dp"
             android:minHeight="?attr/actionBarSize">
 
@@ -38,17 +42,16 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="25dp"
                 android:text="results"
-                android:textColor="#9D6060"
+                android:textColor="@android:color/background_light"
                 android:textSize="18sp" />
 
             <Spinner
                 android:id="@+id/spinner"
-                android:layout_width="149dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="80dp" />
 
         </android.support.v7.widget.Toolbar>
-
 
 
     </android.support.v7.widget.CardView>
@@ -61,7 +64,7 @@
         android:layout_weight="1"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
-        android:paddingTop="70dp" />
+        android:paddingTop="116dp" />
 
 
 </FrameLayout>
