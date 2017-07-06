@@ -1,14 +1,17 @@
 package com.uottawa.benjaminmacdonald.quicktings.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
@@ -24,15 +27,17 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
 
     private final Context context;
     private final List<ProductItem> values;
+    private DatabaseUtils databaseUtils;
 
     public ProductItemArrayAdapter(Context context, List<ProductItem> values) {
         super(context, R.layout.card_search_result, values);
         this.context = context;
         this.values = values;
+        this.databaseUtils = new DatabaseUtils();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View listView = inflater.inflate(R.layout.card_search_result, parent, false);
@@ -57,6 +62,14 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
         ImageView imageView = (ImageView) listView.findViewById(R.id.productImage);
         Glide.with(context).load(values.get(position).getImageUrl()).into(imageView);
 
+        //favourite button
+        final ImageButton favouriteButton = (ImageButton) listView.findViewById(R.id.favouriteButton);
+        favouriteButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                favouriteButton.setColorFilter(Color.parseColor("#D64747"));
+                databaseUtils.addToFavourite(values.get(position).getId());
+            }
+        });
 
         return listView;
     }

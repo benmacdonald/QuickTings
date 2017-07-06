@@ -35,11 +35,13 @@ public class DatabaseUtils {
             database.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    List<Integer> favourites = (List<Integer>) dataSnapshot.child("/users/"+ user.getUid() + "/favourites/").getValue();
+                    List<Integer> favourites = (List<Integer>) dataSnapshot.child("users/"+ user.getUid() + "/favourites/").getValue();
 
                     favourites.add(productID);
 
                     database.child("users").child(user.getUid()).child("favourites").setValue(productID);
+
+                    //TODO: fix dis
                 }
 
                 @Override
