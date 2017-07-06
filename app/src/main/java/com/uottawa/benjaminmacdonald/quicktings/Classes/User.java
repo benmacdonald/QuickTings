@@ -4,6 +4,8 @@ import android.net.Uri;
 
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.util.List;
+
 /**
  * Created by BenjaminMacDonald on 2017-06-27.
  */
@@ -15,6 +17,7 @@ public class User {
     private String firstName;
     private String lastName;
     private String photo;
+    private List<Integer> favourites;
 
     public User() {
         //this is required idk why

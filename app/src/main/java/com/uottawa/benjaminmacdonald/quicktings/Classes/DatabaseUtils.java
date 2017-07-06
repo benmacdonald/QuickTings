@@ -8,6 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,39 +17,35 @@ import java.util.List;
 
 public class DatabaseUtils {
 
+    final private FirebaseDatabase database;
+    final private FirebaseUser user;
+
     //Constructor
     public DatabaseUtils() {
+
+        //connect to db
+        database = FirebaseDatabase.getInstance();
+
+        //get current user
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
     }
 
     //Add to favourite
     public void addToFavourite(final int productID) {
 
-        //connect to db
-        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-        //get current user
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
         if (user != null) {
             // User is signed in
-            database.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    List<Integer> favourites = (List<Integer>) dataSnapshot.child("users/"+ user.getUid() + "/favourites/").getValue();
 
-                    favourites.add(productID);
+            //get reference for favourites
+            DatabaseReference favouritesRef = database.getReference("users/"+ user.getUid() + "/favourites/");
 
-                    database.child("users").child(user.getUid()).child("favourites").setValue(productID);
-
-                    //TODO: fix dis
-                }
-
-                @Override
-                public void onCancelled(DatabaseError firebaseError) {
-                    // for errors
-                }
-            });
+            if (favouritesRef == null) {
+                favouritesRef = database.getReference("users/"+ user.getUid());
+                favouritesRef.setValue("/favourites/" + productID);
+            } else {
+                favouritesRef.push().setValue(productID);
+            }
 
         } else {
             // No user is signed in
