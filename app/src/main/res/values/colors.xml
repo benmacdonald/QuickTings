@@ -7,4 +7,8 @@
     <color name="colorPrimary">#607D8B</color>
     <color name="colorPrimaryDark">#455A64</color>
     <color name="colorAccent">#F5A623</color>
+    <color name="lightGrey">#EFEFEF</color>
+    <color name="darkGrey">#979797</color>
+    <color name="notFavourite">#AAA9A9</color>
+    <color name="searchProductLabel">#565656</color>
 </resources>
