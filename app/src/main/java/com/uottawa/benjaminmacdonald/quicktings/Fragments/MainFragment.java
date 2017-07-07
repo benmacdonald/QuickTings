@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,17 +14,28 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.DiscoverArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.MainActivityArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
+import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -34,7 +46,7 @@ import java.util.List;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements DatabaseCallback {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -50,7 +62,13 @@ public class MainFragment extends Fragment {
     private List<ProductItem> orderAgainItems;
     private List<ProductItem> favouriteItems;
 
+    private HashMap favourites;
+
+    private MainActivityArrayAdapter favouritesArrayAdapter;
+    private GridView favouritesView;
+
     private DatabaseUtils databaseUtils;
+    private RequestQueue requestQueue;
 
     public MainFragment() {
         // Required empty public constructor
@@ -90,7 +108,9 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        databaseUtils = new DatabaseUtils();
+        requestQueue = Volley.newRequestQueue(getActivity());
+
+        databaseUtils = new DatabaseUtils(this);
 
         //Discover Gallery
         discoverItems = new ArrayList<ProductItem>();
@@ -151,24 +171,19 @@ public class MainFragment extends Fragment {
         favouriteItems = new ArrayList<ProductItem>();
 
         //Dummy items
-        favouriteItems.add(new ProductItem());
-        favouriteItems.add(new ProductItem());
-        favouriteItems.add(new ProductItem());
+//        favouriteItems.add(new ProductItem());
+//        favouriteItems.add(new ProductItem());
+//        favouriteItems.add(new ProductItem());
 
-        //TODO: fix dis...
         //Favourites HashMap
-//        HashMap favourites = databaseUtils.getFavourites();
+        favourites = databaseUtils.getFavouritesHashMap();
 
+        favouritesArrayAdapter = new MainActivityArrayAdapter(getActivity(), favouriteItems);
 
-//        for (Iterator i = favourites.e; i.hasNext(); ) {
-//            String url = "https://lcboapi.com/products?access_key=" + getString(R.string.api_key) + "&q=" +
-//            favouriteItems.add()
-//        }
+        favouritesView = (GridView) rootView.findViewById(R.id.favouritesView);
 
-        GridView favouritesView = (GridView) rootView.findViewById(R.id.favouritesView);
-
-        final MainActivityArrayAdapter favouritesArrayAdapter = new MainActivityArrayAdapter(getActivity(), favouriteItems);
         favouritesView.setAdapter(favouritesArrayAdapter);
+
         favouritesView.setNumColumns(favouriteItems.size());
         if (favouriteItems.size() > 0) {
             setDynamicWidth(favouritesView);
@@ -183,6 +198,49 @@ public class MainFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void callback (HashMap hm) {
+
+        List<ProductItem> tmp;
+
+        for (Iterator i = hm.entrySet().iterator(); i.hasNext(); ) {
+            Map.Entry favourite = (Map.Entry) i.next();
+            String url = "https://lcboapi.com/products/" + favourite.getKey() + "/?access_key=" + getString(R.string.api_key);
+            System.out.print(url);
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+
+                            try {
+                                JSONObject product = response.getJSONObject("result");
+
+                                //TODO: is fucked pls fix
+                                List<ProductItem> tmp = new ArrayList<ProductItem>(favouriteItems);
+                                tmp.add(new ProductItem(product));
+                                favouriteItems.clear();
+                                favouriteItems.addAll(tmp);
+                                favouritesArrayAdapter.notifyDataSetChanged();
+                                setDynamicWidth(favouritesView);
+                            } catch (Exception e) {
+                                //swag
+                            }
+                        }
+
+                    }, new Response.ErrorListener() {
+
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("MYAPP","ERROR" + error);
+                        }
+                    });
+
+            requestQueue.add(jsonObjectRequest);
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,11 +23,16 @@ public class DatabaseUtils {
 
     final private FirebaseDatabase database;
     final private FirebaseUser user;
+    final private DatabaseReference userRef;
     final private DatabaseReference favouritesRef;
-    private HashMap favourites;
+    private HashMap favouritesHashMap;
+    private DatabaseCallback callback;
 
     //Constructor
-    public DatabaseUtils() {
+    public DatabaseUtils(final DatabaseCallback callback) {
+
+        //callback object
+        this.callback = callback;
 
         //connect to db
         database = FirebaseDatabase.getInstance();
@@ -34,21 +40,25 @@ public class DatabaseUtils {
         //get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        //get user reference
+        userRef = database.getReference("users/" + user.getUid());
+
         //get favourites reference
         favouritesRef = database.getReference("users/"+ user.getUid() + "/favourites");
 
         //Create an empty HashMap in case user has no favourites and ProductItemArrayAdapter tries to call getFavourites()
-        favourites = new HashMap();
+        favouritesHashMap = new HashMap();
 
         ValueEventListener favouritesListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.print("hello");
+
                 if (dataSnapshot.exists()) {
-                    favourites = (HashMap) dataSnapshot.getValue();
+                    favouritesHashMap = (HashMap) dataSnapshot.getValue();
+                    callback.callback(favouritesHashMap);
                 } else {
                     //Creates an empty HashMap if a user unfavourites everything
-                    favourites = new HashMap();
+                    favouritesHashMap = new HashMap();
                 }
             }
 
@@ -59,6 +69,19 @@ public class DatabaseUtils {
         };
 
         favouritesRef.addValueEventListener(favouritesListener);
+
+//        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                favourites = (HashMap) dataSnapshot.child("favourites").getValue();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+
     }
 
     //Add to favourite
@@ -89,7 +112,9 @@ public class DatabaseUtils {
         }
     }
 
-    public HashMap getFavourites() {
-        return favourites;
+    public DatabaseReference getUserRef() { return userRef; }
+
+    public HashMap getFavouritesHashMap() {
+        return favouritesHashMap;
     }
 }

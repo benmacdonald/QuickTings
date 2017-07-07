@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
+import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import org.w3c.dom.Text;
@@ -25,7 +26,7 @@ import java.util.List;
  * Created by BenjaminMacDonald on 2017-06-10.
  */
 
-public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
+public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> implements DatabaseCallback {
 
     private final Context context;
     private final List<ProductItem> values;
@@ -35,7 +36,7 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
         super(context, R.layout.card_search_result, values);
         this.context = context;
         this.values = values;
-        this.databaseUtils = new DatabaseUtils();
+        this.databaseUtils = new DatabaseUtils(this);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
         //favourite button
         final ImageButton favouriteButton = (ImageButton) listView.findViewById(R.id.favouriteButton);
 
-        if (databaseUtils.getFavourites().containsKey(String.valueOf(values.get(position).getId()))) {
+        if (databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(values.get(position).getId()))) {
             favouriteButton.setColorFilter(Color.parseColor("#D64747"));
         } else {
             favouriteButton.setColorFilter(Color.parseColor("#AAA9A9"));
@@ -75,7 +76,7 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
 
         favouriteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (databaseUtils.getFavourites().containsKey(String.valueOf(values.get(position).getId()))) {
+                if (databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(values.get(position).getId()))) {
                     favouriteButton.setColorFilter(Color.parseColor("#AAA9A9"));
                     databaseUtils.removeFromFavourite(values.get(position).getId());
                 } else {
@@ -96,5 +97,10 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
 
     public ProductItem getItem(int position) {
         return values.get(position);
+    }
+
+    @Override
+    public void callback(HashMap o) {
+
     }
 }
