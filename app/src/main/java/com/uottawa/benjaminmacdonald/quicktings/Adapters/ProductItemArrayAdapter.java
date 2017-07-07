@@ -2,6 +2,7 @@ package com.uottawa.benjaminmacdonald.quicktings.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -64,10 +66,23 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> {
 
         //favourite button
         final ImageButton favouriteButton = (ImageButton) listView.findViewById(R.id.favouriteButton);
+
+        if (databaseUtils.getFavourites().containsKey(String.valueOf(values.get(position).getId()))) {
+            favouriteButton.setColorFilter(Color.parseColor("#D64747"));
+        } else {
+            favouriteButton.setColorFilter(Color.parseColor("#AAA9A9"));
+        }
+
         favouriteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                favouriteButton.setColorFilter(Color.parseColor("#D64747"));
-                databaseUtils.addToFavourite(values.get(position).getId());
+                if (databaseUtils.getFavourites().containsKey(String.valueOf(values.get(position).getId()))) {
+                    favouriteButton.setColorFilter(Color.parseColor("#AAA9A9"));
+                    databaseUtils.removeFromFavourite(values.get(position).getId());
+                } else {
+                    favouriteButton.setColorFilter(Color.parseColor("#D64747"));
+                    databaseUtils.addToFavourite(values.get(position).getId());
+                }
+
             }
         });
 

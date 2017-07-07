@@ -16,10 +16,13 @@ import android.widget.ListAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.DiscoverArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.MainActivityArrayAdapter;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 
@@ -46,6 +49,8 @@ public class MainFragment extends Fragment {
     private List<ProductItem> discoverItems; //TODO: what are we doing with these?
     private List<ProductItem> orderAgainItems;
     private List<ProductItem> favouriteItems;
+
+    private DatabaseUtils databaseUtils;
 
     public MainFragment() {
         // Required empty public constructor
@@ -85,6 +90,8 @@ public class MainFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        databaseUtils = new DatabaseUtils();
+
         //Discover Gallery
         discoverItems = new ArrayList<ProductItem>();
 
@@ -111,7 +118,7 @@ public class MainFragment extends Fragment {
 //            }
 //        });
 
-        //Order Again Gallery
+        //Order Again Product Item List
         orderAgainItems = new ArrayList<ProductItem>();
 
         //Adding dummy items
@@ -140,16 +147,23 @@ public class MainFragment extends Fragment {
             }
         });
 
-        //Favourites Gallery
+        //Favourites ProductItem List
         favouriteItems = new ArrayList<ProductItem>();
 
-        //Adding dummy items
+        //Dummy items
         favouriteItems.add(new ProductItem());
         favouriteItems.add(new ProductItem());
         favouriteItems.add(new ProductItem());
-        favouriteItems.add(new ProductItem());
-        favouriteItems.add(new ProductItem());
-        favouriteItems.add(new ProductItem());
+
+        //TODO: fix dis...
+        //Favourites HashMap
+//        HashMap favourites = databaseUtils.getFavourites();
+
+
+//        for (Iterator i = favourites.e; i.hasNext(); ) {
+//            String url = "https://lcboapi.com/products?access_key=" + getString(R.string.api_key) + "&q=" +
+//            favouriteItems.add()
+//        }
 
         GridView favouritesView = (GridView) rootView.findViewById(R.id.favouritesView);
 

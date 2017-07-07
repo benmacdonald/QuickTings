@@ -77,8 +77,6 @@ public class ProductItem implements Parcelable {
         this.price = 5;
     }
 
-
-
     public int getAlcoholContent() {
         return alcoholContent;
     }
