@@ -12,12 +12,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.CartItem;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 public class ProductActivity extends AppCompatActivity {
 
     private FABToolbarLayout toolbarLayout;
+    private CartItem cartItem;
+    private TextView priceView2;
+    private TextView quantityValue;
+    private Button plusBtn;
+    private Button minusBtn;
 
     String description;
     String details;
@@ -57,10 +64,34 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
+        //plus / minus buttons
+        plusBtn = (Button) findViewById(R.id.plusButton);
+        minusBtn = (Button) findViewById(R.id.minusButton);
+        quantityValue = (TextView) findViewById(R.id.quantityValue);
+
         Intent intent = getIntent();
         ProductItem productItem = (ProductItem) intent.getExtras().getParcelable("PRODUCT");
 
         setupProduct(productItem);
+
+        plusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer newAmount = Integer.valueOf(quantityValue.getText().toString());
+                newAmount++;
+                quantityValue.setText(String.valueOf(newAmount));
+            }
+        });
+        minusBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer newAmount = Integer.valueOf(quantityValue.getText().toString());
+                if (newAmount > 1) {
+                    newAmount--;
+                    quantityValue.setText(String.valueOf(newAmount));
+                }
+            }
+        });
     }
 
     @Override
@@ -92,7 +123,7 @@ public class ProductActivity extends AppCompatActivity {
         TextView priceView = (TextView) findViewById(R.id.priceLabel);
         priceView.setText("$"+ productItem.getPrice() / 100.00);
 
-        TextView priceView2 = (TextView) findViewById(R.id.priceLabel2);
+        priceView2 = (TextView) findViewById(R.id.priceLabel2);
         priceView2.setText("$"+ productItem.getPrice() / 100.00);
 
         TextView volumeView = (TextView) findViewById(R.id.volumeLabel);
@@ -108,6 +139,7 @@ public class ProductActivity extends AppCompatActivity {
             textToChange.setText(productItem.getDescription());
         }
 
+        cartItem = new CartItem(productItem.getId(), 1);
     }
 
     //ActionBar back button functionality
