@@ -33,6 +33,8 @@ public class MainActivityArrayAdapter extends ArrayAdapter<ProductItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        System.out.println(values);
+        System.out.println("POSITION : " + position);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View listView = inflater.inflate(R.layout.card_product,parent,false);
@@ -59,6 +61,6 @@ public class MainActivityArrayAdapter extends ArrayAdapter<ProductItem> {
 
     @Override
     public int getCount() {
-        return (this.values != null) ? this.values.size() : 0;
+        return this.values.size();
     }
 }

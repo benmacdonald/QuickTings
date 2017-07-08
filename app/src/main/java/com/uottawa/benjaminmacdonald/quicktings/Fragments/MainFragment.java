@@ -224,7 +224,10 @@ public class MainFragment extends Fragment implements DatabaseCallback {
                                 favouriteItems.clear();
                                 favouriteItems.addAll(tmp);
                                 favouritesArrayAdapter.notifyDataSetChanged();
-                                setDynamicWidth(favouritesView);
+                                favouritesView.setNumColumns(favouriteItems.size());
+                                if (favouriteItems.size() > 0) {
+                                    setDynamicWidth(favouritesView);
+                                }
                             } catch (Exception e) {
                                 //swag
                             }
