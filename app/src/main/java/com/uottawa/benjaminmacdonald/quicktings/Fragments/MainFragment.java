@@ -241,6 +241,7 @@ public class MainFragment extends Fragment implements DatabaseCallback {
             requestQueue.add(jsonObjectRequest);
         }
 
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -265,6 +266,7 @@ public class MainFragment extends Fragment implements DatabaseCallback {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+
     }
 
     /**

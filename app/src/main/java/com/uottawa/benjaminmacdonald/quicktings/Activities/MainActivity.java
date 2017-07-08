@@ -33,6 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.maps.MapView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -76,6 +77,22 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         createSuggestions();
 
+        // hack to make maps load faster
+        // Fixing Later Map loading Delay
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    MapView mv = new MapView(getApplicationContext());
+                    mv.onCreate(null);
+                    mv.onPause();
+                    mv.onDestroy();
+                }catch (Exception ignored){
+
+                }
+            }
+        }).start();
+
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -117,7 +134,9 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 if(searchView != null && !searchView.isIconified()) {
                     searchView.setIconified(true);
-                    searchView.setIconified(true);
+                    if (searchView != null && !searchView.isIconified()) {
+                        searchView.setIconified(true);
+                    }
                     //closeSearchView();
                 } else {
                     if (drawer.isDrawerOpen(Gravity.START)) {

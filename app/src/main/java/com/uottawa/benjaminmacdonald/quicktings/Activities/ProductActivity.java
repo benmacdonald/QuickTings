@@ -1,31 +1,112 @@
 package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.media.Image;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
+import com.google.android.gms.instantapps.PackageManagerCompat;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.vision.text.Text;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.Store;
+import com.uottawa.benjaminmacdonald.quicktings.Fragments.DescriptionFragment;
+import com.uottawa.benjaminmacdonald.quicktings.Fragments.DetailsFragment;
+import com.uottawa.benjaminmacdonald.quicktings.Manifest;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
-public class ProductActivity extends AppCompatActivity {
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private FABToolbarLayout toolbarLayout;
+
+    private MapView mapView;
+    private GoogleMap map;
+
+    private FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationCallback locationCallback;
+    private RequestQueue requestQueue;
+
+    private ProductItem productItem;
 
     String description;
     String details;
 
+    // fragments
+    private SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_product);
+
+        // setup request queue
+        requestQueue = Volley.newRequestQueue(this);
+
+
+        //get product item
+
+        Intent intent = getIntent();
+        productItem = (ProductItem) intent.getExtras().getParcelable("PRODUCT");
+        setupProduct(productItem);
+
+
+        //set up tabs
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.productPageTabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+
 
         //Add the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -57,10 +138,33 @@ public class ProductActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        ProductItem productItem = (ProductItem) intent.getExtras().getParcelable("PRODUCT");
 
-        setupProduct(productItem);
+        //Setting up mapview
+        mapView = (MapView) findViewById(R.id.mapView);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
+
+        //get user current location
+//        locationCallback = new LocationCallback() {
+//            @Override
+//            public void onLocationResult(LocationResult locationResult) {
+//                for (Location location : locationResult.getLocations()) {
+//                    // Update UI with location data
+//                    // ...
+//                    System.out.println(location);
+//                }
+//            };
+//        };
+
+
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+//        fusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationCallback, null);
+
+
     }
 
     @Override
@@ -101,12 +205,12 @@ public class ProductActivity extends AppCompatActivity {
         description = productItem.getDescription();
         details = productItem.getOrigin();
 
-        TextView textToChange = (TextView) findViewById(R.id.textToChange);
-        if (productItem.getDescription() == null) {
-            //TODO: If description returns null, do something
-        } else {
-            textToChange.setText(productItem.getDescription());
-        }
+//        TextView textToChange = (TextView) findViewById(R.id.textToChange);
+//        if (productItem.getDescription() == null) {
+//            //TODO: If description returns null, do something
+//        } else {
+//            textToChange.setText(productItem.getDescription());
+//        }
 
     }
 
@@ -116,4 +220,148 @@ public class ProductActivity extends AppCompatActivity {
         finish();
         return true;
     }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.MAPS_RECEIVE) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    // Got last known location. In some rare situations this can be null.
+                    if (location != null) {
+                        updateAvalibilityandMap(location.getLatitude(), location.getLongitude());
+//                        LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+//                        map.addMarker(new MarkerOptions().position(current).title("Current Location"));
+//                        map.moveCamera(CameraUpdateFactory.newLatLng(current));
+                        //lcboapi.com/stores?lat=43.659&lon=-79.439
+                    } else {
+
+                    }
+                }
+            });
+        }
+//        LatLng sydney = new LatLng(-34, 151);
+//        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+
+
+    private void updateAvalibilityandMap(Double latitude, Double longitude) {
+        String url = "https://lcboapi.com/stores?access_key="+getString(R.string.api_key)+"&lat="+latitude+"&lon="+longitude;
+        System.out.println(url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        List<Store> tmp = createStores(response);
+                        Store store = tmp.get(0);
+                        TextView storeName = (TextView) findViewById(R.id.storeName);
+                        TextView storeAddPhone = (TextView) findViewById(R.id.storeAddPhone);
+                        storeName.setText(store.getName() + " LCBO");
+                        storeAddPhone.setText(store.getAddress_line_1() + " • " + store.getTelephone());
+
+                        LatLng closestStore = new LatLng(store.getLatitude(), store.getLongitude());
+                        Marker marker = map.addMarker(new MarkerOptions().position(closestStore));
+                        marker.showInfoWindow();
+                        map.moveCamera(CameraUpdateFactory.newLatLng(closestStore));
+                        map.animateCamera(CameraUpdateFactory.zoomTo(12));
+
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("MYAPP","ERROR" + error);
+
+                    }
+                });
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    public List<Store> createStores(JSONObject response) {
+        JSONArray jsonArray;
+        List<Store> items = new ArrayList<Store>();
+        try {
+            jsonArray = new JSONArray(response.getString("result"));
+            for (int i =0; i<jsonArray.length(); i++) {
+
+                try {
+                    items.add(new Store(jsonArray.getJSONObject(i)));
+                } catch (NullPointerException e) {
+                    continue;
+                }
+            }
+        } catch (JSONException e) {
+            return items;
+        }
+        return items;
+    }
+
+    @Override
+    protected void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        mapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        mapView.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLowMemory() {
+        mapView.onLowMemory();
+        super.onLowMemory();
+    }
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            if (position == 0) {
+                return DetailsFragment.newInstance(position + 1, productItem);
+            }
+            return DescriptionFragment.newInstance(position + 1, productItem);
+        }
+
+        @Override
+        public int getCount() {
+            // Show 2 total pages.
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "DETAILS";
+                case 1:
+                    if (!productItem.getDescription().equals("null")) {
+                        return "DESCRIPTION";
+                    }
+                    return "TASTING NOTE";
+            }
+            return null;
+        }
+    }
+
 }

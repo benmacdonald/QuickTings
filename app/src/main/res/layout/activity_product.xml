@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +10,9 @@
     <ScrollView
         android:id="@+id/contentView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,7 +27,7 @@
             <ImageView
                 android:id="@+id/productImage"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="220dp"
                 app:srcCompat="@mipmap/ic_launcher" />
 
             <TextView
@@ -33,24 +35,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:textSize="36sp" />
+                android:textColor="@color/searchProductLabel"
+                android:textSize="34sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/catLabel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="TextView"
+                android:textColor="@color/colorAccent"
                 android:textSize="18sp" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="40dp" />
 
             <TextView
                 android:id="@+id/limitedAvalibility"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_marginTop="34dp"
+                android:text="TextView"
+                android:textColor="#772100" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,7 +66,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="TextView"
-                    android:textSize="30sp" />
+                    android:textColor="@color/searchProductLabel"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/volumeLabel"
@@ -70,59 +76,103 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textColor="@color/searchProductLabel" />
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/descriptionButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/white"
-                    android:text="Description" />
-
-                <Button
-                    android:id="@+id/detailsButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/white"
-                    android:text="Details" />
-            </LinearLayout>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dip"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="28dp"
+                android:background="#EFEFEF" />
 
             <TextView
-                android:id="@+id/textToChange"
+                android:id="@+id/numAvaliable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_weight="1"
+                android:background="#EFECEC"
+                android:paddingBottom="5dp"
+                android:paddingLeft="35dp"
+                android:paddingRight="35dp"
+                android:paddingTop="5dp"
+                android:text="TextView" />
+
+
+            <TextView
+                android:id="@+id/storeName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce quis volutpat est. Morbi vehicula, elit nec vehicula scelerisque, odio tortor elementum lectus, sed ullamcorper neque ante et nulla. Maecenas porta orci non ornare gravida. Fusce laoreet lacinia lobortis. Nullam ullamcorper et elit in efficitur. Morbi ac turpis convallis, viverra dolor feugiat, semper erat. Aenean vitae vulputate enim.  Phasellus cursus vehicula arcu et egestas. Vestibulum at sodales tellus. Proin est neque, ultrices eu egestas id, porttitor a massa. Proin purus felis, convallis at felis eget, tincidunt rutrum felis. Donec blandit mattis lorem et consequat. Donec nec purus nec nibh porta eleifend. Praesent arcu felis, mollis eu diam ac, semper consectetur diam. Mauris in condimentum diam. Aenean aliquam efficitur arcu, ac auctor turpis lobortis nec. Donec sit amet augue vitae augue bibendum dapibus at ac quam. Cras vestibulum, mi in venenatis finibus, mi sapien imperdiet enim, ut egestas mi magna vel diam. Vestibulum mi sapien, scelerisque at venenatis sed, tempus nec nisl. Pellentesque aliquet commodo urna, in scelerisque mi aliquam ac. Vivamus risus lorem, interdum et iaculis sed, mattis sit amet nulla.  Nunc nec aliquet neque. Cras malesuada eget enim vel tempus. Nullam sollicitudin eu tortor a sodales. Vivamus posuere sem id nisl accumsan, in egestas odio tincidunt. Morbi commodo tortor pellentesque maximus ornare. Maecenas a venenatis elit, sit amet gravida ligula. Phasellus egestas sapien a nunc egestas eleifend. Morbi arcu ante, bibendum at justo et, ullamcorper vestibulum enim. Aenean ut ullamcorper dolor, in venenatis elit. Nam sem libero, tincidunt sit amet finibus nec, fringilla at sapien. Aenean accumsan et ipsum ut pharetra. Pellentesque eu eleifend dolor. Quisque hendrerit malesuada semper. Maecenas tincidunt sit amet neque quis laoreet.  Praesent luctus ex et lacus accumsan, vitae lacinia ex commodo. Vivamus consequat congue tellus et sodales. Sed sed nunc pharetra, pretium ipsum a, aliquet ligula. Mauris consequat mollis faucibus. Nunc vel eros non enim semper gravida. Mauris mattis faucibus neque, vel posuere risus interdum non. Nunc quis tellus lobortis, fringilla quam et, pretium dolor. Suspendisse auctor ultricies mi, et molestie felis blandit sit amet. Pellentesque aliquet neque ut condimentum sollicitudin. Donec semper sem nibh. Nullam lobortis, risus non consectetur lobortis, dolor tortor pulvinar urna, ut lacinia diam eros sit amet diam. Fusce dictum tortor nisl, ut sollicitudin eros iaculis sed. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam placerat est ex, ut auctor ligula lobortis ac. In et velit vitae leo pulvinar pharetra.  Aliquam rhoncus dui ut felis gravida, ac vulputate mi dapibus. Fusce in arcu blandit, bibendum libero vel, porttitor leo. Nunc finibus mauris sapien. Nullam aliquam laoreet condimentum. Nam iaculis felis et libero sagittis, id ultrices metus imperdiet. Suspendisse nec convallis ex, ut varius est. Vivamus porta lectus eu lectus luctus, a pharetra ligula fermentum. Suspendisse aliquam quis sapien sit amet tincidunt. In tristique, ligula imperdiet eleifend gravida, libero ligula tristique quam, sed fringilla libero ligula in purus. Suspendisse posuere turpis id mi tempor, sit amet vehicula arcu efficitur. Maecenas vel euismod odio, eu congue nunc. Sed eu dignissim magna." />
+                android:layout_marginTop="15dp"
+                android:text="TextView"
+                android:textColor="@color/searchProductLabel"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
-            <Space
+            <TextView
+                android:id="@+id/storeAddPhone"
                 android:layout_width="match_parent"
-                android:layout_height="80dp" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:text="TextView"
+                android:textAlignment="center" />
+
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="18dp"
+                android:layout_marginTop="14dp" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2dip"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="#EDEBEB" />
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/productPageTabs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp">
+
+
+            </android.support.design.widget.TabLayout>
+
+
+            <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/pager"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+            </android.support.v4.view.ViewPager>
+
+
+
 
         </LinearLayout>
+
     </ScrollView>
 
     <com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
         android:id="@+id/fabtoolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:showDuration="600"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        app:containerId="@+id/fabtoolbar_container"
+        app:fabId="@+id/fabtoolbar_fab"
+        app:fabToolbarId="@+id/fabtoolbar_toolbar"
+        app:fadeInFraction="0.2"
         app:hideDuration="200"
         app:horizontalMargin="30dp"
-        app:verticalMargin="30dp"
-        app:fadeInFraction="0.2"
-        app:fabId="@+id/fabtoolbar_fab"
-        app:containerId="@+id/fabtoolbar_container"
-        app:fabToolbarId="@+id/fabtoolbar_toolbar">
+        app:showDuration="600"
+        app:verticalMargin="30dp">
 
         <RelativeLayout
             android:id="@+id/fabtoolbar_container"
@@ -146,6 +196,7 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
             android:orientation="vertical"
             android:paddingLeft="25dp"
             android:paddingRight="25dp"
@@ -254,4 +305,4 @@
 
     </com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout>
 
-</RelativeLayout>
+</LinearLayout>

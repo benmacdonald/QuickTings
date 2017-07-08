@@ -37,6 +37,9 @@ public class ProductItem implements Parcelable {
     private String imageUrl;
     private String thumbnailUrl;
     private String tags; //string of words related to product
+
+
+    private String tastingNote;
     private String updated; //last updated
 
 
@@ -65,6 +68,7 @@ public class ProductItem implements Parcelable {
             this.thumbnailUrl = json.getString("image_thumb_url");
             this.tags = json.getString("tags");
             this.updated = json.getString("updated_at");
+            this.tastingNote = json.getString("tasting_note");
         } catch (JSONException e) {
             throw new NullPointerException();
         }
@@ -261,6 +265,14 @@ public class ProductItem implements Parcelable {
         this.volume = volume;
     }
 
+    public String getTastingNote() {
+        return tastingNote;
+    }
+
+    public void setTastingNote(String tastingNote) {
+        this.tastingNote = tastingNote;
+    }
+
 
     @Override
     public int describeContents() {
@@ -292,6 +304,7 @@ public class ProductItem implements Parcelable {
         dest.writeString(this.thumbnailUrl);
         dest.writeString(this.tags);
         dest.writeString(this.updated);
+        dest.writeString(this.tastingNote);
     }
 
     protected ProductItem(Parcel in) {
@@ -318,6 +331,7 @@ public class ProductItem implements Parcelable {
         this.thumbnailUrl = in.readString();
         this.tags = in.readString();
         this.updated = in.readString();
+        this.tastingNote = in.readString();
     }
 
     public static final Creator<ProductItem> CREATOR = new Creator<ProductItem>() {
