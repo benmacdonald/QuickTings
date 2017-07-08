@@ -23,7 +23,6 @@ public class DatabaseUtils {
 
     final private FirebaseDatabase database;
     final private FirebaseUser user;
-    final private DatabaseReference userRef;
     final private DatabaseReference favouritesRef;
     private HashMap favouritesHashMap;
     private DatabaseCallback callback;
@@ -39,9 +38,6 @@ public class DatabaseUtils {
 
         //get current user
         user = FirebaseAuth.getInstance().getCurrentUser();
-
-        //get user reference
-        userRef = database.getReference("users/" + user.getUid());
 
         //get favourites reference
         favouritesRef = database.getReference("users/"+ user.getUid() + "/favourites");
@@ -68,19 +64,7 @@ public class DatabaseUtils {
             }
         };
 
-        favouritesRef.addValueEventListener(favouritesListener);
-
-//        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                favourites = (HashMap) dataSnapshot.child("favourites").getValue();
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
+        favouritesRef.addListenerForSingleValueEvent(favouritesListener);
 
     }
 
@@ -111,8 +95,6 @@ public class DatabaseUtils {
             // No user is signed in
         }
     }
-
-    public DatabaseReference getUserRef() { return userRef; }
 
     public HashMap getFavouritesHashMap() {
         return favouritesHashMap;

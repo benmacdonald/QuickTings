@@ -62,11 +62,13 @@ public class MainFragment extends Fragment implements DatabaseCallback {
     private List<ProductItem> orderAgainItems;
     private List<ProductItem> favouriteItems;
 
-    private HashMap favourites;
+//    private HashMap favourites;
 
+    //For favourites
     private MainActivityArrayAdapter favouritesArrayAdapter;
     private GridView favouritesView;
 
+    //Utilities
     private DatabaseUtils databaseUtils;
     private RequestQueue requestQueue;
 
@@ -108,8 +110,8 @@ public class MainFragment extends Fragment implements DatabaseCallback {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+        // Utilities
         requestQueue = Volley.newRequestQueue(getActivity());
-
         databaseUtils = new DatabaseUtils(this);
 
         //Discover Gallery
@@ -176,7 +178,7 @@ public class MainFragment extends Fragment implements DatabaseCallback {
 //        favouriteItems.add(new ProductItem());
 
         //Favourites HashMap
-        favourites = databaseUtils.getFavouritesHashMap();
+//        favourites = databaseUtils.getFavouritesHashMap();
 
         favouritesArrayAdapter = new MainActivityArrayAdapter(getActivity(), favouriteItems);
 
@@ -202,8 +204,6 @@ public class MainFragment extends Fragment implements DatabaseCallback {
 
     @Override
     public void callback (HashMap hm) {
-
-        List<ProductItem> tmp;
 
         for (Iterator i = hm.entrySet().iterator(); i.hasNext(); ) {
             Map.Entry favourite = (Map.Entry) i.next();
@@ -240,6 +240,10 @@ public class MainFragment extends Fragment implements DatabaseCallback {
 
             requestQueue.add(jsonObjectRequest);
         }
+//        if (favouriteItems.size() > 0) {
+//            favouritesArrayAdapter.notifyDataSetChanged();
+//            setDynamicWidth(favouritesView);
+//        }
 
 
     }
@@ -266,7 +270,6 @@ public class MainFragment extends Fragment implements DatabaseCallback {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-
     }
 
     /**
