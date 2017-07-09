@@ -20,21 +20,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/round_button"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:text="Get started"
+            android:elevation="8dp"
+            android:paddingBottom="26dp"
+            android:paddingLeft="70dp"
+            android:paddingRight="70dp"
+            android:paddingTop="26dp"
+            android:text="Sign Up"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/background_light"
             android:textSize="20sp" />
 
         <Button
             android:id="@+id/logInButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
             android:background="@android:color/transparent"
             android:text="Log in"
             android:textAllCaps="false"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

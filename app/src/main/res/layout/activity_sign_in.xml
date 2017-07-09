@@ -34,64 +34,45 @@
             android:hint="password"
             android:inputType="textPassword" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
-            android:orientation="horizontal">
-
-
-            <EditText
-                android:id="@+id/firstName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="firstname"
-                android:inputType="textPersonName" />
-
-            <EditText
-                android:id="@+id/lastName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="lastname"
-                android:inputType="textPersonName" />
-        </LinearLayout>
-
         <Button
-            android:id="@+id/emailSignUp"
+            android:id="@+id/emailSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:background="?attr/colorAccent"
-            android:text="SIGN UP"
+            android:text="Sign In (not working)"
             android:textColor="@android:color/background_light" />
 
 
-        <View
-            android:id="@+id/view"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="2dip"
-            android:layout_marginBottom="20dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="20dp"
-            android:background="#979797" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dip"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="20dp"
+                android:background="#979797" />
+
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/userFacebookSignUp"
+            android:id="@+id/userFacebookSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="22dp"
             android:background="@color/cardview_light_background"
             android:drawableLeft="@drawable/custom_facebook_button"
             android:elevation="8dp"
-            android:text="SIGN UP WITH FACEBOOK" />
+            android:text="SIGN IN WITH FACEBOOK" />
 
         <com.facebook.login.widget.LoginButton
-            android:id="@+id/facebookSignUp"
+            android:id="@+id/facebookSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -102,17 +83,17 @@
 
 
         <Button
-            android:id="@+id/userGoogleSignUp"
+            android:id="@+id/userGoogleSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/cardview_light_background"
             android:drawableLeft="@drawable/custom_google_button"
             android:elevation="8dp"
-            android:text="SIGN UP WITH GOOGLE" />
+            android:text="SIGN IN WITH GOOGLE" />
 
 
         <com.google.android.gms.common.SignInButton
-            android:id="@+id/googleSignUp"
+            android:id="@+id/googleSignIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone" />

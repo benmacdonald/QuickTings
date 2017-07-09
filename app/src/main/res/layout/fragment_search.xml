@@ -22,7 +22,7 @@
             android:id="@+id/wld_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="?attr/colorAccent"
             android:elevation="24dp"
             android:minHeight="?attr/actionBarSize">
 

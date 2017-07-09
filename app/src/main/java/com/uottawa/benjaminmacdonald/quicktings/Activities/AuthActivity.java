@@ -54,6 +54,15 @@ public class AuthActivity extends AppCompatActivity {
             }
         });
 
+        Button logInButton = (Button) findViewById(R.id.logInButton);
+        logInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AuthActivity.this, SignInActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

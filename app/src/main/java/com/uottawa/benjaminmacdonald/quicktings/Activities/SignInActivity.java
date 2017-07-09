@@ -1,10 +1,9 @@
 package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +29,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,7 +41,11 @@ import com.uottawa.benjaminmacdonald.quicktings.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class SignUpActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+/**
+ * Created by BenjaminMacDonald on 2017-07-09.
+ */
+
+public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
     private FirebaseAuth mAuth;
     private GoogleApiClient mGoogleApiClient;
@@ -55,19 +57,19 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.activity_sign_up);
+        setContentView(R.layout.activity_sign_in);
 
         mAuth = FirebaseAuth.getInstance();
 
 
-        Button emailSignUp = (Button) findViewById(R.id.emailSignUp);
+        Button emailSignUp = (Button) findViewById(R.id.emailSignIn);
         emailSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText email = (EditText) findViewById(R.id.email);
                 EditText password = (EditText) findViewById(R.id.password);
 
-                signUpWithEmail(email.getText().toString(), password.getText().toString());
+                signInWithEmail(email.getText().toString(), password.getText().toString());
             }
         });
 
@@ -84,7 +86,7 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        Button realGoogleSign = (Button) findViewById(R.id.userGoogleSignUp);
+        Button realGoogleSign = (Button) findViewById(R.id.userGoogleSignIn);
         realGoogleSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +94,7 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
             }
         });
 
-        SignInButton googleButton = (SignInButton) findViewById(R.id.googleSignUp);
+        SignInButton googleButton = (SignInButton) findViewById(R.id.googleSignIn);
         googleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,17 +106,17 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
 
         // Initialize Facebook Login button
 
-        Button realFacebookSign = (Button) findViewById(R.id.userFacebookSignUp);
+        Button realFacebookSign = (Button) findViewById(R.id.userFacebookSignIn);
         realFacebookSign.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LoginButton loginButton = (LoginButton) findViewById(R.id.facebookSignUp);
+                LoginButton loginButton = (LoginButton) findViewById(R.id.facebookSignIn);
                 loginButton.callOnClick();
             }
         });
 
         mCallbackManager = CallbackManager.Factory.create();
-        LoginButton loginButton = (LoginButton) findViewById(R.id.facebookSignUp);
+        LoginButton loginButton = (LoginButton) findViewById(R.id.facebookSignIn);
         loginButton.setReadPermissions("email", "public_profile");
         loginButton.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -164,31 +166,18 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
         return;
     }
 
-    private void signUpWithEmail(final String email, String password) {
-        mAuth.createUserWithEmailAndPassword(email, password)
+    private void signInWithEmail(final String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            EditText name = (EditText) findViewById(R.id.firstName);
-                            EditText lastName = (EditText) findViewById(R.id.lastName);
-
-                            FirebaseUser currentUser = mAuth.getCurrentUser();
-                            User user = new User(email, name.getText().toString(), lastName.getText().toString(), "");
-
-                            //connect to database
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference ref = database.getReference();
-
-                            String id = currentUser.getUid();
-                            ref.child("users").child(id).setValue(user);
-
-                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                            // Sign in success, update UI with the signed-in user's information
+                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                             startActivity(intent);
 
-
                         } else {
-                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                            Toast.makeText(SignInActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -204,21 +193,13 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     FirebaseUser currentUser = mAuth.getCurrentUser();
-                    User user = new User(account.getEmail(), account.getGivenName(), account.getFamilyName(), account.getPhotoUrl().toString());
 
-                    //connect to database
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference ref = database.getReference();
-
-                    String id = currentUser.getUid();
-                    ref.child("users").child(id).setValue(user);
-
-                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
                     startActivity(intent);
 
                 }
                 else {
-                    Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                    Toast.makeText(SignInActivity.this, "Authentication failed.",
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -251,23 +232,9 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
 
                                     System.out.println(object);
 
-                                    try {
-                                        User user = new User(object.getString("email"),
-                                                object.getString("first_name"), object.getString("last_name"), object.getJSONObject("picture").getJSONObject("data").getString("url"));
 
-                                        //connect to database
-                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                        DatabaseReference ref = database.getReference();
-
-                                        String id = currentUser.getUid();
-                                        ref.child("users").child(id).setValue(user);
-
-                                        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-                                        startActivity(intent);
-
-                                    } catch (JSONException e) {
-                                        //failed
-                                    }
+                                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                    startActivity(intent);
                                 }
                             });
                     Bundle parameters = new Bundle();
@@ -282,6 +249,7 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
             }
         });
     }
+
 
 
 }

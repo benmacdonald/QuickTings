@@ -192,8 +192,8 @@ public class MainFragment extends Fragment implements DatabaseCallback {
         favouritesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(rootView.getContext(), ProductActivity.class);
-                intent.putExtra("PRODUCT", favouriteItems.get(position).getId());
+                Intent intent = new Intent(getActivity(), ProductActivity.class);
+                intent.putExtra("PRODUCT", favouriteItems.get(position));
                 startActivity(intent);
             }
         });

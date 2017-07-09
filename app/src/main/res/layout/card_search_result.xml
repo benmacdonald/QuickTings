@@ -108,7 +108,8 @@
             android:layout_marginLeft="24dp"
             android:layout_weight="0.95"
             android:text="69 in stock near you"
-            android:textColor="@color/darkGrey" />
+            android:textColor="@color/darkGrey"
+            android:textStyle="bold" />
 
         <ImageButton
             android:id="@+id/favouriteButton"
@@ -117,8 +118,8 @@
             android:layout_marginRight="20dp"
             android:layout_weight="0.05"
             android:background="@android:color/transparent"
-            android:paddingBottom="6px"
-            android:paddingTop="6px"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp"
             android:src="@drawable/ic_favorite_black_24dp"
             android:tint="@color/notFavourite" />
 
