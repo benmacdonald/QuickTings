@@ -2,6 +2,7 @@ package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -150,14 +152,13 @@ public class MainFragment extends Fragment implements DatabaseCallback {
         orderAgainItems = new ArrayList<ProductItem>();
 
         //Adding dummy items
-        orderAgainItems.add(new ProductItem());
-        orderAgainItems.add(new ProductItem());
-        orderAgainItems.add(new ProductItem());
-        orderAgainItems.add(new ProductItem());
-        orderAgainItems.add(new ProductItem());
-        orderAgainItems.add(new ProductItem());
+//        orderAgainItems.add(new ProductItem());
+//        orderAgainItems.add(new ProductItem());
+//        orderAgainItems.add(new ProductItem());
 
         GridView orderAgainView = (GridView) rootView.findViewById(R.id.orderAgainView);
+
+        orderAgainView.setEmptyView(rootView.findViewById(R.id.empty_oa_view));
 
         final MainActivityArrayAdapter orderAgainArrayAdapter = new MainActivityArrayAdapter(getActivity(), orderAgainItems);
         orderAgainView.setAdapter(orderAgainArrayAdapter);
@@ -190,13 +191,12 @@ public class MainFragment extends Fragment implements DatabaseCallback {
 
         favouritesView = (GridView) rootView.findViewById(R.id.favouritesView);
 
+        favouritesView.setEmptyView(rootView.findViewById(R.id.empty_fav_view));
+
         favouritesView.setAdapter(favouritesArrayAdapter);
 
-        favouritesView.setNumColumns(favouriteItems.size());
-        if (favouriteItems.size() > 0) {
-            setDynamicWidth(favouritesView);
-        }
         favouritesView.setDrawSelectorOnTop(true);
+
         favouritesView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -205,6 +205,7 @@ public class MainFragment extends Fragment implements DatabaseCallback {
                 startActivityForResult(intent, 1);
             }
         });
+
         return rootView;
     }
 

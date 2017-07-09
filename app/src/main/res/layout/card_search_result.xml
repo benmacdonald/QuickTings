@@ -22,7 +22,7 @@
             <ImageView
                 android:id="@+id/productImage"
                 android:layout_width="98dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_centerInParent="true"
                 app:srcCompat="@drawable/ic_menu_gallery" />
         </RelativeLayout>

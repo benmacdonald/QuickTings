@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+import com.vstechlab.easyfonts.EasyFonts;
 
 import org.w3c.dom.Text;
 
@@ -40,14 +41,17 @@ public class MainActivityArrayAdapter extends ArrayAdapter<ProductItem> {
         //Set the title of the product
         TextView productTitle = (TextView) listView.findViewById(R.id.productTitle);
         productTitle.setText(values.get(position).getName());
+        productTitle.setTypeface(EasyFonts.robotoBold(context));
 
         //Set the type
         TextView productType = (TextView) listView.findViewById(R.id.productType);
         productType.setText(values.get(position).getCategory());
+        productType.setTypeface(EasyFonts.robotoRegular(context));
 
         //Set price
         TextView productPrice = (TextView) listView.findViewById(R.id.productPrice);
         productPrice.setText("$"+values.get(position).getPrice()/100.00);
+        productPrice.setTypeface(EasyFonts.robotoBlack(context));
 
         //get image
         ImageView imageView = (ImageView) listView.findViewById(R.id.productImage);
