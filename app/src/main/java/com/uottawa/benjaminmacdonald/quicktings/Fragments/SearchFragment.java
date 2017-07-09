@@ -3,6 +3,7 @@ package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -47,6 +49,7 @@ public class SearchFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int RESULT_OK = -1;
 
     private String query;
 
@@ -57,6 +60,8 @@ public class SearchFragment extends Fragment {
 
     private TextView numResult;
     private TextView searchParam;
+
+    private int lastPosition;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -112,14 +117,45 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?>adapter,View v, int position, long name){
                 ProductItem productItem = productArrayAdapter.getItem(position);
+                lastPosition = position;
 
                 Intent intent = new Intent(getActivity(), ProductActivity.class);
                 intent.putExtra("PRODUCT" , productItem);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
 
         return rootView;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                ListView listView = (ListView) getView().findViewById(R.id.productListView);
+                View card = getViewByPosition(lastPosition, listView);
+                ImageButton favouriteButton = (ImageButton) card.findViewById(R.id.favouriteButton);
+                if (data.getBooleanExtra("result", false)) {
+                    favouriteButton.setColorFilter(Color.parseColor("#D64747"));
+                } else {
+                    favouriteButton.setColorFilter(Color.parseColor("#AAA9A9"));
+                }
+            } else {
+                //did not get data
+            }
+        }
+    }
+
+    public View getViewByPosition(int pos, ListView listView) {
+        final int firstListItemPosition = listView.getFirstVisiblePosition();
+        final int lastListItemPosition = firstListItemPosition + listView.getChildCount() - 1;
+
+        if (pos < firstListItemPosition || pos > lastListItemPosition ) {
+            return listView.getAdapter().getView(pos, null, listView);
+        } else {
+            final int childIndex = pos - firstListItemPosition;
+            return listView.getChildAt(childIndex);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -54,6 +54,7 @@ import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.Store;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DescriptionFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DetailsFragment;
+import com.uottawa.benjaminmacdonald.quicktings.Fragments.SearchFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 import com.uottawa.benjaminmacdonald.quicktings.Manifest;
 import com.uottawa.benjaminmacdonald.quicktings.R;
@@ -209,13 +210,21 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    public void exitWithData() {
+
+        Intent returnIntent = new Intent();
+        boolean isFavourite = databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(productItem.getId()));
+        returnIntent.putExtra("result", isFavourite);
+        setResult(RESULT_OK, returnIntent);
+        finish();
+    }
 
     @Override
     public void onBackPressed() {
 
         //Checks if the FAB is the button or the toolbar
         if (toolbarLayout.isFab()) {
-            finish();
+            exitWithData();
         } else {
             toolbarLayout.hide();
         }
@@ -254,7 +263,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     //ActionBar back button functionality
     @Override
     public boolean onSupportNavigateUp(){
-        finish();
+        exitWithData();
         return true;
     }
 
