@@ -28,8 +28,6 @@ public class CartAdapter extends ArrayAdapter<CartItem> {
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View listView = inflater.inflate(R.layout.card_cart,parent,false);
 
-        //TODO: Need to decide what we want to do with these
-
         return listView;
     }
 }

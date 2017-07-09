@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
-import android.media.Image;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -32,29 +30,24 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
-import com.google.android.gms.instantapps.PackageManagerCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.vision.text.Text;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.Inventory;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.Store;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DescriptionFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DetailsFragment;
-import com.uottawa.benjaminmacdonald.quicktings.Fragments.SearchFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 import com.uottawa.benjaminmacdonald.quicktings.Manifest;
 import com.uottawa.benjaminmacdonald.quicktings.R;
@@ -64,7 +57,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -90,7 +82,6 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     // fragments
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
