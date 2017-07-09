@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -102,6 +103,9 @@ public class SearchFragment extends Fragment {
 
         // add font
         addFont(rootView);
+
+        // add search filters
+
 
         requestQueue = Volley.newRequestQueue(getActivity());
         updateSearchResults(query);
