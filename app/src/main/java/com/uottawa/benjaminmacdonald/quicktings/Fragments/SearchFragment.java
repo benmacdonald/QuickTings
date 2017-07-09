@@ -148,7 +148,7 @@ public class SearchFragment extends Fragment {
 
     public void updateSearchResults(String query) {
         this.query = query.replaceAll(" ", "%20");
-        String url = "https://lcboapi.com/products?access_key="+getString(R.string.api_key)+"&per_page=100&q="+this.query;
+        String url = "https://lcboapi.com/products?access_key="+getString(R.string.api_key)+"&per_page=100&where_not=is_dead&q="+this.query;
         System.out.println(url);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {

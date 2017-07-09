@@ -40,7 +40,9 @@ public class ProductItem implements Parcelable {
 
 
     private String tastingNote;
+    private String style;
     private String updated; //last updated
+    private String releaseDate;
 
 
     public ProductItem(JSONObject json) {
@@ -69,6 +71,8 @@ public class ProductItem implements Parcelable {
             this.tags = json.getString("tags");
             this.updated = json.getString("updated_at");
             this.tastingNote = json.getString("tasting_note");
+            this.style = json.getString("style");
+            this.releaseDate = json.getString("released_on");
         } catch (JSONException e) {
             throw new NullPointerException();
         }
@@ -273,6 +277,23 @@ public class ProductItem implements Parcelable {
         this.tastingNote = tastingNote;
     }
 
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public void setReleaseDate(String releaseDate) {
+        this.releaseDate = releaseDate;
+    }
+
+
 
     @Override
     public int describeContents() {
@@ -305,6 +326,8 @@ public class ProductItem implements Parcelable {
         dest.writeString(this.tags);
         dest.writeString(this.updated);
         dest.writeString(this.tastingNote);
+        dest.writeString(this.style);
+        dest.writeString(this.releaseDate);
     }
 
     protected ProductItem(Parcel in) {
@@ -332,6 +355,8 @@ public class ProductItem implements Parcelable {
         this.tags = in.readString();
         this.updated = in.readString();
         this.tastingNote = in.readString();
+        this.style = in.readString();
+        this.releaseDate = in.readString();
     }
 
     public static final Creator<ProductItem> CREATOR = new Creator<ProductItem>() {

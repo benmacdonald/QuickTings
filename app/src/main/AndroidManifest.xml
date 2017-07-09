@@ -34,7 +34,10 @@
                 android:resource="@xml/searchable"/>
 
         </activity>
-        <activity android:name=".Activities.ProductActivity" />
+        <activity
+            android:name=".Activities.ProductActivity"
+            android:label="Details" >
+        </activity>
         <activity android:name=".Activities.CartActivity" />
         <activity android:name=".Activities.CheckoutActivity" />
         <activity android:name=".Activities.DeliveryActivity" />

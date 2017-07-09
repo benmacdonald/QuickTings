@@ -2,6 +2,7 @@ package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.media.Image;
@@ -14,6 +15,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -44,10 +48,13 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.text.Text;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.Inventory;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.Store;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DescriptionFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DetailsFragment;
+import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 import com.uottawa.benjaminmacdonald.quicktings.Manifest;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
@@ -55,10 +62,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class ProductActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class ProductActivity extends AppCompatActivity implements OnMapReadyCallback, DatabaseCallback {
 
     private FABToolbarLayout toolbarLayout;
 
@@ -70,6 +80,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     private RequestQueue requestQueue;
 
     private ProductItem productItem;
+    private DatabaseUtils databaseUtils;
 
     String description;
     String details;
@@ -84,6 +95,10 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_product);
+
+        //Set up database utils
+        this.databaseUtils = new DatabaseUtils(this);
+
 
         // setup request queue
         requestQueue = Volley.newRequestQueue(this);
@@ -138,6 +153,39 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
+        //Add to Cart Button
+        //TODO:: add to cart
+
+        //Add Button
+        Button addButton = (Button) findViewById(R.id.plusButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
+                Integer value = Integer.parseInt(quantityValue.getText().toString());
+                value = value + 1;
+                quantityValue.setText(value.toString());
+
+                calculateNewPrice(value);
+            }
+        });
+
+        //Substract Button
+        Button minusButton = (Button) findViewById(R.id.minusButton);
+        minusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
+                Integer value = Integer.parseInt(quantityValue.getText().toString());
+                value = value - 1;
+                if (value > 0) {
+                    quantityValue.setText(value.toString());
+                    calculateNewPrice(value);
+                }
+
+            }
+        });
+
 
         //Setting up mapview
         mapView = (MapView) findViewById(R.id.mapView);
@@ -167,6 +215,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+
     @Override
     public void onBackPressed() {
 
@@ -179,39 +228,27 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
-    private void setupProduct(ProductItem productItem) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.product_menu, menu);
+        return true;
+    }
 
-        ImageView productImage = (ImageView) findViewById(R.id.productImage);
-        Glide.with(this).load(productItem.getImageUrl()).into(productImage);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_fav) {
+            if (databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(productItem.getId()))) {
+                item.setIcon(getResources().getDrawable(R.drawable.ic_favourite_border_white_24dp));
+                databaseUtils.removeFromFavourite(productItem.getId());
+            } else {
+                item.setIcon(getResources().getDrawable(R.drawable.ic_favourite_white_24dp));
+                databaseUtils.addToFavourite(productItem.getId());
+            }
+        }
 
-        TextView nameView = (TextView) findViewById(R.id.nameLabel);
-        nameView.setText(productItem.getName());
-
-        TextView nameView2 = (TextView) findViewById(R.id.nameLabel2);
-        nameView2.setText(productItem.getName());
-
-        TextView catView = (TextView) findViewById(R.id.catLabel);
-        catView.setText(productItem.getCategory());
-
-        TextView priceView = (TextView) findViewById(R.id.priceLabel);
-        priceView.setText("$"+ productItem.getPrice() / 100.00);
-
-        TextView priceView2 = (TextView) findViewById(R.id.priceLabel2);
-        priceView2.setText("$"+ productItem.getPrice() / 100.00);
-
-        TextView volumeView = (TextView) findViewById(R.id.volumeLabel);
-        volumeView.setText(productItem.getVolume() + " mL " +productItem.getUnitType());
-
-        description = productItem.getDescription();
-        details = productItem.getOrigin();
-
-//        TextView textToChange = (TextView) findViewById(R.id.textToChange);
-//        if (productItem.getDescription() == null) {
-//            //TODO: If description returns null, do something
-//        } else {
-//            textToChange.setText(productItem.getDescription());
-//        }
-
+        return super.onOptionsItemSelected(item);
     }
 
     //ActionBar back button functionality
@@ -237,7 +274,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 //                        map.moveCamera(CameraUpdateFactory.newLatLng(current));
                         //lcboapi.com/stores?lat=43.659&lon=-79.439
                     } else {
-
+                        defaultMap();
                     }
                 }
             });
@@ -245,6 +282,56 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 //        LatLng sydney = new LatLng(-34, 151);
 //        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
 //        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+    }
+
+    @Override
+    public void callback(HashMap o) {
+
+    }
+
+    private void calculateNewPrice(Integer quantity) {
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        TextView price = (TextView) findViewById(R.id.priceLabel2);
+        String newPrice = formatter.format(quantity * (productItem.getPrice() / 100.00));
+        price.setText(newPrice);
+    }
+
+    private void setupProduct(ProductItem productItem) {
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+
+        ImageView productImage = (ImageView) findViewById(R.id.productImage);
+        Glide.with(this).load(productItem.getImageUrl()).into(productImage);
+
+        TextView nameView = (TextView) findViewById(R.id.nameLabel);
+        nameView.setText(productItem.getName());
+
+        TextView nameView2 = (TextView) findViewById(R.id.nameLabel2);
+        nameView2.setText(productItem.getName());
+
+        TextView catView = (TextView) findViewById(R.id.catLabel);
+        catView.setText(productItem.getCategory());
+
+        TextView priceView = (TextView) findViewById(R.id.priceLabel);
+        priceView.setText(formatter.format(productItem.getPrice() / 100.00));
+
+        TextView priceView2 = (TextView) findViewById(R.id.priceLabel2);
+        priceView2.setText(formatter.format(productItem.getPrice() / 100.00));
+
+        TextView volumeView = (TextView) findViewById(R.id.volumeLabel);
+        volumeView.setText(productItem.getVolume() + " mL " +productItem.getUnitType());
+
+        description = productItem.getDescription();
+        details = productItem.getOrigin();
+
+//        TextView textToChange = (TextView) findViewById(R.id.textToChange);
+//        if (productItem.getDescription() == null) {
+//            //TODO: If description returns null, do something
+//        } else {
+//            textToChange.setText(productItem.getDescription());
+//        }
+
     }
 
 
@@ -263,12 +350,13 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                         TextView storeAddPhone = (TextView) findViewById(R.id.storeAddPhone);
                         storeName.setText(store.getName() + " LCBO");
                         storeAddPhone.setText(store.getAddress_line_1() + " • " + store.getTelephone());
+                        updateStockQuantitiy(store.getId());
 
                         LatLng closestStore = new LatLng(store.getLatitude(), store.getLongitude());
                         Marker marker = map.addMarker(new MarkerOptions().position(closestStore));
                         marker.showInfoWindow();
                         map.moveCamera(CameraUpdateFactory.newLatLng(closestStore));
-                        map.animateCamera(CameraUpdateFactory.zoomTo(12));
+                        map.animateCamera(CameraUpdateFactory.zoomTo(14));
 
                     }
 
@@ -282,6 +370,67 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                 });
 
         requestQueue.add(jsonObjectRequest);
+    }
+
+    private void updateStockQuantitiy(int storeid) {
+        //lcboapi.com/stores/{store_id}/products/{product_id}/inventory
+        String url = "https://lcboapi.com/stores/"+storeid+"/products/"+productItem.getId()+"/inventory?access_key="+getString(R.string.api_key);
+        System.out.println(url);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Inventory currentInventory = new Inventory(createInventory(response));
+
+                        TextView amount = (TextView) findViewById(R.id.numAvaliable);
+                        amount.setText(currentInventory.getQuantity() + " Available");
+                        amount.setVisibility(View.VISIBLE);
+
+                        TextView limited = (TextView) findViewById(R.id.limitedAvalibility);
+                        if (currentInventory.getQuantity() > 5) {
+                            limited.setTextColor(Color.parseColor("#3BB912"));
+                            limited.setVisibility(View.VISIBLE);
+                            limited.setText("In Stock");
+                        }
+                        else if (currentInventory.getQuantity()  > 0 && currentInventory.getQuantity() <= 5) {
+                            limited.setTextColor(Color.parseColor("#B99712"));
+                            limited.setVisibility(View.VISIBLE);
+                            limited.setText("Limited Avalibility");
+                        }
+                        else if (currentInventory.getQuantity() <= 0) {
+                            limited.setTextColor(Color.parseColor("#B92C12"));
+                            limited.setVisibility(View.VISIBLE);
+                            limited.setText("Out of Stock");
+                        }
+
+                    }
+
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("MYAPP","ERROR" + error);
+
+                    }
+                });
+
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void defaultMap() {
+
+        TextView storeName = (TextView) findViewById(R.id.storeName);
+        TextView storeAddPhone = (TextView) findViewById(R.id.storeAddPhone);
+        TextView amount = (TextView) findViewById(R.id.numAvaliable);
+        amount.setText("In Stock");
+        storeName.setText("FC Rideau Center LCBO");
+        storeAddPhone.setText("50 Rideau St" + " • " + "(613) 569-1879");
+        LatLng rideau = new LatLng(45.4256461, -75.6958886);
+        Marker marker = map.addMarker(new MarkerOptions().position(rideau));
+        marker.showInfoWindow();
+        map.moveCamera(CameraUpdateFactory.newLatLng(rideau));
+        map.animateCamera(CameraUpdateFactory.zoomTo(14));
     }
 
     public List<Store> createStores(JSONObject response) {
@@ -301,6 +450,17 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
             return items;
         }
         return items;
+    }
+
+    public JSONObject createInventory(JSONObject response) {
+        JSONObject inventory = null;
+        try {
+           inventory = new JSONObject(response.getString("result"));
+
+        } catch (JSONException e) {
+
+        }
+        return inventory;
     }
 
     @Override

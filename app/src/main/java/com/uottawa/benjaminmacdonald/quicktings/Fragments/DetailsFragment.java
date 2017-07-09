@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.vision.text.Text;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
@@ -49,6 +50,22 @@ public class DetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.details_fragment, container, false);
 
+
+        TextView alcoholPercent = (TextView) rootView.findViewById(R.id.alcoholPercentText);
+        alcoholPercent.setText(""+productItem.getAlcoholContent()/100+"%");
+
+        TextView packageType = (TextView) rootView.findViewById(R.id.packageTypeText);
+        packageType.setText(productItem.getUnitType().substring(0, 1).toUpperCase() + productItem.getUnitType().substring(1));
+
+        TextView make = (TextView) rootView.findViewById(R.id.madeText);
+        String country = productItem.getOrigin().split(",")[0];
+        make.setText(country);
+
+        TextView producer = (TextView) rootView.findViewById(R.id.producerText);
+        producer.setText(productItem.getProducerName());
+
+        TextView style = (TextView) rootView.findViewById(R.id.styleText);
+        style.setText(productItem.getStyle());
 
         return rootView;
     }

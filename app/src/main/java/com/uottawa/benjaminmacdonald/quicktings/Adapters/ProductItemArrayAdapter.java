@@ -19,6 +19,8 @@ import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -32,6 +34,7 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> implement
     private final List<ProductItem> values;
     private DatabaseUtils databaseUtils;
 
+
     public ProductItemArrayAdapter(Context context, List<ProductItem> values) {
         super(context, R.layout.card_search_result, values);
         this.context = context;
@@ -41,6 +44,8 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> implement
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View listView = inflater.inflate(R.layout.card_search_result, parent, false);
@@ -55,7 +60,7 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> implement
 
         //Set price
         TextView productPrice = (TextView) listView.findViewById(R.id.productPrice);
-        productPrice.setText("$" + values.get(position).getPrice() / 100.00);
+        productPrice.setText(formatter.format(values.get(position).getPrice() / 100.00));
 
         //get volume
         TextView productVolume = (TextView) listView.findViewById(R.id.productVolume);
