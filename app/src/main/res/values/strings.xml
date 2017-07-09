@@ -21,5 +21,16 @@
     <string name="fb_login_protocol_scheme">fb223099741543925</string>
     <string name="title_activity_cart">Cart</string>
 
+    <string-array name="sort_list">
+        <item>Default</item>
+        <item>Price</item>
+        <item>Volume</item>
+        <item>Mars</item>
+        <item>Jupiter</item>
+        <item>Saturn</item>
+        <item>Uranus</item>
+        <item>Neptune</item>
+    </string-array>
+
 
 </resources>
