@@ -217,7 +217,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
         Intent returnIntent = new Intent();
         boolean isFavourite = databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(productItem.getId()));
-        returnIntent.putExtra("result", isFavourite);
+        returnIntent.putExtra("isFavourite", isFavourite);
         setResult(RESULT_OK, returnIntent);
         finish();
     }
