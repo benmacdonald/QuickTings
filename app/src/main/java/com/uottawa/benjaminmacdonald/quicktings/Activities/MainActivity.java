@@ -279,7 +279,13 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
+        cartItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                startActivity(new Intent(MainActivity.this, CartActivity.class));
+                return true;
+            }
+        });
 
         return true;
     }

@@ -19,6 +19,7 @@
     <!-- FACEBOOK -->
     <string name="facebook_app_id">223099741543925</string>
     <string name="fb_login_protocol_scheme">fb223099741543925</string>
+    <string name="title_activity_cart">Cart</string>
 
 
 </resources>
