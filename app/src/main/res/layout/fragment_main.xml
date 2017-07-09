@@ -86,7 +86,7 @@
                         <ImageView
                             android:id="@+id/orderAgainEmptyIcon"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="85dp"
                             android:layout_gravity="center"
                             android:layout_marginBottom="15dp"
                             android:layout_marginTop="10dp"
@@ -94,12 +94,11 @@
                             app:srcCompat="@drawable/ic_recent_search_gray_24dp" />
 
                         <TextView
-                            android:id="@+id/textView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            android:text="Products you purchased before will appear here"
+                            android:text="Recently purchased products will appear here"
                             android:textAlignment="center"
                             android:textColor="@color/colorPlaceholder"
                             android:textStyle="bold" />
@@ -135,6 +134,34 @@
                         android:horizontalSpacing="10dp"
                         android:scrollbars="none"
                         android:smoothScrollbar="false"></GridView>
+
+                    <LinearLayout
+                        android:id="@+id/empty_fav_view"
+                        android:layout_width="360dp"
+                        android:layout_height="170dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/favEmptyIcon"
+                            android:layout_width="match_parent"
+                            android:layout_height="85dp"
+                            android:layout_gravity="center"
+                            android:layout_marginBottom="15dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_weight="1"
+                            app:srcCompat="@drawable/ic_favourite_gray_24dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:text="Products you favourite will appear here"
+                            android:textAlignment="center"
+                            android:textColor="@color/colorPlaceholder"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

@@ -191,6 +191,8 @@ public class MainFragment extends Fragment implements DatabaseCallback {
 
         favouritesView = (GridView) rootView.findViewById(R.id.favouritesView);
 
+        favouritesView.setEmptyView(rootView.findViewById(R.id.empty_fav_view));
+
         favouritesView.setAdapter(favouritesArrayAdapter);
 
         favouritesView.setDrawSelectorOnTop(true);
