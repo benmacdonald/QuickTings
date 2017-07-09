@@ -13,6 +13,7 @@
         android:bottom="0dp"
         android:right="0dp">
         <shape android:shape="rectangle">
+            <stroke android:color="@android:color/white" android:width="1.3dp"/>
             <solid android:color="@android:color/white" />
         </shape>
     </item>
