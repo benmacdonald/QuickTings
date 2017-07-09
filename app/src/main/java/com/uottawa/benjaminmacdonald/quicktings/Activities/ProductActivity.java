@@ -58,6 +58,7 @@ import com.uottawa.benjaminmacdonald.quicktings.Fragments.SearchFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 import com.uottawa.benjaminmacdonald.quicktings.Manifest;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+import com.vstechlab.easyfonts.EasyFonts;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,6 +97,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_product);
+        addFont();
 
         //Set up database utils
         this.databaseUtils = new DatabaseUtils(this);
@@ -284,6 +286,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 //                        map.moveCamera(CameraUpdateFactory.newLatLng(current));
                         //lcboapi.com/stores?lat=43.659&lon=-79.439
                     } else {
+                        TextView amount = (TextView) findViewById(R.id.numAvaliable);
+                        amount.setText("Available");
                         defaultMap();
                     }
                 }
@@ -473,6 +477,28 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         return inventory;
     }
 
+    private void addFont() {
+
+        TextView name = (TextView) findViewById(R.id.nameLabel);
+        name.setTypeface(EasyFonts.robotoBold(this));
+        TextView cat = (TextView) findViewById(R.id.catLabel);
+        cat.setTypeface(EasyFonts.robotoBold(this));
+        TextView avalibility = (TextView) findViewById(R.id.limitedAvalibility);
+        avalibility.setTypeface(EasyFonts.robotoMedium(this));
+        TextView price = (TextView) findViewById(R.id.priceLabel);
+        price.setTypeface(EasyFonts.robotoMedium(this));
+        TextView volume = (TextView) findViewById(R.id.volumeLabel);
+        volume.setTypeface(EasyFonts.robotoRegular(this));
+
+        TextView numAvaliable = (TextView) findViewById(R.id.numAvaliable);
+        numAvaliable.setTypeface(EasyFonts.robotoRegular(this));
+        TextView storeName = (TextView) findViewById(R.id.storeName);
+        storeName.setTypeface(EasyFonts.robotoMedium(this));
+        TextView phone = (TextView) findViewById(R.id.storeAddPhone);
+        phone.setTypeface(EasyFonts.robotoRegular(this));
+
+    }
+
     @Override
     protected void onResume() {
         mapView.onResume();
@@ -496,6 +522,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         mapView.onLowMemory();
         super.onLowMemory();
     }
+
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
@@ -532,6 +559,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
             }
             return null;
         }
+
     }
 
 }

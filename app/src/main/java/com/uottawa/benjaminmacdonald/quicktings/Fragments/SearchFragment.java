@@ -26,6 +26,7 @@ import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.ProductItemArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+import com.vstechlab.easyfonts.EasyFonts;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -98,6 +99,9 @@ public class SearchFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
         rootView.requestFocus();
+
+        // add font
+        addFont(rootView);
 
         requestQueue = Volley.newRequestQueue(getActivity());
         updateSearchResults(query);
@@ -235,6 +239,13 @@ public class SearchFragment extends Fragment {
     public void updateFilterBarText() {
         numResult.setText(Integer.toString(productItems.size()));
         searchParam.setText("results for "+query.replaceAll("%20"," "));
+    }
+
+    private void addFont(View rootView) {
+        TextView numResults = (TextView) rootView.findViewById(R.id.numResults);
+        numResults.setTypeface(EasyFonts.robotoBold(getActivity()));
+        TextView results = (TextView) rootView.findViewById(R.id.searchTerm);
+        results.setTypeface(EasyFonts.robotoMedium(getActivity()));
     }
 
     public List<ProductItem> sortProductItems(String sortParam) {
