@@ -43,7 +43,7 @@ public class MainActivityArrayAdapter extends ArrayAdapter<ProductItem> {
 
         //Set the type
         TextView productType = (TextView) listView.findViewById(R.id.productType);
-        productType.setText(values.get(position).getUnitType());
+        productType.setText(values.get(position).getCategory());
 
         //Set price
         TextView productPrice = (TextView) listView.findViewById(R.id.productPrice);
