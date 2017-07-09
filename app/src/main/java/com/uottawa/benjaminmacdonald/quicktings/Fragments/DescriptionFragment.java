@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+import com.vstechlab.easyfonts.EasyFonts;
 
 /**
  * Created by BenjaminMacDonald on 2017-07-07.
@@ -53,6 +54,7 @@ public class DescriptionFragment extends Fragment {
         TextView productDescription = (TextView) rootView.findViewById(R.id.productDescription);
 
         productDescription.setText(productItem.getTastingNote());
+        productDescription.setTypeface(EasyFonts.robotoMedium(getActivity()));
 
         return rootView;
     }
