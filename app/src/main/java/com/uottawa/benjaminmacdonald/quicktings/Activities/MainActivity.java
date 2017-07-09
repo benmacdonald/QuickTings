@@ -330,7 +330,7 @@ public class MainActivity extends AppCompatActivity
 
 
         // Change action bar colour
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#607D8B")));
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorPrimary)));
 
         // Changing Drawer Icon
         toggle.syncState();

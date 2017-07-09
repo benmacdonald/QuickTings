@@ -136,9 +136,9 @@ public class SearchFragment extends Fragment {
                 View card = getViewByPosition(lastPosition, listView);
                 ImageButton favouriteButton = (ImageButton) card.findViewById(R.id.favouriteButton);
                 if (data.getBooleanExtra("result", false)) {
-                    favouriteButton.setColorFilter(Color.parseColor("#D64747"));
+                    favouriteButton.setColorFilter(getResources().getColor(R.color.colorFavourite));
                 } else {
-                    favouriteButton.setColorFilter(Color.parseColor("#AAA9A9"));
+                    favouriteButton.setColorFilter(getResources().getColor(R.color.colorInactive));
                 }
             } else {
                 //did not get data

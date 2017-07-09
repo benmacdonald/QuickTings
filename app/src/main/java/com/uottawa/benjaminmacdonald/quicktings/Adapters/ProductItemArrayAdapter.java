@@ -82,10 +82,10 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> implement
         favouriteButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(values.get(position).getId()))) {
-                    favouriteButton.setColorFilter(Color.parseColor("#AAA9A9"));
+                    favouriteButton.setColorFilter(context.getResources().getColor(R.color.colorInactive));
                     databaseUtils.removeFromFavourite(values.get(position).getId());
                 } else {
-                    favouriteButton.setColorFilter(Color.parseColor("#D64747"));
+                    favouriteButton.setColorFilter(context.getResources().getColor(R.color.colorFavourite));
                     databaseUtils.addToFavourite(values.get(position).getId());
                 }
 
