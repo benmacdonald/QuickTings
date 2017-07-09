@@ -210,6 +210,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     }
 
+    //
     public void exitWithData() {
 
         Intent returnIntent = new Intent();

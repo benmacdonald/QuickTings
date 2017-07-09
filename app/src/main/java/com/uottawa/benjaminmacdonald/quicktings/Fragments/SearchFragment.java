@@ -131,7 +131,7 @@ public class SearchFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
+            if (resultCode == RESULT_OK) {
                 ListView listView = (ListView) getView().findViewById(R.id.productListView);
                 View card = getViewByPosition(lastPosition, listView);
                 ImageButton favouriteButton = (ImageButton) card.findViewById(R.id.favouriteButton);
