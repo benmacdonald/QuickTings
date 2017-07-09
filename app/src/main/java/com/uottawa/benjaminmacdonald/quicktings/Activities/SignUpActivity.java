@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -57,6 +59,20 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
 
         mAuth = FirebaseAuth.getInstance();
 
+
+        Button emailSignUp = (Button) findViewById(R.id.emailSignUp);
+        emailSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText email = (EditText) findViewById(R.id.email);
+                EditText password = (EditText) findViewById(R.id.password);
+
+                signUpWithEmail(email.getText().toString(), password.getText().toString());
+            }
+        });
+
+
+        // --------------------------- GOOGLE ---------------------------------
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -67,6 +83,14 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        Button realGoogleSign = (Button) findViewById(R.id.userGoogleSignUp);
+        realGoogleSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signInWithGoogle();
+            }
+        });
 
         SignInButton googleButton = (SignInButton) findViewById(R.id.googleSignUp);
         googleButton.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +103,16 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
         //------------------------------- FACEBOOK -------------------------------
 
         // Initialize Facebook Login button
+
+        Button realFacebookSign = (Button) findViewById(R.id.userFacebookSignUp);
+        realFacebookSign.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginButton loginButton = (LoginButton) findViewById(R.id.facebookSignUp);
+                loginButton.callOnClick();
+            }
+        });
+
         mCallbackManager = CallbackManager.Factory.create();
         LoginButton loginButton = (LoginButton) findViewById(R.id.facebookSignUp);
         loginButton.setReadPermissions("email", "public_profile");
@@ -128,6 +162,39 @@ public class SignUpActivity extends AppCompatActivity implements GoogleApiClient
         // An unresolvable error has occurred and Google APIs (including Sign-In) will not
         // be available.
         return;
+    }
+
+    private void signUpWithEmail(final String email, String password) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            EditText name = (EditText) findViewById(R.id.firstName);
+                            EditText lastName = (EditText) findViewById(R.id.lastName);
+
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            User user = new User(email, name.getText().toString(), lastName.getText().toString(), "");
+
+                            //connect to database
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference ref = database.getReference();
+
+                            String id = currentUser.getUid();
+                            ref.child("users").child(id).setValue(user);
+
+                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                            startActivity(intent);
+
+
+                        } else {
+                            Toast.makeText(SignUpActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
     }
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount account) {
