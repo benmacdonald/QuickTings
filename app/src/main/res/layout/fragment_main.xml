@@ -23,8 +23,9 @@
                 android:id="@+id/discoverTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Discover" />
+                android:layout_marginLeft="12dp"
+                android:text="Discover"
+                android:textAllCaps="true" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -54,8 +55,9 @@
                 android:id="@+id/orderAgainTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Order Again" />
+                android:layout_marginLeft="12dp"
+                android:text="Order Again"
+                android:textAllCaps="true" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -85,8 +87,9 @@
                 android:id="@+id/favouritesTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="Favourites" />
+                android:layout_marginLeft="12dp"
+                android:text="Favourites"
+                android:textAllCaps="true" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"

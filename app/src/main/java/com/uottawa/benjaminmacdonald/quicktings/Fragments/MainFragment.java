@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -26,6 +27,7 @@ import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+import com.vstechlab.easyfonts.EasyFonts;
 
 import org.json.JSONObject;
 
@@ -107,6 +109,9 @@ public class MainFragment extends Fragment implements DatabaseCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        // add fonts
+        addFont(rootView);
 
         // Utilities
         requestQueue = Volley.newRequestQueue(getActivity());
@@ -302,6 +307,17 @@ public class MainFragment extends Fragment implements DatabaseCallback {
         ViewGroup.LayoutParams params = gridView.getLayoutParams();
         params.width = totalWidth;
         gridView.setLayoutParams(params);
+    }
+
+    private void addFont(View rootview) {
+
+        // section labels
+        TextView discover = (TextView) rootview.findViewById(R.id.discoverTitle);
+        discover.setTypeface(EasyFonts.robotoRegular(getActivity()));
+        TextView orderAgain = (TextView) rootview.findViewById(R.id.orderAgainTitle);
+        orderAgain.setTypeface(EasyFonts.robotoRegular(getActivity()));
+        TextView fav = (TextView) rootview.findViewById(R.id.favouritesTitle);
+        fav.setTypeface(EasyFonts.robotoRegular(getActivity()));
     }
 
 }

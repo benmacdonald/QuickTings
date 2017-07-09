@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#1F2C3D</color>
     <color name="colorAccent">#F07B3F</color>
     <color name="colorFavourite">#EA5455</color>
-    <color name="colorSuperAccent">#FFD460</color>
+    <color name="colorSuperAccent">#ffd460</color>
     <color name="colorInactive">#AAA9A9</color>
     <color name="colorPlaceholder">#D5D5D5</color>
 

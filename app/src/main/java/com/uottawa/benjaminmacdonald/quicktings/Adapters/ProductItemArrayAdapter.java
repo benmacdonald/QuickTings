@@ -16,6 +16,7 @@ import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+import com.vstechlab.easyfonts.EasyFonts;
 
 import org.w3c.dom.Text;
 
@@ -53,18 +54,22 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> implement
         //Set the title of the product
         TextView productTitle = (TextView) listView.findViewById(R.id.productTitle);
         productTitle.setText(values.get(position).getName());
+        productTitle.setTypeface(EasyFonts.robotoBlack(context));
 
         //Set the type
         TextView productType = (TextView) listView.findViewById(R.id.productType);
         productType.setText(values.get(position).getCategory());
+        productType.setTypeface(EasyFonts.robotoRegular(context));
 
         //Set price
         TextView productPrice = (TextView) listView.findViewById(R.id.productPrice);
         productPrice.setText(formatter.format(values.get(position).getPrice() / 100.00));
+        productPrice.setTypeface(EasyFonts.robotoBold(context));
 
         //get volume
         TextView productVolume = (TextView) listView.findViewById(R.id.productVolume);
         productVolume.setText(values.get(position).getVolume() + " mL bottle");
+        productVolume.setTypeface(EasyFonts.robotoRegular(context));
 
         //get image
         ImageView imageView = (ImageView) listView.findViewById(R.id.productImage);
