@@ -139,7 +139,7 @@ public class SearchFragment extends Fragment {
                 ListView listView = (ListView) getView().findViewById(R.id.productListView);
                 View card = getViewByPosition(lastPosition, listView);
                 ImageButton favouriteButton = (ImageButton) card.findViewById(R.id.favouriteButton);
-                if (data.getBooleanExtra("result", false)) {
+                if (data.getBooleanExtra("isFavourite", false)) {
                     favouriteButton.setColorFilter(getResources().getColor(R.color.colorFavourite));
                 } else {
                     favouriteButton.setColorFilter(getResources().getColor(R.color.colorInactive));

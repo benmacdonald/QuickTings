@@ -22,7 +22,7 @@
         <item name="android:layout_marginBottom">0dp</item>
         <item name="android:paddingTop">0dp</item>
         <item name="android:paddingBottom">0dp</item>
-        <item name="android:listPreferredItemHeightSmall">42dp</item>
+        <item name="android:listPreferredItemHeightSmall">45dp</item>
     </style>
 
 </resources>

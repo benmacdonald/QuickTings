@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -51,6 +53,7 @@ public class MainFragment extends Fragment implements DatabaseCallback {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int RESULT_OK = -1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -199,10 +202,22 @@ public class MainFragment extends Fragment implements DatabaseCallback {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), ProductActivity.class);
                 intent.putExtra("PRODUCT", favouriteItems.get(position));
-                startActivity(intent);
+                startActivityForResult(intent, 1);
             }
         });
         return rootView;
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                favouritesArrayAdapter.clear();
+                callback(databaseUtils.getFavouritesHashMap());
+            } else {
+                //did not get data
+            }
+        }
     }
 
     @Override
