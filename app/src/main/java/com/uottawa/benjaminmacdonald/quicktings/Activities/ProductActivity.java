@@ -99,17 +99,13 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         //Set up database utils
         this.databaseUtils = new DatabaseUtils(this);
 
-
         // setup request queue
         requestQueue = Volley.newRequestQueue(this);
 
-
         //get product item
-
         Intent intent = getIntent();
         productItem = (ProductItem) intent.getExtras().getParcelable("PRODUCT");
         setupProduct(productItem);
-
 
         //set up tabs
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -120,8 +116,6 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.productPageTabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-
 
         //Add the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -170,7 +164,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
-        //Substract Button
+        //Subtract Button
         Button minusButton = (Button) findViewById(R.id.minusButton);
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -232,6 +226,12 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.product_menu, menu);
+
+        //check favourite button if favourited
+        if (databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(productItem.getId()))) {
+            menu.getItem(0).setIcon(getResources().getDrawable(R.drawable.ic_favourite_white_24dp));
+        }
+
         return true;
     }
 

@@ -45,7 +45,7 @@ public class DatabaseUtils {
         //Create an empty HashMap in case user has no favourites and ProductItemArrayAdapter tries to call getFavourites()
         favouritesHashMap = new HashMap();
 
-        ValueEventListener favouritesListener = new ValueEventListener() {
+        ValueEventListener favouritesListenerForCallback = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -64,7 +64,26 @@ public class DatabaseUtils {
             }
         };
 
-        favouritesRef.addListenerForSingleValueEvent(favouritesListener);
+        ValueEventListener favouritesListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+                    favouritesHashMap = (HashMap) dataSnapshot.getValue();
+                } else {
+                    //Creates an empty HashMap if a user unfavourites everything
+                    favouritesHashMap = new HashMap();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        favouritesRef.addListenerForSingleValueEvent(favouritesListenerForCallback);
+        favouritesRef.addValueEventListener(favouritesListener);
 
     }
 

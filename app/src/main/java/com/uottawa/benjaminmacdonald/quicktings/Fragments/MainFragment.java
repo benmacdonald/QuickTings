@@ -208,7 +208,6 @@ public class MainFragment extends Fragment implements DatabaseCallback {
         for (Iterator i = hm.entrySet().iterator(); i.hasNext(); ) {
             Map.Entry favourite = (Map.Entry) i.next();
             String url = "https://lcboapi.com/products/" + favourite.getKey() + "/?access_key=" + getString(R.string.api_key);
-            System.out.print(url);
             JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                     (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -218,7 +217,6 @@ public class MainFragment extends Fragment implements DatabaseCallback {
                             try {
                                 JSONObject product = response.getJSONObject("result");
 
-                                //TODO: is fucked pls fix
                                 List<ProductItem> tmp = new ArrayList<ProductItem>(favouriteItems);
                                 tmp.add(new ProductItem(product));
                                 favouriteItems.clear();
@@ -243,12 +241,6 @@ public class MainFragment extends Fragment implements DatabaseCallback {
 
             requestQueue.add(jsonObjectRequest);
         }
-//        if (favouriteItems.size() > 0) {
-//            favouritesArrayAdapter.notifyDataSetChanged();
-//            setDynamicWidth(favouritesView);
-//        }
-
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event

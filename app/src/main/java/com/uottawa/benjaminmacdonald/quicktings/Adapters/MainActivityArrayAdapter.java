@@ -33,8 +33,6 @@ public class MainActivityArrayAdapter extends ArrayAdapter<ProductItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        System.out.println(values);
-        System.out.println("POSITION : " + position);
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View listView = inflater.inflate(R.layout.card_product,parent,false);
@@ -54,7 +52,6 @@ public class MainActivityArrayAdapter extends ArrayAdapter<ProductItem> {
         //get image
         ImageView imageView = (ImageView) listView.findViewById(R.id.productImage);
         Glide.with(context).load(values.get(position).getImageUrl()).into(imageView);
-
 
         return listView;
     }
