@@ -17,6 +17,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -150,10 +151,15 @@ public class SearchFragment extends Fragment {
                 ListView listView = (ListView) getView().findViewById(R.id.productListView);
                 View card = getViewByPosition(lastPosition, listView);
                 ImageButton favouriteButton = (ImageButton) card.findViewById(R.id.favouriteButton);
-                if (data.getBooleanExtra("isFavourite", false)) {
-                    favouriteButton.setColorFilter(getResources().getColor(R.color.colorFavourite));
-                } else {
-                    favouriteButton.setColorFilter(getResources().getColor(R.color.colorInactive));
+                if (data != null) {
+                    if (data.getBooleanExtra("isFavourite", false)) {
+                        favouriteButton.setColorFilter(getResources().getColor(R.color.colorFavourite));
+                    } else {
+                        favouriteButton.setColorFilter(getResources().getColor(R.color.colorInactive));
+                    }
+                    if (data.getBooleanExtra(ProductActivity.CART_ITEM_ADDED, false)) {
+                        Toast.makeText(getContext(), "Added an to the cart", Toast.LENGTH_SHORT).show();
+                    }
                 }
             } else {
                 //did not get data

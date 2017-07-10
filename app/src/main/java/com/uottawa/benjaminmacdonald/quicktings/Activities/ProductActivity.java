@@ -42,9 +42,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.CartItem;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.Inventory;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.Store;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DescriptionFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DetailsFragment;
@@ -64,6 +66,8 @@ import java.util.List;
 
 public class ProductActivity extends AppCompatActivity implements OnMapReadyCallback, DatabaseCallback {
 
+    public static final String CART_ITEM_ADDED = "addedItem";
+
     private FABToolbarLayout toolbarLayout;
 
     private MapView mapView;
@@ -75,6 +79,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     private ProductItem productItem;
     private DatabaseUtils databaseUtils;
+
+    private CartItem cartItem;
 
     String description;
     String details;
@@ -137,6 +143,10 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         Button cancelButton = (Button) findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
+                TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
+                quantityValue.setText("1");
+                cartItem.setQuantity(1);
+                calculateNewPrice(1);
                 toolbarLayout.hide();
             }
         });
@@ -153,7 +163,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                 Integer value = Integer.parseInt(quantityValue.getText().toString());
                 value = value + 1;
                 quantityValue.setText(value.toString());
-
+                cartItem.incQuantity();
                 calculateNewPrice(value);
             }
         });
@@ -166,6 +176,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                 TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
                 Integer value = Integer.parseInt(quantityValue.getText().toString());
                 value = value - 1;
+                cartItem.decQuantity();
                 if (value > 0) {
                     quantityValue.setText(value.toString());
                     calculateNewPrice(value);
@@ -174,6 +185,15 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
+        Button addToCartButton = (Button) findViewById(R.id.addToCartButton);
+        addToCartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShoppingCart.getInstance().addItem(cartItem);
+                setResult(RESULT_OK, (new Intent()).putExtra(CART_ITEM_ADDED, true));
+                finish();
+            }
+        });
 
         //Setting up mapview
         mapView = (MapView) findViewById(R.id.mapView);
@@ -329,6 +349,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
         description = productItem.getDescription();
         details = productItem.getOrigin();
+
+        cartItem = new CartItem(productItem.getName(), productItem.getCategory(), productItem.getId(), productItem.getRegularPrice());
 
 //        TextView textToChange = (TextView) findViewById(R.id.textToChange);
 //        if (productItem.getDescription() == null) {

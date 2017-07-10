@@ -34,9 +34,6 @@ public class CartActivity extends AppCompatActivity {
 
         CartAdapter adapter = new CartAdapter(this, new ArrayList<CartItem>());
 
-        adapter.add(new CartItem(1, 1));
-        adapter.add(new CartItem(1, 1));
-        adapter.add(new CartItem(1, 1));
         cartList.setAdapter(adapter);
     }
 
