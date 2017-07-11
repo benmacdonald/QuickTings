@@ -14,8 +14,10 @@ public class CartItem {
 
     private Double itemCost;
 
-    private Integer itemId;
     private Integer quantity;
+
+    @Exclude
+    private Integer itemId;
 
     public CartItem(String itemName, String itemType, Integer itemId, Integer itemCost, Integer quantity) {
         this.itemName = itemName;
@@ -32,6 +34,8 @@ public class CartItem {
     public CartItem(String itemName, String itemType, Integer itemId, Integer itemCost) {
         this(itemName, itemType, itemId, itemCost, 1);
     }
+
+    public CartItem() {}
 
     public CartItem(Integer itemId) {
         this.itemId = itemId;
