@@ -42,7 +42,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.uottawa.benjaminmacdonald.quicktings.Classes.CartItem;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart.CartItem;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.Inventory;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
@@ -350,7 +350,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         description = productItem.getDescription();
         details = productItem.getOrigin();
 
-        cartItem = new CartItem(productItem.getName(), productItem.getCategory(), productItem.getId(), productItem.getRegularPrice());
+        cartItem = new CartItem(productItem.getName(), productItem.getCategory(), productItem.getImageUrl(), productItem.getId(), productItem.getRegularPrice());
 
 //        TextView textToChange = (TextView) findViewById(R.id.textToChange);
 //        if (productItem.getDescription() == null) {

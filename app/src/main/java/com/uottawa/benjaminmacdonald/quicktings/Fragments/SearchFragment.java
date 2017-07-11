@@ -158,7 +158,7 @@ public class SearchFragment extends Fragment {
                         favouriteButton.setColorFilter(getResources().getColor(R.color.colorInactive));
                     }
                     if (data.getBooleanExtra(ProductActivity.CART_ITEM_ADDED, false)) {
-                        Toast.makeText(getContext(), "Added an to the cart", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Added an item to the cart", Toast.LENGTH_SHORT).show();
                     }
                 }
             } else {
