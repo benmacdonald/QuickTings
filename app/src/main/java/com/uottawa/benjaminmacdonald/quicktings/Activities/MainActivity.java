@@ -317,6 +317,18 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_help) {
             startActivity(new Intent(this, HelpActivity.class));
+        } else if (id == R.id.nav_wine) {
+            searchView.setIconified(false);
+            searchView.setQuery("wine", true);
+        } else if (id == R.id.nav_coolers) {
+            searchView.setIconified(false);
+            searchView.setQuery("coolers", true);
+        } else if (id == R.id.nav_beer) {
+            searchView.setIconified(false);
+            searchView.setQuery("beer", true);
+        } else if (id == R.id.nav_spirits) {
+            searchView.setIconified(false);
+            searchView.setQuery("spirits", true);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
