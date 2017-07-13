@@ -14,7 +14,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by thomas on 09/07/17.
@@ -24,7 +26,7 @@ public class ShoppingCart {
     public interface CompletionCallable {
         int ADDED = 0;
         int REMOVED = 1;
-        int GET = 2;
+        int UPDATED = 2;
         void onComplete(CartItem item, int resultCode);
         void onFinalize();
     }
@@ -34,9 +36,9 @@ public class ShoppingCart {
 
         //non-db related items
         @Exclude
-        public Integer mId;
+        private Integer mId;
         @Exclude
-        public Integer mQuantity;
+        private Integer mQuantity;
 
         //db stored items
         public String item_name;
@@ -44,6 +46,16 @@ public class ShoppingCart {
         public String quantity;
         public String image_url;
         public Double item_cost;
+
+        public CartItem(CartItem item) {
+            this.mId = item.mId;
+            this.mQuantity = 1;
+            this.quantity = "1";
+            this.item_name = item.item_name;
+            this.item_type = item.item_type;
+            this.item_cost = item.item_cost;
+            this.image_url = item.image_url;
+        }
 
         public CartItem(String itemName, String itemType, String image_url, Integer mId, Integer itemCost, Integer quantity) {
             this.item_name = itemName;
@@ -95,6 +107,18 @@ public class ShoppingCart {
             quantity = String.valueOf(mQuantity);
         }
 
+        @Exclude
+        private void convertAfterFetch(String key) {
+            mQuantity = Integer.decode(quantity);
+            mId = Integer.decode(key);
+        }
+
+        @Exclude
+        private Double findTotalItemCost() {
+            return mQuantity * item_cost;
+        }
+
+        @Exclude
         @Override
         public boolean equals(Object object) {
             if (getClass() != object.getClass()) {
@@ -111,6 +135,8 @@ public class ShoppingCart {
         }
     }
 
+    private final String SHOPPING_KEY = "shopping_cart";
+
     private double totalBill = 0.0;
 
     private static ShoppingCart INSTANCE;
@@ -118,29 +144,6 @@ public class ShoppingCart {
 
     private final FirebaseDatabase database;
     private List<CompletionCallable> completionCallables = new ArrayList<>();
-
-    private ValueEventListener getCart = new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
-            for (DataSnapshot dbData : dataSnapshot.getChildren()) {
-                CartItem item = dbData.getValue(CartItem.class);
-                item.mQuantity = Integer.decode(item.quantity);
-                String key = dbData.getKey();
-                item.mId = Integer.decode(key);
-                cartItems.add(item);
-                totalBill += item.mQuantity * item.item_cost;
-                Log.w("loadCart:loadedItem", "Added the item with the id: " + item.getKey());
-                callAllCompleteListeners(item, CompletionCallable.GET);
-            }
-            Log.w("loadCart:onComplete", "finished loading the cart");
-            callAllFinalizeListeners();
-        }
-
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
-            Log.w("loadCart:onCancelled", databaseError.toException());
-        }
-    };
 
     private ShoppingCart(CompletionCallable completionCallable) {
         if (completionCallable != null) {
@@ -150,8 +153,29 @@ public class ShoppingCart {
         database = FirebaseDatabase.getInstance();
         cartItems = new HashSet<>();
 
-        DatabaseReference ref = database.getReference().child("shopping_cart").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        ref.addListenerForSingleValueEvent(getCart);
+        database.getReference()
+                .child(SHOPPING_KEY)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dbData : dataSnapshot.getChildren()) {
+                            CartItem item = dbData.getValue(CartItem.class);
+                            item.convertAfterFetch(dbData.getKey());
+                            cartItems.add(item);
+                            totalBill += item.findTotalItemCost();
+                            Log.w("loadCart:loadedItem", "Added the item with the id: " + item.getKey());
+                            callAllCompleteListeners(item, CompletionCallable.UPDATED);
+                        }
+                        Log.w("loadCart:onComplete", "finished loading the cart");
+                        callAllFinalizeListeners();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.w("loadCart:onCancelled", databaseError.toException());
+                    }
+                });
     }
 
     public static ShoppingCart getInstance() {
@@ -171,30 +195,50 @@ public class ShoppingCart {
     }
 
     public void addItem(CartItem item) {
-        //first step add to cart struct
-        cartItems.add(item);
-        totalBill += item.mQuantity * item.item_cost;
+        //check to see if the item exists in the cart already
+        Iterator<CartItem> iterator = cartItems.iterator();
+        while (iterator.hasNext()) {
+            CartItem sItem = iterator.next();
+            if (item.equals(sItem)) {
+                sItem.setQuantity(sItem.mQuantity + item.mQuantity);
+                database.getReference()
+                        .child(SHOPPING_KEY)
+                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                        .child(sItem.getKey())
+                        .child("quantity")
+                        .setValue(String.valueOf(sItem.mQuantity));
+                totalBill += item.findTotalItemCost();
+                callAllCompleteListeners(sItem, CompletionCallable.UPDATED);
+                callAllFinalizeListeners();
+                return;
+            }
+        }
 
-        //add the item to the db cart
-        DatabaseReference cartRef = database.getReference("shopping_cart/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-        cartRef.child(item.getKey()).setValue(item);
+        database.getReference()
+                .child(SHOPPING_KEY)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(item.getKey())
+                .setValue(item);
+        cartItems.add(item);
+        totalBill += item.findTotalItemCost();
         callAllCompleteListeners(item, CompletionCallable.ADDED);
         callAllFinalizeListeners();
     }
 
     public void removeItem(CartItem item) {
-        //add to data struct for local things
+        //remove from item if it exists
+        database.getReference()
+                .child(SHOPPING_KEY)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(item.getKey())
+                .removeValue();
         cartItems.remove(item);
-        totalBill -= item.mQuantity * item.item_cost;
-
-        //remove the item from the cart
-        DatabaseReference cartRef = database.getReference("shopping_cart/" + FirebaseAuth.getInstance().getCurrentUser().getUid());
-        cartRef.child(item.getKey()).removeValue();
+        totalBill -= item.findTotalItemCost();
         callAllCompleteListeners(item, CompletionCallable.REMOVED);
         callAllFinalizeListeners();
     }
 
-    public HashSet<CartItem> getCart() {
+    public Set<CartItem> getCart() {
         return cartItems;
     }
 

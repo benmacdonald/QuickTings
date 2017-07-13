@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="180dp"
     android:orientation="horizontal"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
@@ -14,7 +14,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
-        android:src="@drawable/googleg_standard_color_18"/>
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"/>
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -40,15 +41,13 @@
                 android:textColor="#4d4d4d"
                 android:layout_marginBottom="3dp"
                 android:ellipsize="end"
-                android:maxLines="1"
-                android:text="The drink" />
+                android:maxLines="1" />
 
             <TextView
                 android:id="@+id/cart_item_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:text="The type"/>
+                android:textSize="13sp"/>
 
             <Space
                 android:layout_width="wrap_content"
@@ -60,8 +59,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:textSize="14sp"
-                android:textColor="#606060"
-                android:text="The amount"/>
+                android:textColor="#606060"/>
 
         </LinearLayout>
 
@@ -84,8 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#4d4d4d"
-                android:textStyle="bold"
-                android:text="1"/>
+                android:textStyle="bold"/>
 
         </LinearLayout>
 

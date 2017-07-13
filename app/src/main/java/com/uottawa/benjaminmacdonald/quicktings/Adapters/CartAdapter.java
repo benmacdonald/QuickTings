@@ -4,6 +4,7 @@ package com.uottawa.benjaminmacdonald.quicktings.Adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart.CartItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import java.text.NumberFormat;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -35,16 +37,18 @@ public class CartAdapter extends ArrayAdapter<CartItem> implements ShoppingCart.
     }
 
     private ShoppingCart shoppingCart;
+    private final Hashtable<View,CartItem> mapper;
 
     public CartAdapter(Context context, List<CartItem> items) {
         super(context, R.layout.card_cart, items);
         shoppingCart = ShoppingCart.getInstance(this);
+        mapper = new Hashtable<>();
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
 
-        final CartItem item = getItem(position);
+        final int positionToRemove = position;
         ViewHolder cachedItem;
 
         if (convertView == null) {
@@ -56,17 +60,16 @@ public class CartAdapter extends ArrayAdapter<CartItem> implements ShoppingCart.
             convertView.findViewById(R.id.cart_remove).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    (new AlertDialog.Builder(getContext()))
+                    new AlertDialog.Builder(getContext())
                             .setTitle("Remove the item")
                             .setMessage("Are you sure you want remove the item?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    shoppingCart.removeItem(item);
+                                    shoppingCart.removeItem(getItem(positionToRemove));
                                 }
                             })
-                            .setNegativeButton("No", null)
-                            .show();
+                            .setNegativeButton("No", null).show();
                 }
             });
             cachedItem.cartImage = (ImageView) convertView.findViewById(R.id.cart_image);
@@ -79,6 +82,7 @@ public class CartAdapter extends ArrayAdapter<CartItem> implements ShoppingCart.
             cachedItem = (ViewHolder) convertView.getTag();
         }
 
+        CartItem item = getItem(positionToRemove);
         Glide.with(getContext()).load(item.image_url).into(cachedItem.cartImage);
         cachedItem.cartItemName.setText(item.item_name);
         cachedItem.cartItemType.setText(item.item_type);
@@ -89,7 +93,7 @@ public class CartAdapter extends ArrayAdapter<CartItem> implements ShoppingCart.
 
     @Override
     public void onComplete(CartItem item, int resultCode) {
-        if (resultCode == GET) {
+        if (resultCode == UPDATED) {
             add(item);
         } else if (resultCode == REMOVED) {
             remove(item);

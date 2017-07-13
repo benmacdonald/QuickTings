@@ -21,6 +21,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -31,7 +32,6 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -66,20 +66,18 @@ import java.util.List;
 
 public class ProductActivity extends AppCompatActivity implements OnMapReadyCallback, DatabaseCallback {
 
-    public static final String CART_ITEM_ADDED = "addedItem";
-
     private FABToolbarLayout toolbarLayout;
 
     private MapView mapView;
     private GoogleMap map;
 
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private LocationCallback locationCallback;
     private RequestQueue requestQueue;
 
     private ProductItem productItem;
     private DatabaseUtils databaseUtils;
 
+    private ShoppingCart shoppingCart;
     private CartItem cartItem;
 
     String description;
@@ -95,6 +93,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
         setContentView(R.layout.activity_product);
         addFont();
+
+        shoppingCart = ShoppingCart.getInstance();
 
         //Set up database utils
         this.databaseUtils = new DatabaseUtils(this);
@@ -189,9 +189,13 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShoppingCart.getInstance().addItem(cartItem);
-                setResult(RESULT_OK, (new Intent()).putExtra(CART_ITEM_ADDED, true));
-                finish();
+                shoppingCart.addItem(cartItem);
+                TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
+                quantityValue.setText("1");
+                cartItem = new CartItem(cartItem);
+                calculateNewPrice(1);
+                toolbarLayout.hide();
+                Toast.makeText(ProductActivity.this, "Added the item to the cart", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -260,17 +264,19 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_fav) {
-            if (databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(productItem.getId()))) {
-                item.setIcon(getResources().getDrawable(R.drawable.ic_favourite_border_white_24dp));
-                databaseUtils.removeFromFavourite(productItem.getId());
-            } else {
-                item.setIcon(getResources().getDrawable(R.drawable.ic_favourite_white_24dp));
-                databaseUtils.addToFavourite(productItem.getId());
-            }
+        switch (item.getItemId()) {
+            case R.id.action_fav:
+                if (databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(productItem.getId()))) {
+                    item.setIcon(getResources().getDrawable(R.drawable.ic_favourite_border_white_24dp));
+                    databaseUtils.removeFromFavourite(productItem.getId());
+                } else {
+                    item.setIcon(getResources().getDrawable(R.drawable.ic_favourite_white_24dp));
+                    databaseUtils.addToFavourite(productItem.getId());
+                }
+                break;
+            case R.id.action_cart:
+                startActivity(new Intent(this, CartActivity.class));
         }
-
         return super.onOptionsItemSelected(item);
     }
 
