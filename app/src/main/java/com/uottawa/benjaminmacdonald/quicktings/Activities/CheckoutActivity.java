@@ -1,6 +1,11 @@
 package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,82 +13,76 @@ import android.widget.Button;
 
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.CheckoutFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DeliveryFragment;
+import com.uottawa.benjaminmacdonald.quicktings.Fragments.DescriptionFragment;
+import com.uottawa.benjaminmacdonald.quicktings.Fragments.DetailsFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.MainFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.PaymentFragment;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 public class CheckoutActivity extends AppCompatActivity {
 
+    // fragments
+    private CheckoutActivity.SectionsPagerAdapter mSectionsPagerAdapter;
+    private ViewPager mViewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
 
-        // Check that the activity is using the layout version with
-        // the fragment_container FrameLayout
-        if (findViewById(R.id.fragment_container) != null) {
 
-            // However, if we're being restored from a previous state,
-            // then we don't need to do anything and should return or else
-            // we could end up with overlapping fragments.
-            if (savedInstanceState != null) {
-                return;
-            }
+        //set up tabs
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-            CheckoutFragment checkoutFragment = new CheckoutFragment();
-            // Intent, pass the Intent's extras to the fragment as arguments
-            checkoutFragment.setArguments(getIntent().getExtras());
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
 
-            // Add the fragment to the 'fragment_container' FrameLayout
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.checkoutTabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragment_container, checkoutFragment, "CHECKOUT_FRAG");
-            transaction.addToBackStack("main");
-            transaction.commit();
+
+    }
+
+
+    // inner class
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        Button checkout = (Button) findViewById(R.id.checkout);
-        checkout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CheckoutFragment checkoutFragment = new CheckoutFragment();
-                // Intent, pass the Intent's extras to the fragment as arguments
-                checkoutFragment.setArguments(getIntent().getExtras());
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, checkoutFragment, "CHECKOUT_FRAG");
-                transaction.addToBackStack("main");
-                transaction.commit();
+        @Override
+        public Fragment getItem(int position) {
+            // getItem is called to instantiate the fragment for the given page.
+            // Return a PlaceholderFragment (defined as a static inner class below).
+            if (position == 0) {
+                return CheckoutFragment.newInstance(position + 1);
             }
-        });
-
-        Button delivery = (Button) findViewById(R.id.delivery);
-        delivery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DeliveryFragment deliveryFragment = new DeliveryFragment();
-                // Intent, pass the Intent's extras to the fragment as arguments
-                deliveryFragment.setArguments(getIntent().getExtras());
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, deliveryFragment, "DELIVERY_FRAG");
-                transaction.addToBackStack("main");
-                transaction.commit();
+            if (position == 1) {
+                return DeliveryFragment.newInstance(position + 1);
             }
-        });
+            return PaymentFragment.newInstance(position + 1);
+        }
 
-        Button payment = (Button) findViewById(R.id.payment);
-        payment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PaymentFragment paymentFragment = new PaymentFragment();
-                // Intent, pass the Intent's extras to the fragment as arguments
-                paymentFragment.setArguments(getIntent().getExtras());
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, paymentFragment, "PAYMENT_FRAG");
-                transaction.addToBackStack("main");
-                transaction.commit();
+        @Override
+        public int getCount() {
+            // Show 2 total pages.
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "CHECKOUT";
+                case 1:
+                    return "DELIVERY";
+                case 2:
+                    return "PAYMENT";
             }
-        });
-
+            return null;
+        }
 
     }
 }
