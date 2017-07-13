@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,9 @@ import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -60,6 +64,7 @@ public class SearchFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private RequestQueue requestQueue;
     private List<ProductItem> productItems;
+    private List<ProductItem> defaultItems;
     private ProductItemArrayAdapter productArrayAdapter;
 
     private TextView numResult;
@@ -114,6 +119,9 @@ public class SearchFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        defaultItems = new ArrayList<>(); // default for sorting
+        spinnerOnSelect(spinner);
 
         requestQueue = Volley.newRequestQueue(getActivity());
         updateSearchResults(query);
@@ -255,7 +263,11 @@ public class SearchFragment extends Fragment {
 
     public void updateFilterBarText() {
         numResult.setText(Integer.toString(productItems.size()));
-        searchParam.setText("results for "+query.replaceAll("%20"," "));
+        String res = query.replaceAll("%20", " ");
+        if (res.length() > 7) {
+            res = res.substring(0, 5) + "...";
+        }
+        searchParam.setText("results for "+res);
     }
 
     private void addFont(View rootView) {
@@ -282,6 +294,85 @@ public class SearchFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void spinnerOnSelect(Spinner spinner) {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (defaultItems.size() <= 0) {
+                    defaultItems.addAll(productItems);
+                }
+                if (i == 0) {
+                    List<ProductItem> tmp = new ArrayList<ProductItem>(defaultItems);
+                    productItems.clear();
+                    productItems.addAll(tmp);
+                    productArrayAdapter.notifyDataSetChanged();
+                    return;
+                }
+
+                if (i == 1) {
+                    Collections.sort(productItems, new Comparator<ProductItem>() {
+
+                        @Override
+                        public int compare(ProductItem o1, ProductItem o2) {
+                            if (o1.getPrice() == o2.getPrice()) {
+                                return 0;
+                            } else if (o1.getPrice() < o2.getPrice()) {
+                                return -1;
+                            }
+                            return 1;
+                        }
+                    });
+                }
+
+                if (i == 2) {
+                    Collections.sort(productItems, Collections.reverseOrder(new Comparator<ProductItem>() {
+
+                        @Override
+                        public int compare(ProductItem o1, ProductItem o2) {
+                            if (o1.getVolume() == o2.getVolume()) {
+                                return 0;
+                            } else if (o1.getVolume() < o2.getVolume()) {
+                                return -1;
+                            }
+                            return 1;
+                        }
+                    }));
+                }
+
+                if (i == 3) {
+                    Collections.sort(productItems, new Comparator<ProductItem>() {
+
+                        @Override
+                        public int compare(ProductItem o1, ProductItem o2) {
+                            return o1.getName().compareToIgnoreCase(o2.getName());
+                        }
+                    });
+                }
+
+                if (i == 4) {
+                    Collections.sort(productItems, Collections.reverseOrder(new Comparator<ProductItem>() {
+
+                        @Override
+                        public int compare(ProductItem o1, ProductItem o2) {
+                            return o1.getName().compareToIgnoreCase(o2.getName());
+                        }
+                    }));
+                }
+
+                List<ProductItem> tmp = new ArrayList<ProductItem>(productItems);
+                productItems.clear();
+                productItems.addAll(tmp);
+                productArrayAdapter.notifyDataSetChanged();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
 }
