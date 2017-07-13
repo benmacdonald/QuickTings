@@ -37,6 +37,7 @@ public class ProductItem implements Parcelable {
     private String imageUrl;
     private String thumbnailUrl;
     private String tags; //string of words related to product
+    private String packageType;
 
 
     private String tastingNote;
@@ -73,6 +74,7 @@ public class ProductItem implements Parcelable {
             this.tastingNote = json.getString("tasting_note");
             this.style = json.getString("style");
             this.releaseDate = json.getString("released_on");
+            this.packageType = json.getString("package");
         } catch (JSONException e) {
             throw new NullPointerException();
         }
@@ -293,6 +295,14 @@ public class ProductItem implements Parcelable {
         this.releaseDate = releaseDate;
     }
 
+    public String getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(String packageType) {
+        this.packageType = packageType;
+    }
+
 
 
     @Override
@@ -328,6 +338,7 @@ public class ProductItem implements Parcelable {
         dest.writeString(this.tastingNote);
         dest.writeString(this.style);
         dest.writeString(this.releaseDate);
+        dest.writeString(this.packageType);
     }
 
     protected ProductItem(Parcel in) {
@@ -357,6 +368,7 @@ public class ProductItem implements Parcelable {
         this.tastingNote = in.readString();
         this.style = in.readString();
         this.releaseDate = in.readString();
+        this.packageType = in.readString();
     }
 
     public static final Creator<ProductItem> CREATOR = new Creator<ProductItem>() {

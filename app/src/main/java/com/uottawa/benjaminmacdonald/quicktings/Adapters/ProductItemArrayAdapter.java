@@ -68,7 +68,7 @@ public class ProductItemArrayAdapter extends ArrayAdapter<ProductItem> implement
 
         //get volume
         TextView productVolume = (TextView) listView.findViewById(R.id.productVolume);
-        productVolume.setText(values.get(position).getVolume() + " mL bottle");
+        productVolume.setText(values.get(position).getPackageType());
         productVolume.setTypeface(EasyFonts.robotoRegular(context));
 
         //get image

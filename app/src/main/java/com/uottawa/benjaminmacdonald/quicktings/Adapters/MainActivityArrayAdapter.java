@@ -15,6 +15,7 @@ import com.vstechlab.easyfonts.EasyFonts;
 
 import org.w3c.dom.Text;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 /**
@@ -49,8 +50,9 @@ public class MainActivityArrayAdapter extends ArrayAdapter<ProductItem> {
         productType.setTypeface(EasyFonts.robotoRegular(context));
 
         //Set price
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
         TextView productPrice = (TextView) listView.findViewById(R.id.productPrice);
-        productPrice.setText("$"+values.get(position).getPrice()/100.00);
+        productPrice.setText(formatter.format(values.get(position).getPrice()/100.00));
         productPrice.setTypeface(EasyFonts.robotoBlack(context));
 
         //get image
