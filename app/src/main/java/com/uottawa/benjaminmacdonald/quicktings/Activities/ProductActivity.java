@@ -345,7 +345,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         priceView2.setText(formatter.format(productItem.getPrice() / 100.00));
 
         TextView volumeView = (TextView) findViewById(R.id.volumeLabel);
-        volumeView.setText(productItem.getVolume() + " mL " +productItem.getUnitType());
+        volumeView.setText(productItem.getPackageType());
 
         description = productItem.getDescription();
         details = productItem.getOrigin();

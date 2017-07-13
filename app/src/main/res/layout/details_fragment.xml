@@ -16,9 +16,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.07"
-            android:text="Alcohol Percentage:"
+            android:text="Alcohol Percentage"
             android:textColor="@color/searchProductLabel"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
 
         <TextView
             android:id="@+id/alcoholPercentText"
@@ -27,7 +27,7 @@
             android:layout_marginLeft="2dp"
             android:layout_weight="1"
             android:text="TextView"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -43,9 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.07"
-            android:text="Package Type:"
+            android:text="Package Type"
             android:textColor="@color/searchProductLabel"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
 
         <TextView
             android:id="@+id/packageTypeText"
@@ -54,7 +54,7 @@
             android:layout_marginLeft="2dp"
             android:layout_weight="1"
             android:text="TextView"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -70,9 +70,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.07"
-            android:text="Made in:"
+            android:text="Made in"
             android:textColor="@color/searchProductLabel"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
 
         <TextView
             android:id="@+id/madeText"
@@ -81,7 +81,7 @@
             android:layout_marginLeft="2dp"
             android:layout_weight="1"
             android:text="TextView"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -96,19 +96,19 @@
             android:id="@+id/producerLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.07"
-            android:text="Producer:"
+            android:layout_weight="0.10"
+            android:text="Producer"
             android:textColor="@color/searchProductLabel"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
 
         <TextView
             android:id="@+id/producerText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
-            android:layout_weight="1"
+            android:layout_weight="0.90"
             android:text="TextView"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -124,9 +124,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.07"
-            android:text="Style:"
+            android:text="Style"
             android:textColor="@color/searchProductLabel"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
 
         <TextView
             android:id="@+id/styleText"
@@ -135,6 +135,6 @@
             android:layout_marginLeft="2dp"
             android:layout_weight="1"
             android:text="TextView"
-            android:textSize="17sp" />
+            android:textSize="16.5sp" />
     </LinearLayout>
 </LinearLayout>
