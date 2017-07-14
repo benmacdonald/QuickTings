@@ -1,5 +1,7 @@
 package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +26,16 @@ public class SettingsActivity extends AppCompatActivity {
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signOut();
+                new AlertDialog.Builder(SettingsActivity.this)
+                        .setTitle("Sign out")
+                        .setMessage("Are you sure you want to sign out?")
+                        .setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                signOut();
+                            }
+                        })
+                        .setNegativeButton("CANCEL", null).show();
             }
         });
     }

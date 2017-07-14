@@ -25,4 +25,13 @@
         <item name="android:listPreferredItemHeightSmall">45dp</item>
     </style>
 
+
+    <style name="CustomStepperLayoutTheme" parent="MSDefaultStepperLayoutTheme">
+        <item name="ms_tabsContainerStyle">@style/CustomStepTabsContainerStyle</item>
+    </style>
+
+    <style name="CustomStepTabsContainerStyle" parent="MSStepTabsContainer">
+        <item name="android:background">@color/lighterGrey</item>
+    </style>
+
 </resources>
