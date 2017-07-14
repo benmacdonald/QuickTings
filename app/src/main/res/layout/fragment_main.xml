@@ -44,7 +44,58 @@
                         android:clickable="true"
                         android:horizontalSpacing="10dp"
                         android:scrollbars="none"
-                        android:smoothScrollbar="false" ></GridView>
+                        android:smoothScrollbar="false" />
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/discover1"
+                        android:layout_width="270dp"
+                        android:layout_height="160dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="0.02"
+                        app:cardCornerRadius="2dp"
+                        app:cardElevation="5dp">
+
+                        <ImageView
+                            android:id="@+id/discover1Image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="fill_horizontal"
+                            android:src="@drawable/beaus" />
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/discover2"
+                        android:layout_width="270dp"
+                        android:layout_height="160dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="0.02"
+                        app:cardCornerRadius="2dp"
+                        app:cardElevation="5dp">
+
+                        <ImageView
+                            android:id="@+id/discover2Image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="fill_horizontal"
+                            android:src="@drawable/ginsmash" />
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/discover3"
+                        android:layout_width="270dp"
+                        android:layout_height="160dp"
+                        android:layout_margin="10dp"
+                        android:layout_weight="0.02"
+                        app:cardCornerRadius="2dp"
+                        app:cardElevation="5dp">
+
+                        <ImageView
+                            android:id="@+id/discover3Image"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="fill_horizontal"
+                            android:src="@drawable/malibu" />
+                    </android.support.v7.widget.CardView>
 
                 </LinearLayout>
 
