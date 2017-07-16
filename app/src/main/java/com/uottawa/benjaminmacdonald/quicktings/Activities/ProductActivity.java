@@ -66,6 +66,10 @@ import java.util.List;
 
 public class ProductActivity extends AppCompatActivity implements OnMapReadyCallback, DatabaseCallback {
 
+    public static final String INTENT_HASH = "PRODUCT";
+    public static final String FROM_CART = "from_cart";
+    public static final String CART_QUANTITY = "cart_quantity";
+
     private FABToolbarLayout toolbarLayout;
 
     private MapView mapView;
@@ -82,6 +86,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     String description;
     String details;
+    boolean fromCart;
+    int cartQuantity;
 
     // fragments
     private SectionsPagerAdapter mSectionsPagerAdapter;
@@ -94,6 +100,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         setContentView(R.layout.activity_product);
         addFont();
 
+        fromCart = getIntent().getBooleanExtra(FROM_CART, false);
+        cartQuantity = getIntent().getIntExtra(CART_QUANTITY, -1);
         shoppingCart = ShoppingCart.getInstance();
 
         //Set up database utils
@@ -104,7 +112,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
         //get product item
         Intent intent = getIntent();
-        productItem = (ProductItem) intent.getExtras().getParcelable("PRODUCT");
+        productItem = (ProductItem) intent.getExtras().getParcelable(INTENT_HASH);
         setupProduct(productItem);
 
         //set up tabs
@@ -140,13 +148,19 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         });
 
         //Cancel button
-        Button cancelButton = (Button) findViewById(R.id.cancelButton);
+        View cancelButton = findViewById(R.id.cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             public void onClick (View v) {
                 TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
-                quantityValue.setText("1");
-                cartItem.setQuantity(1);
-                calculateNewPrice(1);
+                if (fromCart) {
+                    quantityValue.setText(String.valueOf(cartQuantity));
+                    cartItem.setQuantity(cartQuantity);
+                    calculateNewPrice(cartQuantity);
+                } else {
+                    quantityValue.setText("1");
+                    cartItem.setQuantity(1);
+                    calculateNewPrice(1);
+                }
                 toolbarLayout.hide();
             }
         });
@@ -155,7 +169,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         //TODO:: add to cart
 
         //Add Button
-        Button addButton = (Button) findViewById(R.id.plusButton);
+        View addButton = findViewById(R.id.plusButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,7 +183,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         });
 
         //Subtract Button
-        Button minusButton = (Button) findViewById(R.id.minusButton);
+        View minusButton = findViewById(R.id.minusButton);
         minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -185,17 +199,16 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
             }
         });
 
-        Button addToCartButton = (Button) findViewById(R.id.addToCartButton);
+        View addToCartButton = findViewById(R.id.addToCartButton);
         addToCartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shoppingCart.addItem(cartItem);
-                TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
-                quantityValue.setText("1");
+                ((TextView) findViewById(R.id.quantityValue)).setText("1");
                 cartItem = new CartItem(cartItem);
                 calculateNewPrice(1);
                 toolbarLayout.hide();
-                Toast.makeText(ProductActivity.this, "Added the item to the cart", Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Added the item to the cart", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -203,6 +216,21 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+
+        if (fromCart) {
+            ((TextView) findViewById(R.id.quantityValue)).setText(cartItem.quantity);
+            addToCartButton.setVisibility(View.GONE);
+            findViewById(R.id.setQuantity).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shoppingCart.setItemQuantity(cartItem);
+                    toolbarLayout.hide();
+                    Toast.makeText(v.getContext(), "Updated your cart", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            findViewById(R.id.setQuantity).setVisibility(View.GONE);
+        }
 
         //get user current location
 //        locationCallback = new LocationCallback() {
@@ -223,11 +251,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
 //        fusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationCallback, null);
-
-
     }
 
-    //
     public void exitWithData() {
 
         Intent returnIntent = new Intent();
@@ -275,7 +300,12 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                 }
                 break;
             case R.id.action_cart:
-                startActivity(new Intent(this, CartActivity.class));
+
+                if (fromCart) {
+                    finish();
+                } else {
+                    startActivity(new Intent(this, CartActivity.class));
+                }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -356,7 +386,12 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         description = productItem.getDescription();
         details = productItem.getOrigin();
 
-        cartItem = new CartItem(productItem.getName(), productItem.getCategory(), productItem.getImageUrl(), productItem.getId(), productItem.getRegularPrice());
+        if (cartQuantity != -1) {
+            cartItem = new CartItem(productItem.getName(), productItem.getCategory(), productItem.getImageUrl(), productItem.getId(), productItem.getPrice(), cartQuantity);
+            calculateNewPrice(cartQuantity);
+        } else {
+            cartItem = new CartItem(productItem.getName(), productItem.getCategory(), productItem.getImageUrl(), productItem.getId(), productItem.getPrice());
+        }
 
 //        TextView textToChange = (TextView) findViewById(R.id.textToChange);
 //        if (productItem.getDescription() == null) {

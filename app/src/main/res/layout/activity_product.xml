@@ -282,19 +282,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <Space
-                    android:layout_width="110dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                android:layout_gravity="end">
 
                 <Button
                     android:id="@+id/cancelButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:text="Cancel"
                     android:textAlignment="center"
@@ -303,19 +296,28 @@
 
                 <Space
                     android:layout_width="10dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
+                    android:layout_height="wrap_content"/>
 
                 <Button
                     android:id="@+id/addToCartButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:text="Add to Cart"
                     android:textAlignment="center"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
+                
+                <Button
+                    android:id="@+id/setQuantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:text="Set Quantity"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
+
             </LinearLayout>
 
         </LinearLayout>

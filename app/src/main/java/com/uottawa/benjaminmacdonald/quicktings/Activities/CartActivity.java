@@ -4,23 +4,40 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ListView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.CartAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart.CartItem;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 
-public class CartActivity extends AppCompatActivity implements ShoppingCart.CompletionCallable {
+public class CartActivity extends AppCompatActivity
+        implements ShoppingCart.CompletionCallable, CartAdapter.ReactableInterface {
 
     private CartAdapter adapter;
     private TextView cartAmount;
     private ShoppingCart shoppingCart;
+    private View undoBar;
+    private Button undoButton;
+
+    private int recentPosition;
+    private CartItem recentItem;
+
+    private Runnable refreshUndo = new Runnable() {
+        @Override
+        public void run() {
+            adapter.onNegativeResult();
+            undoBar.setVisibility(View.GONE);
+            recentItem = null;
+            recentPosition = -1;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +45,22 @@ public class CartActivity extends AppCompatActivity implements ShoppingCart.Comp
         setContentView(R.layout.activity_cart);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        cartAmount = (TextView) findViewById(R.id.cart_amount);
-        ListView cartList = (ListView) findViewById(R.id.cart_list);
-
         shoppingCart = ShoppingCart.getInstance(this);
-        adapter = new CartAdapter(this, new ArrayList<>(shoppingCart.getCart()));
+        cartAmount = (TextView) findViewById(R.id.cart_amount);
+        undoButton = (Button) findViewById(R.id.undoBtn);
+        undoBar = findViewById(R.id.undoBar);
+        adapter = new CartAdapter(this, new ArrayList<>(shoppingCart.getCart()), this);
+
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.onPositiveResult(recentPosition, recentItem);
+                undoBar.setVisibility(View.GONE);
+            }
+        });
+
+        RecyclerView cartList = (RecyclerView) findViewById(R.id.cart_list);
+        cartList.setLayoutManager(new LinearLayoutManager(this));
         cartList.setAdapter(adapter);
         onFinalize();
     }
@@ -63,6 +91,15 @@ public class CartActivity extends AppCompatActivity implements ShoppingCart.Comp
     @Override
     public void onFinalize() {
         cartAmount.setText(shoppingCart.getTotalBill());
+    }
+
+    @Override
+    public void reactTo(int position, CartItem item) {
+        recentPosition = position;
+        recentItem = item;
+        undoBar.removeCallbacks(refreshUndo);
+        undoBar.setVisibility(View.VISIBLE);
+        undoBar.postDelayed(refreshUndo, 5000);
     }
 
     public void checkoutItems(View view) {

@@ -144,7 +144,7 @@ public class SearchFragment extends Fragment {
                 lastPosition = position;
 
                 Intent intent = new Intent(getActivity(), ProductActivity.class);
-                intent.putExtra("PRODUCT" , productItem);
+                intent.putExtra(ProductActivity.INTENT_HASH , productItem);
                 startActivityForResult(intent, 1);
             }
         });
