@@ -2,16 +2,22 @@ package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -20,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.uottawa.benjaminmacdonald.quicktings.Activities.MainActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.DiscoverArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.MainActivityArrayAdapter;
@@ -37,9 +44,25 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class MainFragment extends Fragment implements DatabaseCallback {
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link MainFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link MainFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class MainFragment extends Fragment implements DatabaseCallback {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     private static final int RESULT_OK = -1;
+
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -56,14 +79,38 @@ public class MainFragment extends Fragment implements DatabaseCallback {
     //Utilities
     private DatabaseUtils databaseUtils;
     private RequestQueue requestQueue;
+    private MainActivity mainActivity;
 
     public MainFragment() {
         // Required empty public constructor
     }
 
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment MainFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static MainFragment newInstance(String param1, String param2) {
+        MainFragment fragment = new MainFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
     }
 
     @Override
@@ -78,32 +125,44 @@ public class MainFragment extends Fragment implements DatabaseCallback {
         // Utilities
         requestQueue = Volley.newRequestQueue(getActivity());
         databaseUtils = new DatabaseUtils(this);
+        mainActivity = (MainActivity) getActivity();
 
         //Discover Gallery
-        discoverItems = new ArrayList<ProductItem>();
-
-        //Dummy items
-        discoverItems.add(new ProductItem());
-        discoverItems.add(new ProductItem());
-
         GridView discoverView = (GridView) rootView.findViewById(R.id.discoverView);
-
-        final DiscoverArrayAdapter discoverArrayAdapter = new DiscoverArrayAdapter(getActivity(), discoverItems);
-        discoverView.setAdapter(discoverArrayAdapter);
-        discoverView.setNumColumns(discoverItems.size());
-        if (discoverItems.size() > 0) {
-            setDynamicWidth(discoverView);
-        }
         discoverView.setDrawSelectorOnTop(true);
-        //TODO: decide what clicking on Discover cards do
-//        discoverView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(rootView.getContext(), ProductActivity.class);
-//                intent.putExtra("PRODUCT", orderAgainItems.get(position).getId());
-//                startActivity(intent);
-//            }
-//        });
+
+        CardView discover1 = (CardView) rootView.findViewById(R.id.discover1);
+        discover1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.searchFromElsewhere("beau's");
+            }
+        });
+
+        ImageView discover1Image = (ImageView) rootView.findViewById(R.id.discover1Image);
+        discover1Image.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        CardView discover2 = (CardView) rootView.findViewById(R.id.discover2);
+        discover2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.searchFromElsewhere("gin smash");
+            }
+        });
+
+        ImageView discover2Image = (ImageView) rootView.findViewById(R.id.discover2Image);
+        discover2Image.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        CardView discover3 = (CardView) rootView.findViewById(R.id.discover3);
+        discover3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mainActivity.searchFromElsewhere("malibu");
+            }
+        });
+
+        ImageView discover3Image = (ImageView) rootView.findViewById(R.id.discover3Image);
+        discover3Image.setScaleType(ImageView.ScaleType.FIT_XY);
 
         //Order Again Product Item List
         orderAgainItems = new ArrayList<ProductItem>();

@@ -34,14 +34,27 @@
             <!--android:text="Payment" />-->
     <!--</LinearLayout>-->
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/checkoutTabs"
+    <com.stepstone.stepper.StepperLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/stepperLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        app:ms_activeStepColor="#F6A623"
+        app:ms_bottomNavigationBackground="@color/lighterGrey"
+        app:ms_inactiveStepColor="#B2B2B2"
+        app:ms_stepperType="tabs"
+        app:ms_stepperLayoutTheme="@style/CustomStepperLayoutTheme"/>
+
+    <!--<android.support.design.widget.TabLayout-->
+        <!--android:id="@+id/checkoutTabs"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="69dp"-->
+        <!--android:background="#EEEEEE"-->
+        <!--app:tabIndicatorColor="@android:color/transparent">-->
 
 
-    </android.support.design.widget.TabLayout>
+    <!--</android.support.design.widget.TabLayout>-->
 
 
     <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"

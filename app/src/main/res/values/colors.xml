@@ -12,8 +12,13 @@
     <!--<color name="colorPrimary">#607D8B</color>-->
     <!--<color name="colorPrimaryDark">#455A64</color>-->
     <!--<color name="colorAccent">#f5a623</color>-->
+    <color name="lighterGrey">#EEEEEE</color>
     <color name="lightGrey">#EFEFEF</color>
     <color name="darkGrey">#979797</color>
     <color name="notFavourite">#AAA9A9</color>
     <color name="searchProductLabel">#565656</color>
+
+    <color name="completed_tab_line">#2D4059</color>
+    <color name="tab_line">#B2B2B2</color>
+    <color name="tab_text_color">#424242</color>
 </resources>

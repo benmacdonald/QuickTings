@@ -609,7 +609,10 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                     if (!productItem.getDescription().equals("null")) {
                         return "DESCRIPTION";
                     }
-                    return "TASTING NOTE";
+                    else if (!productItem.getTastingNote().equals("null")) {
+                        return "TASTING NOTE";
+                    }
+                    return "TAGS";
             }
             return null;
         }

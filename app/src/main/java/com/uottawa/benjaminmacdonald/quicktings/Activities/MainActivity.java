@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        cartItem =(MenuItem) menu.findItem(R.id.action_cart);
+        cartItem = (MenuItem) menu.findItem(R.id.action_cart);
 
         searchView = (SearchView) searchItem.getActionView();
 
@@ -405,6 +405,12 @@ public class MainActivity extends AppCompatActivity
         } else {
             searchFragment.updateSearchResults(query);
         }
+    }
+
+    public void searchFromElsewhere(String query) {
+
+        searchView.setIconified(false);
+        searchView.setQuery(query, true);
     }
 
     private ArrayList<String> createSuggestions() {
