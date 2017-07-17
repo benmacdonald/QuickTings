@@ -99,7 +99,7 @@
                 <Button
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/colorAccentLight"
+                    android:background="@color/colorAccent"
                     android:onClick="checkoutItems"
                     android:text="CHECKOUT"
                     android:textColor="#FFF" />

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -48,23 +49,17 @@ public class CheckoutActivity extends AppCompatActivity {
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), this));
 
+
+        FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                mStepperLayout.proceed();
+            }
+        });
+
         //Add the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        //set up tabs
-//        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-//
-//        // Set up the ViewPager with the sections adapter.
-//        mViewPager = (ViewPager) findViewById(R.id.pager);
-//        mViewPager.setAdapter(mSectionsPagerAdapter);
-//
-//        TabLayout tabLayout = (TabLayout) findViewById(R.id.checkoutTabs);
-//        tabLayout.setupWithViewPager(mViewPager);
-//
-//        View headerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE))
-//                .inflate(R.layout.custom_tab, null, false);
-//
-//        tabLayout.getTabAt(0).setCustomView(headerView);
 
 
     }

@@ -1,75 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.uottawa.benjaminmacdonald.quicktings.Activities.CheckoutActivity">
+    tools:context="com.uottawa.benjaminmacdonald.quicktings.Activities.CheckoutActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--tools:layout_editor_absoluteX="8dp"-->
-        <!--tools:layout_editor_absoluteY="8dp">-->
-
-        <!--<Button-->
-            <!--android:id="@+id/checkout"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Checkout" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/delivery"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Delivery" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/payment"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Payment" />-->
-    <!--</LinearLayout>-->
-
-    <com.stepstone.stepper.StepperLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/stepperLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        app:ms_activeStepColor="#F6A623"
-        app:ms_bottomNavigationBackground="@color/lighterGrey"
-        app:ms_inactiveStepColor="#B2B2B2"
-        app:ms_stepperType="tabs"
-        app:ms_showBottomNavigation="false"
-        app:ms_stepperLayoutTheme="@style/CustomStepperLayoutTheme"/>
-
-    <!--<android.support.design.widget.TabLayout-->
-        <!--android:id="@+id/checkoutTabs"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="69dp"-->
-        <!--android:background="#EEEEEE"-->
-        <!--app:tabIndicatorColor="@android:color/transparent">-->
-
-
-    <!--</android.support.design.widget.TabLayout>-->
-
-
-    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </android.support.v4.view.ViewPager>
 
-    <!--<FrameLayout-->
-        <!--android:id="@+id/fragment_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--tools:layout_editor_absoluteX="8dp"-->
-        <!--tools:layout_editor_absoluteY="8dp" />-->
+    <com.stepstone.stepper.StepperLayout
+        android:id="@+id/stepperLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        app:ms_activeStepColor="@color/colorAccent"
+        app:ms_bottomNavigationBackground="@color/lighterGrey"
+        app:ms_inactiveStepColor="#B2B2B2"
+        app:ms_showBottomNavigation="false"
+        app:ms_stepperLayoutTheme="@style/CustomStepperLayoutTheme"
+        app:ms_stepperType="tabs" />
 
-</LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right|end"
+        android:layout_margin="28dp"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_arrow_forward" />
+
+</android.support.design.widget.CoordinatorLayout>
