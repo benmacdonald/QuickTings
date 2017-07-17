@@ -18,6 +18,7 @@ import android.widget.ListAdapter;
 import com.rengwuxian.materialedittext.MaterialEditText;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
+import com.uottawa.benjaminmacdonald.quicktings.Activities.CheckoutActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.CreditCardAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.CreditCard;
 import com.uottawa.benjaminmacdonald.quicktings.R;
@@ -93,6 +94,9 @@ public class PaymentFragment extends Fragment implements Step {
 
                 EditText cvv = (EditText) rootView.findViewById(R.id.cardCVV);
                 cvv.setText(card.getCvv());
+
+                CheckoutActivity checkoutActivity = (CheckoutActivity) getActivity();
+                checkoutActivity.setCreditCard(card);
             }
         });
 

@@ -1,6 +1,7 @@
 package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.CreditCard;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.CheckoutFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DeliveryFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DescriptionFragment;
@@ -39,6 +42,8 @@ public class CheckoutActivity extends AppCompatActivity {
     private CheckoutActivity.SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private StepperLayout mStepperLayout;
+    private String address;
+    private CreditCard creditCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,16 +58,34 @@ public class CheckoutActivity extends AppCompatActivity {
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mStepperLayout.proceed();
+                if (mStepperLayout.getCurrentStepPosition() == 2) {
+                    showDialog();
+                } else {
+                    mStepperLayout.proceed();
+                }
             }
         });
 
         //Add the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
     }
+
+    private void showDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Confirmation")
+                .setMessage("Place order for ")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //TODO: do stuff
+                    }})
+                .setNegativeButton(android.R.string.no, null).show();
+    }
+
+    public void setAddress(String address) { this.address = address; }
+
+    public void setCreditCard(CreditCard creditCard) { this.creditCard = creditCard; }
 
     //Back button functionality
     @Override

@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
+import com.uottawa.benjaminmacdonald.quicktings.Activities.CheckoutActivity;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -148,6 +149,8 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
                 LatLng latLng = place.getLatLng();
                 googleMap.addMarker(new MarkerOptions().position(latLng).title("Delivery Location"));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+                CheckoutActivity checkoutActivity = (CheckoutActivity) getActivity();
+                checkoutActivity.setAddress(place.getAddress().toString());
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getContext(), data);
