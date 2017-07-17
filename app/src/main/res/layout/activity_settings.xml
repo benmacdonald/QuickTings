@@ -10,5 +10,7 @@
         android:id="@+id/signOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign Out" />
+        android:background="@color/colorFavourite"
+        android:text="Sign Out"
+        android:textColor="@color/cardview_light_background" />
 </LinearLayout>
