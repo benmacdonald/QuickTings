@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
             android:background="?attr/colorAccent"
-            android:text="Sign In (not working)"
+            android:text="Sign In"
             android:textColor="@android:color/background_light" />
 
 

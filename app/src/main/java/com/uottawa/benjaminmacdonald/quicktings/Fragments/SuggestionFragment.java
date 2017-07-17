@@ -2,6 +2,7 @@ package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,10 @@ import com.uottawa.benjaminmacdonald.quicktings.R;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  * Created by BenjaminMacDonald on 2017-06-28.
@@ -41,7 +46,11 @@ public class SuggestionFragment extends Fragment {
 
     private ArrayList<String> suggestions;
 
+    private ArrayList<String> recent;
+
     private SuggestionArrayAdapter arrayAdapter;
+
+    private SuggestionArrayAdapter recentAdapter;
 
     private SearchFragment searchFragment;
 
@@ -70,12 +79,32 @@ public class SuggestionFragment extends Fragment {
         // Inflate the layout for this fragment
         final View rootView = inflater.inflate(R.layout.fragment_suggestions, container, false);
 
-        arrayAdapter = new SuggestionArrayAdapter(getActivity(), suggestions);
+        arrayAdapter = new SuggestionArrayAdapter(getActivity(), suggestions, "");
 
         ListView listView = (ListView) rootView.findViewById(R.id.suggestionsListView);
         listView.setAdapter(arrayAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView labelView = (TextView) view.findViewById(R.id.suggestion);
+                ((MainActivity) getActivity()).clickOnSuggested(labelView.getText().toString());
+            }
+        });
+
+        recent = getRecent();
+
+        if (recent.size() <= 0) {
+            View recentParentView = rootView.findViewById(R.id.recentParentView);
+            recentParentView.setVisibility(View.GONE);
+        }
+
+        recentAdapter = new SuggestionArrayAdapter(getActivity(), recent, "RECENT");
+
+        ListView recentView = (ListView) rootView.findViewById(R.id.recentListView);
+        recentView.setAdapter(recentAdapter);
+
+        recentView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView labelView = (TextView) view.findViewById(R.id.suggestion);
@@ -129,5 +158,20 @@ public class SuggestionFragment extends Fragment {
         suggestions.clear();
         suggestions.addAll(newSuggestions);
         arrayAdapter.notifyDataSetChanged();
+    }
+
+    public ArrayList<String> getRecent() {
+
+        Context context = this.getActivity();
+        SharedPreferences sharedPref = context.getSharedPreferences("com.quicktings.saves", Context.MODE_PRIVATE);
+
+        String recent = sharedPref.getString("recent", "");
+
+        ArrayList<String> recents = new ArrayList<String>();
+        if (! recent.equals("")) {
+            recents = new ArrayList<String>(Arrays.asList(recent.split(",")));
+        }
+
+        return recents;
     }
 }
