@@ -48,6 +48,9 @@ public class CheckoutActivity extends AppCompatActivity {
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), this));
 
+        //Add the back button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 //        //set up tabs
 //        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 //
@@ -66,6 +69,26 @@ public class CheckoutActivity extends AppCompatActivity {
 
     }
 
+    //Back button functionality
+    @Override
+    public boolean onSupportNavigateUp(){
+        if (mStepperLayout.getCurrentStepPosition() > 0) {
+            mStepperLayout.onBackClicked();
+        } else {
+            finish();
+        }
+        return true;
+    }
+
+    //Override back button
+    @Override
+    public void onBackPressed() {
+        if (mStepperLayout.getCurrentStepPosition() > 0) {
+            mStepperLayout.onBackClicked();
+        } else {
+            finish();
+        }
+    }
 
     // inner class
     public class SectionsPagerAdapter extends AbstractFragmentStepAdapter {
@@ -100,17 +123,20 @@ public class CheckoutActivity extends AppCompatActivity {
         public StepViewModel getViewModel(@IntRange(from = 0) int position) {
             //Override this method to set Step title for the Tabs, not necessary for other stepper types
             if (position == 0) {
+                setTitle("Checkout");
                 return new StepViewModel.Builder(context)
-                        //.setTitle("Checkout")
+//                        .setTitle("Checkout")
                         .create();
             }
             else if (position == 1) {
+                setTitle("Delivery");
                 return new StepViewModel.Builder(context)
-                        //.setTitle("Delivery") //can be a CharSequence instead
+//                        .setTitle("Delivery") //can be a CharSequence instead
                         .create();
             }
+            setTitle("Payment");
             return new StepViewModel.Builder(context)
-                    //.setTitle("Payment") //can be a CharSequence instead
+//                    .setTitle("Payment") //can be a CharSequence instead
                     .create();
         }
 
