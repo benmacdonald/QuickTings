@@ -94,9 +94,6 @@ public class PaymentFragment extends Fragment implements Step {
 
                 EditText cvv = (EditText) rootView.findViewById(R.id.cardCVV);
                 cvv.setText(card.getCvv());
-
-                CheckoutActivity checkoutActivity = (CheckoutActivity) getActivity();
-                checkoutActivity.setCreditCard(card);
             }
         });
 

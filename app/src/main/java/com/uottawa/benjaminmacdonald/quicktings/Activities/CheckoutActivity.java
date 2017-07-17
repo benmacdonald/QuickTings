@@ -42,8 +42,6 @@ public class CheckoutActivity extends AppCompatActivity {
     private CheckoutActivity.SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private StepperLayout mStepperLayout;
-    private String address;
-    private CreditCard creditCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,11 +56,7 @@ public class CheckoutActivity extends AppCompatActivity {
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (mStepperLayout.getCurrentStepPosition() == 2) {
-                    showDialog();
-                } else {
-                    mStepperLayout.proceed();
-                }
+                mStepperLayout.proceed();
             }
         });
 
@@ -70,22 +64,6 @@ public class CheckoutActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
-
-    private void showDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("Confirmation")
-                .setMessage("Place order for ")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //TODO: do stuff
-                    }})
-                .setNegativeButton(android.R.string.no, null).show();
-    }
-
-    public void setAddress(String address) { this.address = address; }
-
-    public void setCreditCard(CreditCard creditCard) { this.creditCard = creditCard; }
 
     //Back button functionality
     @Override

@@ -149,8 +149,6 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
                 LatLng latLng = place.getLatLng();
                 googleMap.addMarker(new MarkerOptions().position(latLng).title("Delivery Location"));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                CheckoutActivity checkoutActivity = (CheckoutActivity) getActivity();
-                checkoutActivity.setAddress(place.getAddress().toString());
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getContext(), data);
