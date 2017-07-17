@@ -94,6 +94,7 @@ public class CheckoutActivity extends AppCompatActivity {
 
         @Override
         public Step createStep(int position) {
+
             if (position == 0) {
                 CheckoutFragment step = new CheckoutFragment();
                 return step;
@@ -102,7 +103,6 @@ public class CheckoutActivity extends AppCompatActivity {
                 DeliveryFragment step = new DeliveryFragment();
                 return step;
             }
-
             PaymentFragment step = new PaymentFragment();
 
             return step;
