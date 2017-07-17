@@ -20,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -240,6 +241,11 @@ public class SearchFragment extends Fragment {
     }
 
     public List<ProductItem> createProductItems(JSONObject response) {
+
+        //get rids of loading indicator
+        LottieAnimationView animationView = (LottieAnimationView) getView().findViewById(R.id.animation_view);
+        animationView.setVisibility(View.GONE);
+
         JSONArray jsonArray;
         List<ProductItem> items = new ArrayList<ProductItem>();
         try {
