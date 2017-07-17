@@ -1,10 +1,13 @@
 package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -13,10 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -32,6 +37,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 import com.uottawa.benjaminmacdonald.quicktings.R;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import static android.app.Activity.RESULT_CANCELED;
 
@@ -39,15 +45,17 @@ import static android.app.Activity.RESULT_CANCELED;
  * Created by BenjaminMacDonald on 2017-07-12.
  */
 
-public class DeliveryFragment extends Fragment implements Step {
+public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private GoogleApiClient mGoogleApiClient;
     private static final int RESULT_OK = 1;
     private MapView mMapView;
     private GoogleMap googleMap;
     final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
-    public DeliveryFragment() {}
+    public DeliveryFragment() {
+    }
 
     public static DeliveryFragment newInstance(int sectionNumber) {
         DeliveryFragment fragment = new DeliveryFragment();
@@ -66,6 +74,13 @@ public class DeliveryFragment extends Fragment implements Step {
         if (getArguments() != null) {
 
         }
+
+        mGoogleApiClient = new GoogleApiClient
+                .Builder(getActivity())
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(getActivity(), this)
+                .build();
 
     }
 
@@ -90,7 +105,6 @@ public class DeliveryFragment extends Fragment implements Step {
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
 
-                // For showing a move to my location button
                 googleMap.setMyLocationEnabled(true);
 
                 // For dropping a marker at a point on the Map
@@ -110,7 +124,7 @@ public class DeliveryFragment extends Fragment implements Step {
             public void onClick(View view) {
                 try {
                     Intent intent =
-                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_OVERLAY)
                                     .build(getActivity());
                     startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
                 } catch (GooglePlayServicesRepairableException e) {
@@ -138,7 +152,8 @@ public class DeliveryFragment extends Fragment implements Step {
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getContext(), data);
                 // TODO: Handle the error.
-//                Log.i(TAG, status.getStatusMessage());
+                String bad = status.getStatusMessage();
+                System.out.println(bad);
 
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
@@ -182,6 +197,11 @@ public class DeliveryFragment extends Fragment implements Step {
 
     @Override
     public void onError(@NonNull VerificationError error) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
 }
