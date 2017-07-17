@@ -49,7 +49,7 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
 
     private static final String ARG_SECTION_NUMBER = "section_number";
     private GoogleApiClient mGoogleApiClient;
-    private static final int RESULT_OK = 1;
+    private static final int RESULT_OK = -1;
     private MapView mMapView;
     private GoogleMap googleMap;
     final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
@@ -146,7 +146,7 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
 
                 Place place = PlaceAutocomplete.getPlace(getContext(), data);
                 LatLng latLng = place.getLatLng();
-                googleMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                googleMap.addMarker(new MarkerOptions().position(latLng).title("Delivery Location"));
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
@@ -157,6 +157,10 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
 
             } else if (resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
+                Status status = PlaceAutocomplete.getStatus(getContext(), data);
+                // TODO: Handle the error.
+                String bad = status.getStatusMessage();
+                System.out.println(bad);
             }
         }
     }
