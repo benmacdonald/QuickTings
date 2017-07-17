@@ -141,6 +141,8 @@ public class ShoppingCart {
 
     private static ShoppingCart INSTANCE;
     private HashSet<CartItem> cartItems;
+    private ArrayList<CartItem> softItems;
+    private CartItem recentItem;
 
     private final FirebaseDatabase database;
     private List<CompletionCallable> completionCallables = new ArrayList<>();
@@ -173,6 +175,7 @@ public class ShoppingCart {
 
         database = FirebaseDatabase.getInstance();
         cartItems = new HashSet<>();
+        softItems = new ArrayList<>();
 
         database.getReference()
                 .child(SHOPPING_KEY)
@@ -228,16 +231,50 @@ public class ShoppingCart {
     }
 
     public void removeItem(CartItem item) {
+        removeItem(item, true);
+    }
+
+    public void removeItem(CartItem item, boolean hardDelete) {
         //remove from item if it exists
-        database.getReference()
-                .child(SHOPPING_KEY)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child(item.getKey())
-                .removeValue();
+        if (hardDelete) {
+            database.getReference()
+                    .child(SHOPPING_KEY)
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(item.getKey())
+                    .removeValue();
+        } else {
+            softItems.add(item);
+            recentItem = item;
+        }
         cartItems.remove(item);
         totalBill -= item.findTotalItemCost();
         callAllCompleteListeners(item, CompletionCallable.REMOVED);
         callAllFinalizeListeners();
+    }
+
+    public CartItem undoRecent() {
+        CartItem result = null;
+        if (recentItem != null) {
+            softItems.remove(recentItem);
+            cartItems.add(recentItem);
+            totalBill += recentItem.findTotalItemCost();
+            result = recentItem;
+            recentItem = null;
+            callAllCompleteListeners(result, CompletionCallable.UPDATED);
+            callAllFinalizeListeners();
+        }
+        return result;
+    }
+
+    public void softCommit() {
+        for (CartItem item : softItems) {
+            database.getReference()
+                    .child(SHOPPING_KEY)
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child(item.getKey())
+                    .removeValue();
+        }
+        softItems.clear();
     }
 
     public void setItemQuantity(CartItem item) {

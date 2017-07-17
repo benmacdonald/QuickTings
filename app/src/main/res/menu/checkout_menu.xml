@@ -3,17 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:clickable="false">
 
-
     <item
         android:id="@+id/action_fav"
         android:icon="@drawable/ic_favourite_border_white_24dp"
         android:title="favourite"
-        app:showAsAction="ifRoom" />
-
-    <item
-        android:id="@+id/action_cart"
-        android:icon="@drawable/ic_shopping_cart_white_24dp"
-        android:title="Cart"
-        app:showAsAction="ifRoom" />
-
+        app:showAsAction="always" />
 </menu>

@@ -28,7 +28,6 @@ import com.uottawa.benjaminmacdonald.quicktings.R;
 import org.json.JSONObject;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -78,6 +77,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
 
     public interface ReactableInterface {
         void reactTo(int position, CartItem item);
+        void beginReaction();
+        void endReaction();
     }
 
     private ReactableInterface mReactableInterface;
@@ -86,7 +87,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
     private ShoppingCart shoppingCart;
     private RequestQueue mRequestQueue;
     private RecyclerView mRecyclerView;
-    private List<CartItem> mItemsToRemove;
 
     public CartAdapter(Context mContext, List<CartItem> mDataset, @Nullable ReactableInterface mReactableInterface) {
         this.mReactableInterface = mReactableInterface;
@@ -94,7 +94,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
         this.mContext = mContext;
         shoppingCart = ShoppingCart.getInstance(this);
         mRequestQueue = Volley.newRequestQueue(mContext);
-        mItemsToRemove = new ArrayList<>();
     }
 
     @Override
@@ -122,6 +121,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mReactableInterface.beginReaction();
                 final CartItem cartItem = mDataset.get(holder.getAdapterPosition());
                 String url = "https://lcboapi.com/products/" + cartItem.getKey() + "/?access_key=" + mContext.getString(R.string.api_key);
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -134,7 +134,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
                                     .putExtra(ProductActivity.INTENT_HASH, item)
                                     .putExtra(ProductActivity.FROM_CART, true)
                                     .putExtra(ProductActivity.CART_QUANTITY, cartItem.mQuantity));
-
+                            mReactableInterface.endReaction();
                         } catch (Exception e) {
                             //some error
                         }
@@ -158,7 +158,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
     public void onItemRemove(RecyclerView.ViewHolder mViewHolder, RecyclerView recyclerView) {
         int adapterPosition = mViewHolder.getAdapterPosition();
         mReactableInterface.reactTo(adapterPosition, mDataset.get(adapterPosition));
-        mItemsToRemove.add(mDataset.remove(adapterPosition));
+        CartItem item = mDataset.remove(adapterPosition);
+        shoppingCart.removeItem(item, false);
         notifyItemRemoved(adapterPosition);
     }
 
@@ -181,12 +182,5 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
         mDataset.add(position, item);
         notifyItemInserted(position);
         mRecyclerView.scrollToPosition(position);
-        mItemsToRemove.remove(item);
-    }
-
-    public void onNegativeResult() {
-        for (CartItem item : mItemsToRemove) {
-            shoppingCart.removeItem(item);
-        }
     }
 }

@@ -68,6 +68,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     public static final String INTENT_HASH = "PRODUCT";
     public static final String FROM_CART = "from_cart";
+    public static final String FROM_CHECKOUT = "from_checkout";
     public static final String CART_QUANTITY = "cart_quantity";
 
     private FABToolbarLayout toolbarLayout;
@@ -87,6 +88,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     String description;
     String details;
     boolean fromCart;
+    boolean fromCheckout;
     int cartQuantity;
 
     // fragments
@@ -100,6 +102,7 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         setContentView(R.layout.activity_product);
         addFont();
 
+        fromCheckout = getIntent().getBooleanExtra(FROM_CHECKOUT, false);
         fromCart = getIntent().getBooleanExtra(FROM_CART, false);
         cartQuantity = getIntent().getIntExtra(CART_QUANTITY, -1);
         shoppingCart = ShoppingCart.getInstance();
@@ -131,118 +134,115 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         //Adds onClickListener to FAB
         toolbarLayout = (FABToolbarLayout) findViewById(R.id.fabtoolbar);
         View fab = findViewById(R.id.fabtoolbar_fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toolbarLayout.show();
-            }
-        });
-
-        //Closes fabtoolbar if user scrolls
         View scrollView = findViewById(R.id.contentView);
-        scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-            @Override
-            public void onScrollChanged() {
-                toolbarLayout.hide();
-            }
-        });
-
-        //Cancel button
         View cancelButton = findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick (View v) {
-                TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
-                if (fromCart) {
-                    quantityValue.setText(String.valueOf(cartQuantity));
-                    cartItem.setQuantity(cartQuantity);
-                    calculateNewPrice(cartQuantity);
-                } else {
-                    quantityValue.setText("1");
-                    cartItem.setQuantity(1);
-                    calculateNewPrice(1);
-                }
-                toolbarLayout.hide();
-            }
-        });
-
-        //Add to Cart Button
-        //TODO:: add to cart
-
-        //Add Button
         View addButton = findViewById(R.id.plusButton);
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
-                Integer value = Integer.parseInt(quantityValue.getText().toString());
-                value = value + 1;
-                quantityValue.setText(value.toString());
-                cartItem.incQuantity();
-                calculateNewPrice(value);
-            }
-        });
-
-        //Subtract Button
         View minusButton = findViewById(R.id.minusButton);
-        minusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
-                Integer value = Integer.parseInt(quantityValue.getText().toString());
-                value = value - 1;
-                cartItem.decQuantity();
-                if (value > 0) {
+        View addToCartButton = findViewById(R.id.addToCartButton);
+        if (fromCheckout) {
+            toolbarLayout.setVisibility(View.GONE);
+            fab.setVisibility(View.GONE);
+        } else {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toolbarLayout.show();
+                }
+            });
+            //Closes fabtoolbar if user scrolls
+            scrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                @Override
+                public void onScrollChanged() {
+                    toolbarLayout.hide();
+                }
+            });
+            //Cancel button
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick (View v) {
+                    TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
+                    if (fromCart) {
+                        quantityValue.setText(String.valueOf(cartQuantity));
+                        cartItem.setQuantity(cartQuantity);
+                        calculateNewPrice(cartQuantity);
+                    } else {
+                        quantityValue.setText("1");
+                        cartItem.setQuantity(1);
+                        calculateNewPrice(1);
+                    }
+                    toolbarLayout.hide();
+                }
+            });
+            //add to cart button
+            addToCartButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    shoppingCart.addItem(cartItem);
+                    ((TextView) findViewById(R.id.quantityValue)).setText("1");
+                    cartItem = new CartItem(cartItem);
+                    calculateNewPrice(1);
+                    toolbarLayout.hide();
+                    Toast.makeText(v.getContext(), "Added the item to the cart", Toast.LENGTH_SHORT).show();
+                }
+            });
+            //Add Button
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
+                    Integer value = Integer.parseInt(quantityValue.getText().toString());
+                    value = value + 1;
                     quantityValue.setText(value.toString());
+                    cartItem.incQuantity();
                     calculateNewPrice(value);
                 }
+            });
+            //Subtract Button
+            minusButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView quantityValue = (TextView) findViewById(R.id.quantityValue);
+                    Integer value = Integer.parseInt(quantityValue.getText().toString());
+                    value = value - 1;
+                    cartItem.decQuantity();
+                    if (value > 0) {
+                        quantityValue.setText(value.toString());
+                        calculateNewPrice(value);
+                    }
 
+                }
+            });
+            if (fromCart) {
+                ((TextView) findViewById(R.id.quantityValue)).setText(cartItem.quantity);
+                addToCartButton.setVisibility(View.GONE);
+                findViewById(R.id.setQuantity).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        shoppingCart.setItemQuantity(cartItem);
+                        toolbarLayout.hide();
+                        Toast.makeText(v.getContext(), "Updated your cart", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            } else {
+                findViewById(R.id.setQuantity).setVisibility(View.GONE);
             }
-        });
-
-        View addToCartButton = findViewById(R.id.addToCartButton);
-        addToCartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shoppingCart.addItem(cartItem);
-                ((TextView) findViewById(R.id.quantityValue)).setText("1");
-                cartItem = new CartItem(cartItem);
-                calculateNewPrice(1);
-                toolbarLayout.hide();
-                Toast.makeText(v.getContext(), "Added the item to the cart", Toast.LENGTH_SHORT).show();
-            }
-        });
+        }
 
         //Setting up mapview
         mapView = (MapView) findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        if (fromCart) {
-            ((TextView) findViewById(R.id.quantityValue)).setText(cartItem.quantity);
-            addToCartButton.setVisibility(View.GONE);
-            findViewById(R.id.setQuantity).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    shoppingCart.setItemQuantity(cartItem);
-                    toolbarLayout.hide();
-                    Toast.makeText(v.getContext(), "Updated your cart", Toast.LENGTH_SHORT).show();
+        /*get user current location
+        locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                for (Location location : locationResult.getLocations()) {
+                    // Update UI with location data
+                    // ...
+                    System.out.println(location);
                 }
-            });
-        } else {
-            findViewById(R.id.setQuantity).setVisibility(View.GONE);
-        }
-
-        //get user current location
-//        locationCallback = new LocationCallback() {
-//            @Override
-//            public void onLocationResult(LocationResult locationResult) {
-//                for (Location location : locationResult.getLocations()) {
-//                    // Update UI with location data
-//                    // ...
-//                    System.out.println(location);
-//                }
-//            };
-//        };
+            };
+        };*/
 
 
         LocationRequest mLocationRequest = new LocationRequest();
@@ -250,11 +250,10 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
-//        fusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationCallback, null);
+        //fusedLocationProviderClient.requestLocationUpdates(mLocationRequest, locationCallback, null);
     }
 
     public void exitWithData() {
-
         Intent returnIntent = new Intent();
         boolean isFavourite = databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(productItem.getId()));
         returnIntent.putExtra("isFavourite", isFavourite);
@@ -264,7 +263,6 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     @Override
     public void onBackPressed() {
-
         //Checks if the FAB is the button or the toolbar
         if (toolbarLayout.isFab()) {
             exitWithData();
@@ -277,7 +275,11 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.product_menu, menu);
+        if (fromCheckout || fromCart) {
+            inflater.inflate(R.menu.checkout_menu, menu);
+        } else {
+            inflater.inflate(R.menu.product_menu, menu);
+        }
 
         //check favourite button if favourited
         if (databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(productItem.getId()))) {

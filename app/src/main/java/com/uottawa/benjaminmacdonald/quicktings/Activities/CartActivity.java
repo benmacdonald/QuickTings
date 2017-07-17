@@ -1,5 +1,6 @@
 package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -27,14 +28,13 @@ public class CartActivity extends AppCompatActivity
     private Button undoButton;
 
     private int recentPosition;
-    private CartItem recentItem;
+    private ProgressDialog progressDialog;
 
     private Runnable refreshUndo = new Runnable() {
         @Override
         public void run() {
-            adapter.onNegativeResult();
+            shoppingCart.softCommit();
             undoBar.setVisibility(View.GONE);
-            recentItem = null;
             recentPosition = -1;
         }
     };
@@ -49,11 +49,13 @@ public class CartActivity extends AppCompatActivity
         cartAmount = (TextView) findViewById(R.id.cart_amount);
         undoButton = (Button) findViewById(R.id.undoBtn);
         undoBar = findViewById(R.id.undoBar);
+        //progressBar = (ProgressBar) findViewById(R.id.cart_progress_bar);
         adapter = new CartAdapter(this, new ArrayList<>(shoppingCart.getCart()), this);
 
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CartItem recentItem = shoppingCart.undoRecent();
                 adapter.onPositiveResult(recentPosition, recentItem);
                 undoBar.setVisibility(View.GONE);
             }
@@ -96,10 +98,28 @@ public class CartActivity extends AppCompatActivity
     @Override
     public void reactTo(int position, CartItem item) {
         recentPosition = position;
-        recentItem = item;
         undoBar.removeCallbacks(refreshUndo);
         undoBar.setVisibility(View.VISIBLE);
         undoBar.postDelayed(refreshUndo, 5000);
+    }
+
+    @Override
+    public void beginReaction() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setTitle("Processing");
+            progressDialog.setMessage("Finding Product");
+        }
+        progressDialog.show();
+    }
+
+    @Override
+    public void endReaction() {
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
     public void checkoutItems(View view) {

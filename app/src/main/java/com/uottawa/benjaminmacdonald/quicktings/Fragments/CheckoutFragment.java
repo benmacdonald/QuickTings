@@ -3,6 +3,8 @@ package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +12,13 @@ import android.widget.TextView;
 
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
+import com.uottawa.benjaminmacdonald.quicktings.Adapters.CheckoutAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 import com.vstechlab.easyfonts.EasyFonts;
+
+import java.util.ArrayList;
 
 /**
  * Created by BenjaminMacDonald on 2017-07-12.
@@ -49,6 +55,9 @@ public class CheckoutFragment extends Fragment implements Step {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_checkout, container, false);
 
+        RecyclerView recyclerView = (RecyclerView) rootView;
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(new CheckoutAdapter(getContext(), new ArrayList<>(ShoppingCart.getInstance().getCart())));
 
         return rootView;
     }

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="180dp"
     android:orientation="horizontal"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
+    android:paddingStart="15dp"
+    android:paddingEnd="5dp"
     android:weightSum="1"
     android:background="@drawable/card_cart_background">
 
     <ImageView
-        android:id="@+id/productImage"
+        android:id="@+id/checkout_image"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="0.3"
-        android:src="@drawable/ic_categories_wine" />
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"/>
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -26,67 +26,63 @@
         android:paddingEnd="0dp">
 
         <LinearLayout
+            android:id="@+id/checkout_item_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/productTitle"
+                android:id="@+id/checkout_item_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:textColor="#4d4d4d"
                 android:layout_marginBottom="3dp"
                 android:ellipsize="end"
-                android:maxLines="1"
-                android:text="TextView"
-                android:textColor="#4d4d4d"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:maxLines="1" />
 
             <TextView
-                android:id="@+id/productType"
+                android:id="@+id/checkout_item_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textSize="13sp" />
+                android:textSize="13sp"/>
 
             <Space
                 android:layout_width="wrap_content"
                 android:layout_height="15dp" />
 
             <TextView
-                android:id="@+id/productPrice"
+                android:id="@+id/checkout_item_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                android:textColor="#606060"
+                android:textStyle="bold"
                 android:textSize="14sp"
-                android:textStyle="bold" />
+                android:textColor="#606060"/>
 
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/checkout_quantity_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/cart_item_header"
+            android:orientation="vertical"
             android:layout_marginTop="15dp"
-            android:orientation="vertical">
+            android:layout_below="@id/checkout_item_header">
 
             <TextView
-                android:id="@+id/quantityLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="3dp"
-                android:text="TextView" />
+                android:text="Quantity"/>
 
             <TextView
-                android:id="@+id/productQuantity"
+                android:id="@+id/checkout_amount_cart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1"
                 android:textColor="#4d4d4d"
-                android:textStyle="bold" />
+                android:textStyle="bold"/>
 
         </LinearLayout>
-
     </RelativeLayout>
 </LinearLayout>
