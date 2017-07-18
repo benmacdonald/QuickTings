@@ -87,8 +87,8 @@ public class CheckoutActivity extends AppCompatActivity
             Toast.makeText(this, "failed to attain all information required", Toast.LENGTH_LONG).show();
         } else {
             CompleteOrderDialog dialog = new CompleteOrderDialog();
+            OrdersCart.getInstance().addListener(dialog);
             dialog.show(getSupportFragmentManager(), "confirm");
-            //startActivity(new Intent(CheckoutActivity.this, ConfirmationActivity.class));
         }
     }
 

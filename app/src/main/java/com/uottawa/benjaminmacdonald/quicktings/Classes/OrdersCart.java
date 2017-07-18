@@ -33,11 +33,12 @@ public class OrdersCart implements ValueEventListener {
 
         @Exclude
         public String order_key;
+
         public String order_date;
         public Double longitude;
         public Double latitude;
         public Double order_cost;
-        public Map<String, CartItem> order_items;
+        public Map<String, Object> order_items;
 
         public Order() {}
 
@@ -48,7 +49,7 @@ public class OrdersCart implements ValueEventListener {
                 order_items = new HashMap<>();
             }
             for (CartItem item : items) {
-                order_items.put(item.getKey(), item);
+                order_items.put(item.getKey(), item.map());
             }
             order_cost = ShoppingCart.getInstance().getBill();
         }
@@ -114,17 +115,19 @@ public class OrdersCart implements ValueEventListener {
 
     public void addCurrentOrder() {
         //go to the all order db ref
-        DatabaseReference mRef = mDatabase.getReference()
+        mCurrentOrder.order_key = mDatabase.getReference()
                 .child(ORDERS_KEY)
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child(ALL_ORDER_KEY);
-
-        //get the new key
-        mCurrentOrder.order_key = mRef
+                .child(ALL_ORDER_KEY)
                 .push()
                 .getKey();
+
         //add the value
-        mRef.child(mCurrentOrder.order_key)
+        mDatabase.getReference()
+                .child(ORDERS_KEY)
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child(ALL_ORDER_KEY)
+                .child(mCurrentOrder.order_key)
                 .setValue(mCurrentOrder)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

@@ -3,6 +3,7 @@ package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialogFragment;
@@ -13,6 +14,8 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.uottawa.benjaminmacdonald.quicktings.Activities.ConfirmationActivity;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.Interfaces.CompletionCallable;
 import com.uottawa.benjaminmacdonald.quicktings.R;
@@ -63,6 +66,7 @@ public class CompleteOrderDialog extends AppCompatDialogFragment implements Comp
                 rootView.findViewById(R.id.order_wrapper).setVisibility(View.INVISIBLE);
                 rootView.findViewById(R.id.waiting_wrapper).setVisibility(View.VISIBLE);
                 rootView.findViewById(R.id.close_confirmation).setVisibility(View.GONE);
+                OrdersCart.getInstance().addCurrentOrder();
             }
         });
 
@@ -76,6 +80,7 @@ public class CompleteOrderDialog extends AppCompatDialogFragment implements Comp
 
     @Override
     public void onFinalize() {
-
+        getDialog().dismiss();
+        startActivity(new Intent(getActivity(), ConfirmationActivity.class));
     }
 }

@@ -13,9 +13,11 @@ import com.uottawa.benjaminmacdonald.quicktings.Interfaces.CompletionCallable;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -87,6 +89,17 @@ public class ShoppingCart {
                 mQuantity--;
             }
             convertQuantity();
+        }
+
+        @Exclude
+        public Map<String, Object> map() {
+            Map<String, Object> map = new HashMap<>();
+            map.put("image_url", image_url);
+            map.put("item_cost", item_cost);
+            map.put("item_name", item_name);
+            map.put("item_type", item_type);
+            map.put("quantity", quantity);
+            return map;
         }
 
         @Exclude
