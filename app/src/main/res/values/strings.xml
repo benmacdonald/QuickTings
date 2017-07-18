@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">LCB-GO</string>
+    <string name="activity_confirmation">Confirmation</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -11,6 +12,8 @@
     <string name="main_fragment_favorites">Favorites</string>
 
     <string name="api_key">MDplN2Y5YTk1Yy0zNzJmLTExZTctYTBjZi1lZmFlNmMyYmFlY2U6ZDlTcWtYWEFhb0FUdU9vMFVPOFdTUXMwYWRUQUxkdnhLcG1v</string>
+
+    <string name="bullet_point">\u2022</string>
 
     <!--USER PREFERENCES-->
     <string name="preferences">qt_prefs</string>

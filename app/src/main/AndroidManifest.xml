@@ -9,10 +9,12 @@
     <permission
         android:name="com.uottawa.benjaminmacdonald.quicktings.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
-    <permission android:name="android.permission.ACCESS_COARSE_LOCATION"
-        android:protectionLevel="signature"/>
-    <permission android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:protectionLevel="signature"/>
+    <permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        android:protectionLevel="signature" />
+    <permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:protectionLevel="signature" />
 
     <uses-permission android:name="com.uottawa.benjaminmacdonald.quicktings.permission.MAPS_RECEIVE" />
 
@@ -24,7 +26,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBmiF2GZIAd2FtdYVjYmt448yeSsc_p5z0"/>
+            android:value="AIzaSyBmiF2GZIAd2FtdYVjYmt448yeSsc_p5z0" />
 
         <activity
             android:name=".Activities.MainActivity"
@@ -40,10 +42,10 @@
         </activity>
         <activity
             android:name=".Activities.ProductActivity"
-            android:label="Details"></activity>
+            android:label="Details" />
         <activity
             android:name=".Activities.CartActivity"
-            android:label="@string/title_activity_cart"/>
+            android:label="@string/title_activity_cart" />
         <activity android:name=".Activities.CheckoutActivity" />
         <activity android:name=".Activities.DeliveryActivity" />
         <activity
@@ -87,7 +89,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.SignInActivity"></activity>
+        <activity android:name=".Activities.SignInActivity" />
+        <activity android:name=".Activities.ConfirmationActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Confirmation"/>
     </application>
 
 </manifest>
