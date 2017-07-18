@@ -11,6 +11,7 @@
 
     <item
         android:id="@+id/action_cart"
+        android:actionLayout="@layout/cart_icon"
         android:icon="@drawable/ic_shopping_cart_white_24dp"
         android:title="Cart"
         app:showAsAction="always" />

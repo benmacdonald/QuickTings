@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,7 +20,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -84,6 +87,11 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
 
     private ShoppingCart shoppingCart;
     private CartItem cartItem;
+
+
+    private MenuItem sCart;
+    private ShoppingCart cart;
+    private TextView numItems;
 
     String description;
     String details;
@@ -181,6 +189,8 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
                     cartItem = new CartItem(cartItem);
                     calculateNewPrice(1);
                     toolbarLayout.hide();
+                    Integer quantity = Integer.parseInt(numItems.getText().toString()) + 1;
+                    numItems.setText(quantity.toString());
                     Toast.makeText(v.getContext(), "Added the item to the cart", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -279,7 +289,27 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
             inflater.inflate(R.menu.checkout_menu, menu);
         } else {
             inflater.inflate(R.menu.product_menu, menu);
+
+            sCart = (MenuItem) menu.findItem(R.id.action_cart);
+            MenuItemCompat.setActionView(sCart, R.layout.cart_icon);
+
+            RelativeLayout notifCount = (RelativeLayout) MenuItemCompat.getActionView(sCart);
+            numItems = (TextView) notifCount.findViewById(R.id.cartItems);
+
+            ImageButton cartButton = (ImageButton) notifCount.findViewById(R.id.cartButton);
+            cartButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(ProductActivity.this, CartActivity.class));
+                }
+            });
+
+            cart = ShoppingCart.getInstance();
+            Integer num = cart.getCart().size();
+            numItems.setText(num.toString());
         }
+
+
 
         //check favourite button if favourited
         if (databaseUtils.getFavouritesHashMap().containsKey(String.valueOf(productItem.getId()))) {
@@ -620,5 +650,11 @@ public class ProductActivity extends AppCompatActivity implements OnMapReadyCall
         }
 
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+    }
+
 
 }

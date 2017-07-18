@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -23,7 +24,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +37,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.User;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.MainFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.SearchFragment;
@@ -44,7 +48,7 @@ import com.uottawa.benjaminmacdonald.quicktings.R;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener, SuggestionFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener, SuggestionFragment.OnFragmentInteractionListener, ShoppingCart.CompletionCallable {
 
     private SearchView searchView;
     private SearchFragment searchFragment;
@@ -58,6 +62,9 @@ public class MainActivity extends AppCompatActivity
     private SuggestionFragment suggestionFragment;
     private Toolbar toolbar;
     private DrawerLayout drawer;
+
+    private ShoppingCart cart;
+    private TextView numItems;
 
     private ActionBarDrawerToggle toggle;
 
@@ -209,6 +216,21 @@ public class MainActivity extends AppCompatActivity
         final MenuItem searchItem = menu.findItem(R.id.action_search);
 
         cartItem = (MenuItem) menu.findItem(R.id.action_cart);
+        MenuItemCompat.setActionView(cartItem, R.layout.cart_icon);
+
+        RelativeLayout notifCount = (RelativeLayout) MenuItemCompat.getActionView(cartItem);
+        numItems = (TextView) notifCount.findViewById(R.id.cartItems);
+
+        ImageButton cartButton = (ImageButton) notifCount.findViewById(R.id.cartButton);
+        cartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, CartActivity.class));
+            }
+        });
+
+        cart = ShoppingCart.getInstance(this);
+
 
         searchView = (SearchView) searchItem.getActionView();
 
@@ -429,5 +451,23 @@ public class MainActivity extends AppCompatActivity
                 arrayList.add(suggestions.get(i));
         }
         return arrayList;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        cart.removeListener(this);
+    }
+
+    @Override
+    public void onComplete(ShoppingCart.CartItem item, int resultCode) {
+        Integer num = cart.getCart().size();
+        numItems.setText(num.toString());
+    }
+
+    @Override
+    public void onFinalize() {
+
+
     }
 }
