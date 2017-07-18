@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.uottawa.benjaminmacdonald.quicktings.Activities.HelpActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/reportAProblemButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Report A Problem"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@+id/giveFeedbackButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Give Feedback" />
+
+    <Button
+        android:id="@+id/contactUsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Contact Us" />
+
+</LinearLayout>

@@ -93,6 +93,12 @@
         <activity android:name=".Activities.ConfirmationActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:label="Confirmation"/>
+        <activity android:name=".Activities.ReportAProblemActivity"
+            android:label="Report A Problem"/>
+        <activity android:name=".Activities.GiveFeedbackActivity"
+            android:label="Give Feedback"/>
+        <activity android:name=".Activities.ContactUsActivity"
+            android:label="Contact Us"/>
     </application>
 
 </manifest>
