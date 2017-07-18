@@ -23,6 +23,7 @@ import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart.CartItem;
+import com.uottawa.benjaminmacdonald.quicktings.Interfaces.CompletionCallable;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import org.json.JSONObject;
@@ -34,7 +35,7 @@ import java.util.List;
  * Created by thomas on 09/07/17.
  */
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
-        implements ShoppingCart.CompletionCallable {
+        implements CompletionCallable {
 
     private class ItemTouchHelperCallback extends ItemTouchHelper.SimpleCallback {
 

@@ -12,14 +12,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.CartAdapter;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart.CartItem;
+import com.uottawa.benjaminmacdonald.quicktings.Interfaces.CompletionCallable;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import java.util.ArrayList;
 
 public class CartActivity extends AppCompatActivity
-        implements ShoppingCart.CompletionCallable, CartAdapter.ReactableInterface {
+        implements CompletionCallable, CartAdapter.ReactableInterface {
 
     private CartAdapter adapter;
     private TextView cartAmount;
@@ -123,6 +125,7 @@ public class CartActivity extends AppCompatActivity
     }
 
     public void checkoutItems(View view) {
+        OrdersCart.getInstance().newOrder();
         Intent intent = new Intent(this, CheckoutActivity.class);
         startActivity(intent);
     }

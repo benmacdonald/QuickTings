@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.CheckoutAdapter;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.R;
@@ -29,28 +31,12 @@ import java.util.ArrayList;
 
 public class CheckoutFragment extends Fragment implements Step {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
-
     public CheckoutFragment() {}
-
-    public static CheckoutFragment newInstance(int sectionNumber) {
-        CheckoutFragment fragment = new CheckoutFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-
-        //shared preferences
-
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
-
+        OrdersCart.getInstance().newOrder();
     }
 
     @Override
@@ -62,7 +48,6 @@ public class CheckoutFragment extends Fragment implements Step {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(new CheckoutAdapter(getContext(), new ArrayList<>(ShoppingCart.getInstance().getCart())));
 
-
         return rootView;
     }
 
@@ -73,7 +58,6 @@ public class CheckoutFragment extends Fragment implements Step {
 
     @Override
     public void onSelected() {
-
     }
 
     @Override

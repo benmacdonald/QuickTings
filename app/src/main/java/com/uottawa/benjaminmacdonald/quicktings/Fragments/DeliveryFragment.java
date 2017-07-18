@@ -45,6 +45,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 import com.uottawa.benjaminmacdonald.quicktings.Activities.CheckoutActivity;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -166,22 +167,20 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
                 }
             });
         }
-//        LatLng sydney = new LatLng(-34, 151);
-//        map.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        map.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == PLACE_AUTOCOMPLETE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-
                 Place place = PlaceAutocomplete.getPlace(getContext(), data);
                 LatLng latLng = place.getLatLng();
                 map.clear();
                 Marker marker = map.addMarker(new MarkerOptions().position(latLng).title(place.getAddress().toString()));
                 marker.showInfoWindow();
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
+                OrdersCart.getInstance().getCurrentOrder().setLocation(latLng);
+
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getContext(), data);
@@ -230,7 +229,7 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
 
     @Override
     public void onSelected() {
-
+        Log.w("","");
     }
 
     @Override

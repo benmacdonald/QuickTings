@@ -5,11 +5,11 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
 import com.google.firebase.database.ValueEventListener;
+import com.uottawa.benjaminmacdonald.quicktings.Interfaces.CompletionCallable;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -22,14 +22,6 @@ import java.util.Set;
  * Created by thomas on 09/07/17.
  */
 public class ShoppingCart {
-
-    public interface CompletionCallable {
-        int ADDED = 0;
-        int REMOVED = 1;
-        int UPDATED = 2;
-        void onComplete(CartItem item, int resultCode);
-        void onFinalize();
-    }
 
     @IgnoreExtraProperties
     public static class CartItem {
@@ -306,6 +298,10 @@ public class ShoppingCart {
 
     public String getTotalBill() {
         return NumberFormat.getCurrencyInstance().format(totalBill);
+    }
+
+    public Double getBill() {
+        return totalBill;
     }
 
     public void clearCart() {
