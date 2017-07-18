@@ -39,6 +39,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.stepstone.stepper.Step;
@@ -178,7 +179,8 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
                 Place place = PlaceAutocomplete.getPlace(getContext(), data);
                 LatLng latLng = place.getLatLng();
                 map.clear();
-                map.addMarker(new MarkerOptions().position(latLng).title("Delivery Location"));
+                Marker marker = map.addMarker(new MarkerOptions().position(latLng).title(place.getAddress().toString()));
+                marker.showInfoWindow();
                 map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
