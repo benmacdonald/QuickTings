@@ -35,6 +35,7 @@ import java.util.regex.Pattern;
 public class PaymentFragment extends Fragment implements Step {
 
     private static final String ARG_SECTION_NUMBER = "section_number";
+    private View rootView;
 
     GridView creditCardView;
 
@@ -63,7 +64,7 @@ public class PaymentFragment extends Fragment implements Step {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_payment, container, false);
+        rootView = inflater.inflate(R.layout.fragment_payment, container, false);
 
         final List<CreditCard> cards = new ArrayList<>();
         cards.add(new CreditCard("Benjamin MacDonald","4730034470933407", "0220", "455", "VISA"));
@@ -106,6 +107,33 @@ public class PaymentFragment extends Fragment implements Step {
 
     @Override
     public VerificationError verifyStep() {
+
+        boolean isValid = true;
+        EditText cardName = (EditText) rootView.findViewById(R.id.cardHolderName);
+        EditText cardNumber = (EditText) rootView.findViewById(R.id.cardNumber);
+        EditText cardExpire = (EditText) rootView.findViewById(R.id.cardExpire);
+        EditText cardCvv = (EditText) rootView.findViewById(R.id.cardCVV);
+
+        if(cardName.getText().toString().isEmpty()) {
+            cardName.setError("cardholder name cannot be empty");
+            isValid = false;
+        }
+        if (cardNumber.getText().toString().isEmpty()) {
+            cardNumber.setError("card number cannot be empty");
+            isValid = false;
+        }
+        if (cardExpire.getText().toString().isEmpty()) {
+            cardExpire.setError("expiry date cannot be empty");
+            isValid = false;
+        }
+        if (cardCvv.getText().toString().isEmpty()) {
+            cardCvv.setError("cvv cannot be empty");
+            isValid = false;
+        }
+
+        if (!isValid) {
+            return new VerificationError("one of the fields is empty");
+        }
 
 
         return null;
