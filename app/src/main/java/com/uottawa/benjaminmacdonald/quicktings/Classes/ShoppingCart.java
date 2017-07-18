@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.IgnoreExtraProperties;
@@ -27,6 +28,10 @@ public class ShoppingCart {
 
     @IgnoreExtraProperties
     public static class CartItem {
+
+        public Integer getmId() {
+            return mId;
+        }
 
         //non-db related items
         @Exclude
@@ -323,10 +328,10 @@ public class ShoppingCart {
         completionCallables.clear();
 
         //repopulate the cart with new user data
-        database.getReference()
+        DatabaseReference delRef = database.getReference()
                 .child(SHOPPING_KEY)
-                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .addListenerForSingleValueEvent(fetchData);
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        delRef.removeValue();
     }
 
     public void addListener(CompletionCallable completionCallable) {

@@ -44,7 +44,7 @@ public class CompleteOrderDialog extends AppCompatDialogFragment implements Comp
         rootView = inflater.inflate(R.layout.complete_dialog, null);
         builder.setView(rootView);
 
-        LinearLayout orderLayout = (LinearLayout) rootView.findViewById(R.id.dialog_order_list);
+        final LinearLayout orderLayout = (LinearLayout) rootView.findViewById(R.id.dialog_order_list);
 
         ArrayList<ShoppingCart.CartItem> list = new ArrayList<>(ShoppingCart.getInstance().getCart());
         for (int i = 0; i < list.size(); i++) {
@@ -66,7 +66,14 @@ public class CompleteOrderDialog extends AppCompatDialogFragment implements Comp
                 rootView.findViewById(R.id.order_wrapper).setVisibility(View.INVISIBLE);
                 rootView.findViewById(R.id.waiting_wrapper).setVisibility(View.VISIBLE);
                 rootView.findViewById(R.id.close_confirmation).setVisibility(View.GONE);
-                OrdersCart.getInstance().addCurrentOrder();
+
+                OrdersCart ordersCart = OrdersCart.getInstance();
+                ordersCart.addCurrentOrder();
+                System.out.println(ordersCart);
+                dismiss();
+                startActivity(new Intent(getContext(), ConfirmationActivity.class));
+
+
             }
         });
 
@@ -80,7 +87,6 @@ public class CompleteOrderDialog extends AppCompatDialogFragment implements Comp
 
     @Override
     public void onFinalize() {
-        getDialog().dismiss();
-        startActivity(new Intent(getActivity(), ConfirmationActivity.class));
+
     }
 }
