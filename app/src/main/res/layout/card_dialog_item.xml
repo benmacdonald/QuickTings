@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/bullet_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bullet_point"
+        android:textSize="30sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/dialog_item_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorConfirmationText"
+        app:layout_constraintTop_toTopOf="@+id/bullet_point"
+        app:layout_constraintBottom_toBottomOf="@+id/bullet_point"
+        app:layout_constraintStart_toEndOf="@id/bullet_point"/>
+
+    <TextView
+        android:id="@+id/dialog_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorConfirmationText"
+        app:layout_constraintTop_toTopOf="@+id/dialog_item_quantity"
+        app:layout_constraintStart_toEndOf="@id/dialog_item_quantity"/>
+</android.support.constraint.ConstraintLayout>

@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.CartAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
@@ -66,7 +67,17 @@ public class CartActivity extends AppCompatActivity
         RecyclerView cartList = (RecyclerView) findViewById(R.id.cart_list);
         cartList.setLayoutManager(new LinearLayoutManager(this));
         cartList.setAdapter(adapter);
-        onFinalize();
+        cartAmount.setText(shoppingCart.getTotalBill());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (shoppingCart.getCart().isEmpty()) {
+            setupProgressDialog();
+            progressDialog.setMessage("Getting you shopping cart...");
+            progressDialog.show();
+        }
     }
 
     @Override
@@ -90,11 +101,12 @@ public class CartActivity extends AppCompatActivity
     }
 
     @Override
-    public void onComplete(ShoppingCart.CartItem item, int resultCode) {}
+    public void onComplete(Object item, int resultCode) {}
 
     @Override
     public void onFinalize() {
         cartAmount.setText(shoppingCart.getTotalBill());
+        progressDialog.dismiss();
     }
 
     @Override
@@ -107,26 +119,34 @@ public class CartActivity extends AppCompatActivity
 
     @Override
     public void beginReaction() {
-        if (progressDialog == null) {
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setCancelable(false);
-            progressDialog.setTitle("Processing");
-            progressDialog.setMessage("Finding Product");
-        }
+        setupProgressDialog();
+        progressDialog.setMessage("Finding Product");
         progressDialog.show();
     }
 
     @Override
     public void endReaction() {
-        if (progressDialog != null) {
-            progressDialog.dismiss();
+        setupProgressDialog();
+        progressDialog.dismiss();
+    }
+
+    public void checkoutItems(View v) {
+        if (shoppingCart.getCart().isEmpty()) {
+            Toast.makeText(this, "Add items to the card", Toast.LENGTH_SHORT).show();
+            finish();
+        } else {
+            OrdersCart.getInstance().newOrder();
+            Intent intent = new Intent(this, CheckoutActivity.class);
+            startActivity(intent);
         }
     }
 
-    public void checkoutItems(View view) {
-        OrdersCart.getInstance().newOrder();
-        Intent intent = new Intent(this, CheckoutActivity.class);
-        startActivity(intent);
+    private void setupProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setCancelable(false);
+            progressDialog.setTitle("Processing...");
+        }
     }
 }

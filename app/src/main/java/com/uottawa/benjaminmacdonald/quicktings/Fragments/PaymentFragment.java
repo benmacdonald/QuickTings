@@ -130,12 +130,10 @@ public class PaymentFragment extends Fragment implements Step {
 
     @Override
     public void onSelected() {
-        Log.w("","");
     }
 
     @Override
     public void onError(@NonNull VerificationError error) {
-
     }
 
     private void cardVerification(final View rootView) {

@@ -74,9 +74,11 @@ public class MainActivity extends AppCompatActivity
     private MenuItem cartItem;
 
     private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
+        if (Build.VERSION.SDK_INT > 22) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                    ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 123);
+            }
         }
     }
 
@@ -84,9 +86,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            checkPermission();
-        }
+        checkPermission();
 
         createSuggestions();
 
@@ -470,7 +470,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onComplete(ShoppingCart.CartItem item, int resultCode) {
+    public void onComplete(Object item, int resultCode) {
         Integer num = cart.getCart().size();
         numItems.setText(num.toString());
     }

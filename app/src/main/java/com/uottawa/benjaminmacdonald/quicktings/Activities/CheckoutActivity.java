@@ -9,18 +9,27 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart.Order;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.CheckoutFragment;
+import com.uottawa.benjaminmacdonald.quicktings.Fragments.CompleteOrderDialog;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DeliveryFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.PaymentFragment;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
-public class CheckoutActivity extends AppCompatActivity implements StepperLayout.StepperListener {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+public class CheckoutActivity extends AppCompatActivity
+        implements StepperLayout.StepperListener {
 
     // fragments
     private StepperLayout mStepperLayout;
@@ -46,7 +55,6 @@ public class CheckoutActivity extends AppCompatActivity implements StepperLayout
 
         //Add the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     //Back button functionality
@@ -72,7 +80,16 @@ public class CheckoutActivity extends AppCompatActivity implements StepperLayout
 
     @Override
     public void onCompleted(View completeButton) {
-        startActivity(new Intent(CheckoutActivity.this, ConfirmationActivity.class));
+        String formattedDate = new SimpleDateFormat("MMMM dd, yyyy").format(Calendar.getInstance().getTime());
+        Order currentOrder = OrdersCart.getInstance().getCurrentOrder();
+        currentOrder.order_date = formattedDate;
+        if (!currentOrder.hasAllData()) {
+            Toast.makeText(this, "failed to attain all information required", Toast.LENGTH_LONG).show();
+        } else {
+            CompleteOrderDialog dialog = new CompleteOrderDialog();
+            dialog.show(getSupportFragmentManager(), "confirm");
+            //startActivity(new Intent(CheckoutActivity.this, ConfirmationActivity.class));
+        }
     }
 
     @Override

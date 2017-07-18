@@ -3,15 +3,16 @@ package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -36,6 +37,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
+import com.uottawa.benjaminmacdonald.quicktings.Manifest;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -61,10 +63,6 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
-
         mGoogleApiClient = new GoogleApiClient
                 .Builder(getActivity())
                 .addApi(Places.GEO_DATA_API)
@@ -131,20 +129,20 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
 
-        if (ContextCompat.checkSelfPermission(getActivity(), com.uottawa.benjaminmacdonald.quicktings.Manifest.permission.MAPS_RECEIVE) == PackageManager.PERMISSION_GRANTED) {
-            fusedLocationProviderClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-                    // Got last known location. In some rare situations this can be null.
-                    if (location != null) {
-                        LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
-                        map.addMarker(new MarkerOptions().position(current).title("Current Location"));
-                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 12));
-
-                    }
-                }
-            });
+        if (Build.VERSION.SDK_INT > 22 && ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.MAPS_RECEIVE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.MAPS_RECEIVE}, 123);
         }
+        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
+                    map.addMarker(new MarkerOptions().position(current).title("Current Location"));
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 12));
+                }
+            }
+        });
     }
 
     @Override
@@ -202,12 +200,16 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
 
     @Override
     public VerificationError verifyStep() {
+        if (!OrdersCart.getInstance().getCurrentOrder().hasLocation()) {
+            Toast.makeText(getContext(), "You must enter a location", Toast.LENGTH_SHORT).show();
+            return new VerificationError("You must enter a location");
+        }
         return null;
     }
 
     @Override
     public void onSelected() {
-        Log.w("","");
+
     }
 
     @Override

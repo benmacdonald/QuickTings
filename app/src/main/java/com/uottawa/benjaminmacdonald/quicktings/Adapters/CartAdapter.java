@@ -35,7 +35,7 @@ import java.util.List;
  * Created by thomas on 09/07/17.
  */
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
-        implements CompletionCallable {
+        implements CompletionCallable<CartItem> {
 
     private class ItemTouchHelperCallback extends ItemTouchHelper.SimpleCallback {
 
@@ -43,7 +43,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
         private RecyclerView mRecyclerView;
 
         public ItemTouchHelperCallback(CartAdapter mAdapter, RecyclerView mRecyclerView) {
-            super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT);
+            super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT);
             this.mAdapter = mAdapter;
             this.mRecyclerView = mRecyclerView;
         }
@@ -156,7 +156,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
         return mDataset.size();
     }
 
-    public void onItemRemove(RecyclerView.ViewHolder mViewHolder, RecyclerView recyclerView) {
+    private void onItemRemove(RecyclerView.ViewHolder mViewHolder, RecyclerView recyclerView) {
         int adapterPosition = mViewHolder.getAdapterPosition();
         mReactableInterface.reactTo(adapterPosition, mDataset.get(adapterPosition));
         CartItem item = mDataset.remove(adapterPosition);
