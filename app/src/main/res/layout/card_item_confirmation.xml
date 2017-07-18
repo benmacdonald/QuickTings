@@ -18,18 +18,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
+        android:textColor="#565656"
         android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="@id/bullet_point"
         app:layout_constraintBottom_toBottomOf="@id/bullet_point"
-        app:layout_constraintStart_toEndOf="@id/bullet_point"/>
+        app:layout_constraintStart_toEndOf="@id/bullet_point"
+        app:layout_constraintTop_toTopOf="@id/bullet_point" />
 
     <TextView
         android:id="@+id/order_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:textColor="#565656"
         android:textSize="20sp"
-        app:layout_constraintTop_toTopOf="@id/order_item_quantity"
-        app:layout_constraintStart_toEndOf="@id/order_item_quantity"/>
+        app:layout_constraintStart_toEndOf="@id/order_item_quantity"
+        app:layout_constraintTop_toTopOf="@id/order_item_quantity" />
 </android.support.constraint.ConstraintLayout>

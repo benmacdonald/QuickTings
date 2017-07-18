@@ -59,26 +59,27 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_centerInParent="true">
+                android:layout_centerInParent="true"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/cart_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:textSize="10sp"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="5dp"
+                    android:text="Total before tax"
                     android:textColor="#000"
-                    android:text="Total before tax" />
+                    android:textSize="10sp" />
 
                 <TextView
                     android:id="@+id/cart_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:text="dummy text"
                     android:textColor="#000"
-                    android:textSize="14sp"
-                    android:text="dummy text" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
         </RelativeLayout>
@@ -94,7 +95,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginRight="60dp"
                 android:layout_marginTop="30dp"
-                app:cardElevation="8dp">
+                app:cardElevation="4dp">
 
                 <Button
                     android:layout_width="match_parent"
