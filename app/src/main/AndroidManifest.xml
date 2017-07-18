@@ -47,7 +47,6 @@
             android:name=".Activities.CartActivity"
             android:label="@string/title_activity_cart" />
         <activity android:name=".Activities.CheckoutActivity" />
-        <activity android:name=".Activities.DeliveryActivity" />
         <activity
             android:name=".Activities.PaymentActivity"
             android:label="Payment" />
@@ -95,10 +94,6 @@
             android:label="Confirmation"/>
         <activity android:name=".Activities.ReportAProblemActivity"
             android:label="Report A Problem"/>
-        <activity android:name=".Activities.GiveFeedbackActivity"
-            android:label="Give Feedback"/>
-        <activity android:name=".Activities.ContactUsActivity"
-            android:label="Contact Us"/>
     </application>
 
 </manifest>

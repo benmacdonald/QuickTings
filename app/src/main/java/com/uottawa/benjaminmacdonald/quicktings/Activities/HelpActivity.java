@@ -1,11 +1,15 @@
 package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 public class HelpActivity extends AppCompatActivity {
@@ -17,6 +21,8 @@ public class HelpActivity extends AppCompatActivity {
 
         //Add the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         Button reportAProblemButton = (Button) findViewById(R.id.reportAProblemButton);
         reportAProblemButton.setOnClickListener(new View.OnClickListener() {
@@ -30,7 +36,18 @@ public class HelpActivity extends AppCompatActivity {
         giveFeedbackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), GiveFeedbackActivity.class));
+                String mailto = "mailto:help@lcb-go.com" +
+                        "&subject=" + Uri.encode("Feedback - " + user.getUid()) +
+                        "&body=" + Uri.encode("This app is awesome!");
+
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse(mailto));
+
+                try {
+                    startActivity(emailIntent);
+                } catch (ActivityNotFoundException e) {
+                    //TODO: Handle case where no email app is available aka EMULATOR
+                }
             }
         });
 
@@ -38,7 +55,18 @@ public class HelpActivity extends AppCompatActivity {
         contactUsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), ContactUsActivity.class));
+                String mailto = "mailto:help@lcb-go.com" +
+                        "&subject=" + Uri.encode("Contact - " + user.getUid()) +
+                        "&body=" + Uri.encode("I'd like to purchase your app.");
+
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse(mailto));
+
+                try {
+                    startActivity(emailIntent);
+                } catch (ActivityNotFoundException e) {
+                    //TODO: Handle case where no email app is available aka EMULATOR
+                }
             }
         });
     }
