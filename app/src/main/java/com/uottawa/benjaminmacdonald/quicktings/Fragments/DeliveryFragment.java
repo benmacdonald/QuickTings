@@ -159,8 +159,7 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
                     if (location != null) {
                         LatLng current = new LatLng(location.getLatitude(), location.getLongitude());
                         map.addMarker(new MarkerOptions().position(current).title("Current Location"));
-                        map.moveCamera(CameraUpdateFactory.newLatLng(current));
-                        map.animateCamera(CameraUpdateFactory.zoomTo(12));
+                        map.moveCamera(CameraUpdateFactory.newLatLngZoom(current, 12));
 
                     }
                 }
@@ -180,8 +179,7 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
                 LatLng latLng = place.getLatLng();
                 map.clear();
                 map.addMarker(new MarkerOptions().position(latLng).title("Delivery Location"));
-                map.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-                map.animateCamera(CameraUpdateFactory.zoomTo(14));
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 12));
 
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getContext(), data);
