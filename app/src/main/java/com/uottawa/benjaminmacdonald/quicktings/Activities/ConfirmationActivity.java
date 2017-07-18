@@ -11,7 +11,6 @@ import android.widget.TextView;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 
@@ -35,7 +34,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         for (int i = 0; i < list.size(); i++) {
             ShoppingCart.CartItem item = list.get(i);
-            inflater.inflate(R.layout.card_order, orderList, true);
+            inflater.inflate(R.layout.card_item_confirmation, orderList, true);
             View view = orderList.getChildAt(i);
             TextView t1 = (TextView) view.findViewById(R.id.order_item_name);
             TextView t2 = (TextView) view.findViewById(R.id.order_item_quantity);

@@ -18,7 +18,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="1"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="@id/bullet_point"
         app:layout_constraintBottom_toBottomOf="@id/bullet_point"
@@ -30,7 +29,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:text="ruuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuum"
         android:textSize="20sp"
         app:layout_constraintTop_toTopOf="@id/order_item_quantity"
         app:layout_constraintStart_toEndOf="@id/order_item_quantity"/>

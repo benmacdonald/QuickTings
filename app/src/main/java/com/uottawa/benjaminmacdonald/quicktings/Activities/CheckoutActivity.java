@@ -1,6 +1,7 @@
 package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -53,7 +54,11 @@ public class CheckoutActivity extends AppCompatActivity {
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                mStepperLayout.proceed();
+                if (mStepperLayout.getCurrentStepPosition() == 2) {
+                    startActivity(new Intent(CheckoutActivity.this, ConfirmationActivity.class));
+                } else {
+                    mStepperLayout.proceed();
+                }
             }
         });
 
