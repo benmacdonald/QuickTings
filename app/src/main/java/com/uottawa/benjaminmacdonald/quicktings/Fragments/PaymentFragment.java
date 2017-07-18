@@ -35,23 +35,11 @@ import java.util.regex.Pattern;
 
 public class PaymentFragment extends Fragment implements Step {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
     private View rootView;
 
     GridView creditCardView;
 
     public PaymentFragment() {}
-
-    public static PaymentFragment newInstance(int sectionNumber) {
-        PaymentFragment fragment = new PaymentFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-
-        //shared preferences
-
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

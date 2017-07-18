@@ -42,13 +42,16 @@ import com.uottawa.benjaminmacdonald.quicktings.Classes.User;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.MainFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.SearchFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.SuggestionFragment;
+import com.uottawa.benjaminmacdonald.quicktings.Interfaces.CompletionCallable;
 import com.uottawa.benjaminmacdonald.quicktings.Manifest;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener, SearchFragment.OnFragmentInteractionListener, SuggestionFragment.OnFragmentInteractionListener, ShoppingCart.CompletionCallable {
+        implements NavigationView.OnNavigationItemSelectedListener, MainFragment.OnFragmentInteractionListener,
+        SearchFragment.OnFragmentInteractionListener, SuggestionFragment.OnFragmentInteractionListener,
+        CompletionCallable {
 
     private SearchView searchView;
     private SearchFragment searchFragment;

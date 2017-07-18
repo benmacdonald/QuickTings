@@ -1,13 +1,10 @@
 package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -15,13 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.FusedLocationProviderApi;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -29,22 +24,17 @@ import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
-import com.uottawa.benjaminmacdonald.quicktings.Activities.CheckoutActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -57,7 +47,6 @@ import static android.app.Activity.RESULT_CANCELED;
 
 public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
     private GoogleApiClient mGoogleApiClient;
     private static final int RESULT_OK = -1;
     private MapView mMapView;
@@ -67,17 +56,6 @@ public class DeliveryFragment extends Fragment implements Step, GoogleApiClient.
     final int PLACE_AUTOCOMPLETE_REQUEST_CODE = 1;
 
     public DeliveryFragment() {
-    }
-
-    public static DeliveryFragment newInstance(int sectionNumber) {
-        DeliveryFragment fragment = new DeliveryFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
-
-        //shared preferences
-
-        return fragment;
     }
 
     @Override
