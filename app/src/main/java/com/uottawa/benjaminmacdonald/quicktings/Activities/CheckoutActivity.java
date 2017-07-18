@@ -2,22 +2,13 @@ package com.uottawa.benjaminmacdonald.quicktings.Activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
@@ -25,20 +16,12 @@ import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.CheckoutFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DeliveryFragment;
-import com.uottawa.benjaminmacdonald.quicktings.Fragments.DescriptionFragment;
-import com.uottawa.benjaminmacdonald.quicktings.Fragments.DetailsFragment;
-import com.uottawa.benjaminmacdonald.quicktings.Fragments.MainFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.PaymentFragment;
 import com.uottawa.benjaminmacdonald.quicktings.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CheckoutActivity extends AppCompatActivity {
 
     // fragments
-    private CheckoutActivity.SectionsPagerAdapter mSectionsPagerAdapter;
-    private ViewPager mViewPager;
     private StepperLayout mStepperLayout;
 
     @Override
@@ -64,8 +47,6 @@ public class CheckoutActivity extends AppCompatActivity {
 
         //Add the back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
 
     }
 

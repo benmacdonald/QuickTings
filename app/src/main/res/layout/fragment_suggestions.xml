@@ -5,6 +5,28 @@
     android:background="@color/cardview_light_background"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/recentParentView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/recentText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:text="RECENT" />
+
+        <ListView
+            android:id="@+id/recentListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:divider="@android:color/white" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/suggestedText"
         android:layout_width="match_parent"

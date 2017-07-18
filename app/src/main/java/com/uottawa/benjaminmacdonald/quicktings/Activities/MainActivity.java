@@ -418,6 +418,7 @@ public class MainActivity extends AppCompatActivity
         suggestions.add("tequila");
         suggestions.add("rum");
         suggestions.add("vodka");
+        suggestions.add("whisky");
         return suggestions;
     }
 

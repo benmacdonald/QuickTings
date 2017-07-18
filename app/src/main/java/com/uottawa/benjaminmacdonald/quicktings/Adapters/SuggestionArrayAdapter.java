@@ -22,18 +22,24 @@ public class SuggestionArrayAdapter extends ArrayAdapter<String> {
 
     private final Context context;
     private final List<String> values;
+    private final String type;
 
-    public SuggestionArrayAdapter(Context context, List<String> values) {
+    public SuggestionArrayAdapter(Context context, List<String> values, String type) {
         super(context, R.layout.card_suggestion_result, values);
         this.context = context;
         this.values = values;
+        this.type = type;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         View listView = inflater.inflate(R.layout.card_suggestion_result,parent,false);
+        if(type.equals("RECENT")) {
+            listView = inflater.inflate(R.layout.card_recent_result,parent,false);
+        }
 
         //Set the title of the product
         TextView suggestion = (TextView) listView.findViewById(R.id.suggestion);

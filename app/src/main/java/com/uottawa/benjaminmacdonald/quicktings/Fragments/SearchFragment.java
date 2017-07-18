@@ -3,11 +3,13 @@ package com.uottawa.benjaminmacdonald.quicktings.Fragments;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,6 +45,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 
 /**
@@ -209,7 +214,7 @@ public class SearchFragment extends Fragment {
         mListener = null;
     }
 
-    public void updateSearchResults(String query) {
+    public void updateSearchResults(final String query) {
         this.query = query.replaceAll(" ", "%20");
         String url = "https://lcboapi.com/products?access_key="+getString(R.string.api_key)+"&per_page=100&where_not=is_dead&q="+this.query;
         System.out.println(url);
@@ -223,6 +228,9 @@ public class SearchFragment extends Fragment {
                         productItems.addAll(tmp);
                         updateFilterBarText();
                         productArrayAdapter.notifyDataSetChanged();
+
+                        //log recent search
+                        figureOutRecentSearch(query);
 
                         Log.d("MYAPP",response.toString());
 
@@ -376,6 +384,33 @@ public class SearchFragment extends Fragment {
 
             }
         });
+    }
+
+    private void figureOutRecentSearch(String query) {
+
+        Context context = this.getActivity();
+        SharedPreferences sharedPref = context.getSharedPreferences("com.quicktings.saves", Context.MODE_PRIVATE);
+
+        String recent = sharedPref.getString("recent", "");
+
+        ArrayList<String> recents = new ArrayList<String>();
+        if (! recent.equals("")) {
+            recents = new ArrayList<String>(Arrays.asList(recent.split(",")));
+        }
+
+        if (recents.contains(query)) {
+            recents.remove(query);
+        }
+        if (recents.size() >= 3) {
+            recents.remove(recents.size() - 1);
+        }
+
+        recents.add(0, query);
+
+        SharedPreferences.Editor sharedEditor = sharedPref.edit();
+        sharedEditor.putString("recent", TextUtils.join(",", recents));
+        sharedEditor.apply();
+
     }
 
 }
