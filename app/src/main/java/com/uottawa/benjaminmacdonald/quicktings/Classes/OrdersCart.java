@@ -116,6 +116,10 @@ public class OrdersCart implements ValueEventListener {
         return mCurrentOrder;
     }
 
+    public void clearCurrentOrder() {
+        mCurrentOrder = null;
+    }
+
     public void addCurrentOrder() {
         //go to the all order db ref
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -158,7 +162,6 @@ public class OrdersCart implements ValueEventListener {
 //                    }
 //                });
         mRecentOrder = mCurrentOrder.order_key;
-        mCurrentOrder = null;
     }
 
     public void addListener(CompletionCallable completionCallable) {

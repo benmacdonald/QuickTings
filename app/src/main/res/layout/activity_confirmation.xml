@@ -103,10 +103,12 @@
             </LinearLayout>
 
             <ImageView
+                android:id="@+id/confirmationMap"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:layout_marginTop="20dp"
-                android:background="#000"/>
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
     <LinearLayout

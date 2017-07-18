@@ -7,9 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
@@ -45,6 +48,20 @@ public class ConfirmationActivity extends AppCompatActivity {
 
         totalOrder.setText(ShoppingCart.getInstance().getTotalBill());
 
+        OrdersCart ordersCart = OrdersCart.getInstance();
+
+        String lat = ordersCart.getCurrentOrder().latitude.toString();
+        String _long = ordersCart.getCurrentOrder().longitude.toString();
+
+        String url = "https://maps.googleapis.com/maps/api/staticmap?center="+lat+","+_long+
+                "&zoom=15&size=400x400&scale=2" +
+                "&markers=color:red%7Clabel:C%7C+"+lat+","+_long+"&key=AIzaSyALZvqSgkzhLBtORw7iej52P3M-pvl4K5w";
+
+        ImageView map = (ImageView) findViewById(R.id.confirmationMap);
+        Glide.with(this).load(url).into(map);
+
+
+
         Button home = (Button) findViewById(R.id.homeButton);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,6 +71,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         });
 
         ShoppingCart.getInstance().clearCart();
+        ordersCart.clearCurrentOrder();
     }
 
     @Override

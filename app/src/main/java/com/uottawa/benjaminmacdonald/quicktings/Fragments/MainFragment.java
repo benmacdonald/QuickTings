@@ -26,12 +26,21 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.uottawa.benjaminmacdonald.quicktings.Activities.MainActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Activities.ProductActivity;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.DiscoverArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Adapters.MainActivityArrayAdapter;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.DatabaseUtils;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.Orders;
 import com.uottawa.benjaminmacdonald.quicktings.Classes.ProductItem;
+import com.uottawa.benjaminmacdonald.quicktings.Classes.ShoppingCart;
 import com.uottawa.benjaminmacdonald.quicktings.Interfaces.DatabaseCallback;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 import com.vstechlab.easyfonts.EasyFonts;
@@ -70,11 +79,15 @@ public class MainFragment extends Fragment implements DatabaseCallback {
     private List<ProductItem> orderAgainItems;
     private List<ProductItem> favouriteItems;
 
+    private HashMap<String, HashMap<String,Object>> ordersHashMap;
+
 //    private HashMap favourites;
 
     //For favourites
     private MainActivityArrayAdapter favouritesArrayAdapter;
+    private MainActivityArrayAdapter orderAgainArrayAdapter;
     private GridView favouritesView;
+    private GridView orderAgainView;
 
     //Utilities
     private DatabaseUtils databaseUtils;
@@ -167,11 +180,11 @@ public class MainFragment extends Fragment implements DatabaseCallback {
         //Order Again Product Item List
         orderAgainItems = new ArrayList<ProductItem>();
 
-        GridView orderAgainView = (GridView) rootView.findViewById(R.id.orderAgainView);
+        orderAgainView = (GridView) rootView.findViewById(R.id.orderAgainView);
 
         orderAgainView.setEmptyView(rootView.findViewById(R.id.empty_oa_view));
 
-        final MainActivityArrayAdapter orderAgainArrayAdapter = new MainActivityArrayAdapter(getActivity(), orderAgainItems);
+        orderAgainArrayAdapter = new MainActivityArrayAdapter(getActivity(), orderAgainItems);
         orderAgainView.setAdapter(orderAgainArrayAdapter);
         orderAgainView.setNumColumns(orderAgainItems.size());
         if (orderAgainItems.size() > 0) {
@@ -186,6 +199,7 @@ public class MainFragment extends Fragment implements DatabaseCallback {
                 startActivity(intent);
             }
         });
+
 
         //Favourites ProductItem List
         favouriteItems = new ArrayList<ProductItem>();
@@ -208,6 +222,9 @@ public class MainFragment extends Fragment implements DatabaseCallback {
                 startActivityForResult(intent, 1);
             }
         });
+
+        ordersHashMap = new HashMap<>();
+        getOrders();
 
         return rootView;
     }
@@ -337,6 +354,85 @@ public class MainFragment extends Fragment implements DatabaseCallback {
         orderAgain.setTypeface(EasyFonts.robotoRegular(getActivity()));
         TextView fav = (TextView) rootview.findViewById(R.id.favouritesTitle);
         fav.setTypeface(EasyFonts.robotoRegular(getActivity()));
+    }
+
+    public void getOrders() {
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference mRef = database.getReference("orders/"+ user.getUid());
+
+        // Attach a listener to read the data at our posts reference
+        mRef.addValueEventListener(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Orders> tmp = new ArrayList<Orders>();
+                ordersHashMap = (HashMap<String, HashMap<String,Object>>) dataSnapshot.getValue();
+
+                if (ordersHashMap == null) {
+                    ordersHashMap = new HashMap<String, HashMap<String, Object>>();
+                }
+                for ( Map.Entry<String, HashMap<String,Object>> entry : ordersHashMap.entrySet()) {
+                    String key = entry.getKey();
+                    HashMap<String, Object> item = entry.getValue();
+                    Orders order = new Orders();
+                    order.setOrder_cost((Double) item.get("order_cost"));
+                    order.setOrder_date((String) item.get("order_date"));
+                    order.setLatitude((Double) item.get("latitude"));
+                    order.setLongitude((Double) item.get("longitude"));
+                    order.setProducts((List<Integer>) item.get("products"));
+
+                    tmp.add(order);
+                }
+
+                for (Orders orders : tmp) {
+                    ArrayList<Integer> test = new ArrayList<Integer>();
+                    test.addAll(orders.getProducts());
+                    for (Object productId : test) {
+                        String url = "https://lcboapi.com/products/" + productId.toString() + "/?access_key=MDplN2Y5YTk1Yy0zNzJmLTExZTctYTBjZi1lZmFlNmMyYmFlY2U6ZDlTcWtYWEFhb0FUdU9vMFVPOFdTUXMwYWRUQUxkdnhLcG1v";
+                        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                                    @Override
+                                    public void onResponse(JSONObject response) {
+                                        try {
+                                            System.out.println(response);
+                                            JSONObject product = response.getJSONObject("result");
+                                            ProductItem productItem = new ProductItem(product);
+                                            //String itemName, String itemType, String image_url, Integer mId, Integer itemCost, Integer quantity\
+                                            List<ProductItem> tmp = new ArrayList<ProductItem>(orderAgainItems);
+                                            tmp.add(new ProductItem(product));
+                                            orderAgainItems.clear();
+                                            orderAgainItems.addAll(tmp);
+                                            orderAgainArrayAdapter.notifyDataSetChanged();
+                                            orderAgainView.setNumColumns(orderAgainItems.size());
+                                            if (orderAgainItems.size() > 0) {
+                                                setDynamicWidth(orderAgainView);
+                                            }
+
+                                        } catch (Exception e) {
+                                            //swag
+                                        }
+                                    }
+
+                                }, new Response.ErrorListener() {
+
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d("MYAPP","ERROR" + error);
+                                    }
+                                });
+                        requestQueue.add(jsonObjectRequest);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                System.out.println("The read failed: " + databaseError.getCode());
+            }
+        });
     }
 
 }

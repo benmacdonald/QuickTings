@@ -7,38 +7,24 @@
     android:paddingBottom="24dp"
     tools:context="com.uottawa.benjaminmacdonald.quicktings.Activities.YourOrdersActivity">
 
-    <android.support.v4.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="11dp"
-                android:text="Current Order"
-                android:textSize="18sp"
-                android:textColor="#939393"/>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginBottom="11dp"
-                android:background="@color/colorConfirmationText"/>
+            android:layout_marginBottom="11dp"
+            android:text="Current Orders"
+            android:textColor="#939393"
+            android:textSize="18sp" />
 
-            <include layout="@layout/card_order" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginTop="11dp"
-                android:background="@color/colorConfirmationText"/>
-        </LinearLayout>
+        <ListView
+            android:id="@+id/orderList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
+    </LinearLayout>
 
-
-    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
