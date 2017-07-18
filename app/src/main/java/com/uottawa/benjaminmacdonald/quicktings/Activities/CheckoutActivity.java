@@ -9,20 +9,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 import com.stepstone.stepper.adapter.AbstractFragmentStepAdapter;
 import com.stepstone.stepper.viewmodel.StepViewModel;
-import com.uottawa.benjaminmacdonald.quicktings.Classes.OrdersCart;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.CheckoutFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.DeliveryFragment;
 import com.uottawa.benjaminmacdonald.quicktings.Fragments.PaymentFragment;
 import com.uottawa.benjaminmacdonald.quicktings.R;
 
-public class CheckoutActivity extends AppCompatActivity {
+public class CheckoutActivity extends AppCompatActivity implements StepperLayout.StepperListener {
 
     // fragments
     private StepperLayout mStepperLayout;
@@ -35,24 +33,14 @@ public class CheckoutActivity extends AppCompatActivity {
         // set up section
         mStepperLayout = (StepperLayout) findViewById(R.id.stepperLayout);
         mStepperLayout.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), this));
+        mStepperLayout.setListener(this);
 
 
         FloatingActionButton myFab = (FloatingActionButton) findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                int currentStep = mStepperLayout.getCurrentStepPosition();
-                if (currentStep == 1) {
-                    if (!OrdersCart.getInstance().getCurrentOrder().hasLocation()) {
-                        Toast.makeText(CheckoutActivity.this, "Please find your location", Toast.LENGTH_LONG).show();
-                    } else {
-                        mStepperLayout.proceed();
-                    }
-                } else if (currentStep == 2) {
-
-                    startActivity(new Intent(CheckoutActivity.this, ConfirmationActivity.class));
-                } else {
-                    mStepperLayout.proceed();
-                }
+                //test
+                mStepperLayout.proceed();
             }
         });
 
@@ -80,6 +68,26 @@ public class CheckoutActivity extends AppCompatActivity {
         } else {
             finish();
         }
+    }
+
+    @Override
+    public void onCompleted(View completeButton) {
+        startActivity(new Intent(CheckoutActivity.this, ConfirmationActivity.class));
+    }
+
+    @Override
+    public void onError(VerificationError verificationError) {
+
+    }
+
+    @Override
+    public void onStepSelected(int newStepPosition) {
+
+    }
+
+    @Override
+    public void onReturn() {
+
     }
 
     // inner class

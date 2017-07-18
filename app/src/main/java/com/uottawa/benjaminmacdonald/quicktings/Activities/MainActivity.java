@@ -207,7 +207,10 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
         }
     }
 
@@ -233,6 +236,9 @@ public class MainActivity extends AppCompatActivity
         });
 
         cart = ShoppingCart.getInstance(this);
+
+        Integer num = cart.getCart().size();
+        numItems.setText(num.toString());
 
 
         searchView = (SearchView) searchItem.getActionView();
@@ -455,6 +461,7 @@ public class MainActivity extends AppCompatActivity
         }
         return arrayList;
     }
+
 
     @Override
     public void finish() {

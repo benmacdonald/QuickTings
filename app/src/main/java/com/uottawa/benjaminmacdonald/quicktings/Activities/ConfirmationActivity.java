@@ -29,7 +29,7 @@ public class ConfirmationActivity extends AppCompatActivity {
         TextView totalOrder = (TextView) findViewById(R.id.order_total);
         setSupportActionBar(actionBar);
         getSupportActionBar().setTitle(getResources().getString(R.string.activity_confirmation));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LayoutInflater inflater = getLayoutInflater();
         for (int i = 0; i < list.size(); i++) {
