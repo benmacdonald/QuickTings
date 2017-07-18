@@ -1,6 +1,8 @@
 package com.uottawa.benjaminmacdonald.quicktings.Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -147,6 +149,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder>
                     }
                 });
                 mRequestQueue.add(jsonObjectRequest);
+            }
+        });
+        holder.itemView.findViewById(R.id.cart_remove).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(mContext)
+                        .setTitle("Delete this item?")
+                        .setMessage("Do you want to delete this item from the cart?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                shoppingCart.removeItem(mDataset.remove(holder.getAdapterPosition()));
+                            }
+                        })
+                        .setNegativeButton("No", null)
+                        .create()
+                        .show();
             }
         });
     }

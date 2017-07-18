@@ -31,7 +31,6 @@ public class ConfirmationActivity extends AppCompatActivity {
         TextView totalOrder = (TextView) findViewById(R.id.order_total);
         setSupportActionBar(actionBar);
         getSupportActionBar().setTitle(getResources().getString(R.string.activity_confirmation));
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LayoutInflater inflater = getLayoutInflater();
         for (int i = 0; i < list.size(); i++) {
@@ -50,11 +49,11 @@ public class ConfirmationActivity extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShoppingCart cart = ShoppingCart.getInstance();
-                cart.clearCart();
                 startActivity(new Intent(view.getContext(), MainActivity.class));
             }
         });
+
+        ShoppingCart.getInstance().clearCart();
     }
 
     @Override

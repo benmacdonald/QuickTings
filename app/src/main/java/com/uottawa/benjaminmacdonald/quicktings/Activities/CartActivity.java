@@ -30,6 +30,8 @@ public class CartActivity extends AppCompatActivity
     private View undoBar;
     private Button undoButton;
 
+    private static boolean loadedFlag = false;
+
     private int recentPosition;
     private ProgressDialog progressDialog;
 
@@ -71,16 +73,6 @@ public class CartActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        if (shoppingCart.getCart().isEmpty()) {
-            setupProgressDialog();
-            progressDialog.setMessage("Getting you shopping cart...");
-            progressDialog.show();
-        }
-    }
-
-    @Override
     public void finish() {
         super.finish();
         shoppingCart.removeListener(this);
@@ -106,7 +98,6 @@ public class CartActivity extends AppCompatActivity
     @Override
     public void onFinalize() {
         cartAmount.setText(shoppingCart.getTotalBill());
-        progressDialog.dismiss();
     }
 
     @Override
@@ -132,8 +123,7 @@ public class CartActivity extends AppCompatActivity
 
     public void checkoutItems(View v) {
         if (shoppingCart.getCart().isEmpty()) {
-            Toast.makeText(this, "Add items to the card", Toast.LENGTH_SHORT).show();
-            finish();
+            Toast.makeText(this, "To make your order, add items to the cart!", Toast.LENGTH_SHORT).show();
         } else {
             OrdersCart.getInstance().newOrder();
             Intent intent = new Intent(this, CheckoutActivity.class);
