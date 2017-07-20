@@ -195,10 +195,11 @@ public class MainFragment extends Fragment implements DatabaseCallback {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(rootView.getContext(), ProductActivity.class);
-                intent.putExtra("PRODUCT", orderAgainItems.get(position).getId());
+                intent.putExtra("PRODUCT", orderAgainItems.get(position));
                 startActivity(intent);
             }
         });
+
 
 
         //Favourites ProductItem List
@@ -376,7 +377,11 @@ public class MainFragment extends Fragment implements DatabaseCallback {
                     String key = entry.getKey();
                     HashMap<String, Object> item = entry.getValue();
                     Orders order = new Orders();
-                    order.setOrder_cost((Double) item.get("order_cost"));
+                    if (item.get("order_cost") instanceof Double) {
+                        order.setOrder_cost((Double) item.get("order_cost"));
+                    } else if (item.get("order_cost") instanceof Long) {
+                        order.setOrder_cost(Double.valueOf((Long) item.get("order_cost")));
+                    }
                     order.setOrder_date((String) item.get("order_date"));
                     order.setLatitude((Double) item.get("latitude"));
                     order.setLongitude((Double) item.get("longitude"));
